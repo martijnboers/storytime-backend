@@ -1,7 +1,7 @@
-# TOSAD Configuration
+# StoryTime database Configuration
 # 
 #	THIS IS AN EXAMPLE!
-# 	Move to tosad.properties
+# 	Move to storytime.properties
 
 host=
 user=
