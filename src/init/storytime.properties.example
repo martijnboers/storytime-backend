@@ -1,0 +1,17 @@
+# TOSAD Configuration
+# 
+#	THIS IS AN EXAMPLE!
+# 	Move to tosad.properties
+
+host=
+user=
+password=
+database=
+port=
+
+#logging:
+# 1 = only critical
+# 2 = crit and error
+# 3 = verbose
+
+loggingLevel=3
