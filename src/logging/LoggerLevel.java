@@ -30,8 +30,8 @@ public class LoggerLevel {
 
 	public String getPropValues() throws IOException, MissingPropertiesFile {
 		Properties prop = new Properties();
-		String propFileName = "tosad.properties";
-		inputStream = this.getClass().getClassLoader().getResource("init/tosad.properties").openStream();
+		String propFileName = "storytime.properties";
+		inputStream = this.getClass().getClassLoader().getResource("init/storytime.properties").openStream();
 
 		if (inputStream != null) {
 			prop.load(inputStream);
