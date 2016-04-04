@@ -20,18 +20,18 @@ import java.util.Calendar;
 import logging.Level;
 
 /**
- * @author martijn
- * 
- *         Abstract logger
- *
+ * @author martijn en een outsourcer uit India 
+ * Abstract (Singleton) logger
  */
 
 public class Logger {
+
+	private static Logger logger = new Logger();
 	private Level level;
 	private String message;
 	private int propLevel;
 
-	public Logger() {
+	private Logger() {
 		LoggerLevel loggerLevel = new LoggerLevel();
 		try {
 			propLevel = Integer.valueOf(loggerLevel.getPropValues());
@@ -47,10 +47,10 @@ public class Logger {
 	 * informate} if none given default is INFORMATIVE
 	 * 
 	 * @param level
-	 * @param ex
+	 * @param er
 	 * @param message
 	 */
-	public void out(Level level, String ex, String message) {
+	public void out(Level level, String er, String message) {
 		if (propLevel == 1 && (level == Level.ERROR || level == Level.INFORMATIVE)) {
 			return;
 		}
@@ -58,9 +58,14 @@ public class Logger {
 		if (propLevel == 2 && level == Level.INFORMATIVE) {
 			return;
 		}
-		
+
 		String timeNow = new SimpleDateFormat("yyy-MM-dd HH:mm:ss.SSS").format(Calendar.getInstance().getTime());
 		this.level = (level.equals(null)) ? Level.INFORMATIVE : level;
-		System.out.println(timeNow + ":" + level.toString() + " [" + ex + "] " + message);
+		
+		System.out.println(timeNow + ":" + level.toString() + " [" + er + "] " + message);
+	}
+
+	public static Logger getInstance() {
+		return logger;
 	}
 }

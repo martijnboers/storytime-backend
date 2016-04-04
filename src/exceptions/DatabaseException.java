@@ -24,7 +24,7 @@ import logging.Logger;
 public class DatabaseException extends Exception{
 	public DatabaseException(String message){
 		super(message);
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		log.out(Level.CRITICAL, "DatabaseException", message);
 	}
 }

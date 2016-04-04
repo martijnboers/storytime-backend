@@ -24,7 +24,7 @@ import logging.Logger;
 public class MissingPropertiesFile extends Exception {
 	public MissingPropertiesFile(String message) {
 		super(message);
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		log.out(Level.CRITICAL, "MissingPropertiesFile", message);
 	}
 }

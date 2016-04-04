@@ -34,7 +34,7 @@ public class DatabaseProperties {
 	InputStream inputStream;
 
 	public DbConfiguration getPropValues() throws IOException, MissingPropertiesFile{
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		DbConfiguration configuration = null;
 		Properties prop = new Properties();
 		String propFileName = "init/storytime.properties";

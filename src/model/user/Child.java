@@ -10,6 +10,12 @@ public class Child extends User {
 	public Child() {
 	}
 
+	public Child(Date dateOfBirth, String gender) {
+		super();
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+	}
+
 	protected Date getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -25,7 +31,7 @@ public class Child extends User {
 	protected void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "Child [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";

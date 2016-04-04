@@ -25,7 +25,7 @@ import logging.Logger;
 public class ParameterException extends Exception {
 	public ParameterException(String message) {
 		super(message);
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		log.out(Level.CRITICAL, "MissingParameterException", message);
 	}
 }

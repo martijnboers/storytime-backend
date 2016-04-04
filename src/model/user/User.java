@@ -12,6 +12,14 @@ public abstract class User {
 	public User() {
 	}
 
+	public User(String username, String password, Image profilePicture, String name) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.profilePicture = profilePicture;
+		this.name = name;
+	}
+
 	protected String getUsername() {
 		return username;
 	}
@@ -43,7 +51,7 @@ public abstract class User {
 	protected void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", profilePicture=" + profilePicture + ", name=" + name + "]";
