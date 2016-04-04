@@ -12,33 +12,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package logging;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+package dao;
 
-import exceptions.MissingPropertiesFile;
-import init.StartServer;
+import java.sql.Connection;
 
-/**
- * @author martijn
- *
- */
-public class LoggerLevel {
-	String result = "";
-	InputStream inputStream;
+import logging.Level;
+import logging.Logger;
 
-	public String getPropValues() throws IOException, MissingPropertiesFile {
-		Properties prop = new Properties();
-		String propFileName = "init/storytime.properties";
-		inputStream = this.getClass().getClassLoader().getResource(propFileName).openStream();
+public class ConnectorFactory {
+	
+	private static Connector local;
+	private static Logger log = Logger.getInstance();
 
-		if (inputStream != null) {
-			prop.load(inputStream);
+	public static Connection getConnection() throws Exception {
+		if (local != null && local.getConnectionStatus()) {
+			log.out(Level.INFORMATIVE, "ConnectorFactory", "Reusing connection");
+			return local.getConnection();
 		} else {
-			throw new MissingPropertiesFile("property file '" + propFileName + "' not found in the classpath");
+			log.out(Level.INFORMATIVE, "ConnectorFactory", "Serving new connection");
+			local = new Connector(null);
+			return local.getConnection();
 		}
-		return prop.getProperty("loggingLevel");
 	}
+
 }
