@@ -30,6 +30,10 @@ import controller.Security;
 public class ViewSuper {
 	protected Gson gson = new Gson();
 	protected Json json = new Json();
-	protected Security sec = new Security();
+	protected Security sec;
+	
+	public ViewSuper() throws Exception{
+		sec = new Security();
+	}
 
 }

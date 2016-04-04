@@ -15,6 +15,7 @@
 package view;
 
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import controller.Json;
 import model.State;
@@ -33,22 +35,28 @@ import model.user.Mentor;
 @Path("/")
 public class UserRequest extends ViewSuper {
 
+	public UserRequest() throws Exception {
+		super();
+	}
+
 	/**
 	 * TODO: register function. @ xml notation everywere
+	 * 
 	 * @param input
 	 * @return
 	 * @throws UnknownHostException
 	 */
-	@POST @Consumes("application/json")
+	@POST
+	@Consumes("application/json")
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(String input) throws UnknownHostException {
 		Mentor theMentor = gson.fromJson(input, Mentor.class);
 		System.out.println("param1 = " + theMentor.getEmail());
-	    System.out.println("param2 = " + theMentor.getName());
+		System.out.println("param2 = " + theMentor.getName());
 		return json.createJson(State.PASSED, "Succesvol geregistreerd");
 	}
-	
+
 	@GET
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -62,11 +70,16 @@ public class UserRequest extends ViewSuper {
 		return json;
 
 	}
-	
+
 	@POST
-	@Consumes("application/json")
 	@Path("/login")
-	@public String login(String credentials) {
-		return sec.login(gson.fromJson(credentials, Credentials.class));
+	@Produces(MediaType.APPLICATION_JSON)
+	public String login(String credentials) throws JsonSyntaxException, SQLException {
+		String token = sec.login(gson.fromJson(credentials, Credentials.class));
+		if (token != null) {
+			return json.createJson(State.PASSED, token);
+		} else {
+			return json.createJson(State.ERROR, "Verkeerde inloggegevens");
+		}
 	}
 }

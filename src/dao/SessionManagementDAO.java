@@ -15,20 +15,67 @@
 
 package dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import logging.Level;
 import model.user.Credentials;
 
+import java.util.UUID;
+
 public class SessionManagementDAO extends DataAccesObject {
-	
+	private PreparedStatement statement;
+	private PreparedStatement token;
+	private Statement clean;
+
 	/**
 	 * Database functions for SessionManagement
 	 * 
 	 * @throws Exception
 	 */
-	public SessionManagementDAO() throws Exception{
+	public SessionManagementDAO() throws Exception {
 		super();
 	}
-	
-	public String Login(Credentials cred) {
-		
+
+	/**
+	 * Checks credentials of user and returns a token that can be used to
+	 * authenticate future web calls. Removes old auth tokens for user
+	 * 
+	 * @param cred
+	 * @return
+	 * @throws SQLException
+	 */
+	public String Login(Credentials cred) throws SQLException {
+		try {
+			statement = con.prepareStatement("SELECT user_id FROM User WHERE username=? AND password=?");
+			statement.setString(1, cred.getUsername());
+			statement.setString(2, cred.getPassword());
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				int id = result.getInt("user_id");
+				String uuid = UUID.randomUUID().toString();
+
+				clean = con.createStatement();
+				clean.executeUpdate("DELETE FROM Tokens WHERE userid = " + id);
+
+				token = con.prepareStatement("INSERT INTO Tokens (token, userid) Values (?, ?)");
+				token.setString(1, uuid);
+				token.setInt(2, id);
+				token.executeUpdate();
+
+				return uuid;
+
+			}
+		} catch (Exception e) {
+			log.out(Level.ERROR, "Login", "Kan niet inloggen");
+		} finally {
+			statement.close();
+			clean.close();
+			token.close();
+		}
+		return null;
 	}
 }

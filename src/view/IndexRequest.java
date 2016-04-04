@@ -44,6 +44,10 @@ import exceptions.MissingPropertiesFile;
 @Path("/")
 public class IndexRequest extends ViewSuper {
 
+	public IndexRequest() throws Exception {
+		super();
+	}
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String index() {

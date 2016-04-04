@@ -32,11 +32,17 @@ import model.State;
 
 @Provider
 public class GenericExceptionMapper implements ExceptionMapper<Exception>{
-
+	private Security security;
+	
 	public Response toResponse(Exception e) {
 		Json json = new Json();
 		String message = (e.getMessage().equals("")) ? "Missing message, please see stacktrace" : e.getMessage();
-		Security security = new Security();
+		
+		try {
+			security = new Security();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		
 		// For debugging purposes:
 		e.printStackTrace();

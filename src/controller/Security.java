@@ -23,11 +23,19 @@ package controller;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
+import java.sql.SQLException;
+
+import dao.SessionManagementDAO;
 import model.user.Credentials;
 import model.user.User;
 
 
 public class Security {
+	private SessionManagementDAO session;
+	
+	public Security() throws Exception{
+		session = new SessionManagementDAO();
+	}
 	/**
 	 * Escape HTML characters
 	 * 
@@ -38,7 +46,7 @@ public class Security {
 		return escapeHtml4(in);
 	}
 	
-	public boolean login(Credentials cred) {
-		return true;
+	public String login(Credentials cred) throws SQLException {
+		return session.Login(cred);
 	}
 }
