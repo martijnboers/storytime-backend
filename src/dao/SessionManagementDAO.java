@@ -15,6 +15,8 @@
 
 package dao;
 
+import model.user.Credentials;
+
 public class SessionManagementDAO extends DataAccesObject {
 	
 	/**
@@ -24,5 +26,9 @@ public class SessionManagementDAO extends DataAccesObject {
 	 */
 	public SessionManagementDAO() throws Exception{
 		super();
+	}
+	
+	public String Login(Credentials cred) {
+		
 	}
 }

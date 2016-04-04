@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 import controller.Json;
 import model.State;
+import model.user.Credentials;
 import model.user.Mentor;
 
 @Path("/")
@@ -60,5 +61,12 @@ public class UserRequest extends ViewSuper {
 		String json = gson.toJson(m);
 		return json;
 
+	}
+	
+	@POST
+	@Consumes("application/json")
+	@Path("/login")
+	@public String login(String credentials) {
+		return sec.login(gson.fromJson(credentials, Credentials.class));
 	}
 }

@@ -23,6 +23,9 @@ package controller;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
+import model.user.Credentials;
+import model.user.User;
+
 
 public class Security {
 	/**
@@ -33,5 +36,9 @@ public class Security {
 	 */
 	public String escape(String in) {
 		return escapeHtml4(in);
+	}
+	
+	public boolean login(Credentials cred) {
+		return true;
 	}
 }

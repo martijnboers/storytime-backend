@@ -13,23 +13,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package view;
+package model.user;
 
-import com.google.gson.Gson;
+public class Credentials {
+	private String username;
+	private String password;
 
-import controller.Json;
-import controller.Security;
+	public Credentials() {
 
-/**
- * Super class for view. Please add commonly used vars and functions here for
- * other views
- * 
- * @author martijn
- *
- */
-public class ViewSuper {
-	protected Gson gson = new Gson();
-	protected Json json = new Json();
-	protected Security sec = new Security();
+	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
