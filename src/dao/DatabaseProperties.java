@@ -33,6 +33,13 @@ public class DatabaseProperties {
 	String result = "";
 	InputStream inputStream;
 
+	/**
+	 * Fetches database configuratioin to be used in the connector
+	 * 
+	 * @return DbConfiguration 
+	 * @throws IOException
+	 * @throws MissingPropertiesFile
+	 */
 	public DbConfiguration getPropValues() throws IOException, MissingPropertiesFile{
 		Logger log = Logger.getInstance();
 		DbConfiguration configuration = null;

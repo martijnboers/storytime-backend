@@ -40,19 +40,28 @@ public class Connector {
 	private DbConfiguration config;
 	private Connection connection = null;
 
-
-	public Connector() throws IOException, DatabaseException, MissingPropertiesFile {
+	/**
+	 * Connector class that has the function to add own DBConfiguration. If this
+	 * parameter is null it will get the configuration file from disk. Consider
+	 * keeping this object in memmory instead of getting it from disk each call
+	 * 
+	 * @param _config
+	 * @throws IOException
+	 * @throws DatabaseException
+	 * @throws MissingPropertiesFile
+	 */
+	public Connector(DbConfiguration _config) throws IOException, DatabaseException, MissingPropertiesFile {
 		Logger log = Logger.getInstance();
 		dbProp = new DatabaseProperties();
-		config =  dbProp.getPropValues();
+		config = (_config == null) ? dbProp.getPropValues() : _config;
 
 		try {
 			log.out(Level.INFORMATIVE, "Connector",
-					"Trying with connection string: " + "jdbc:mariadb://" + config.getHost() + ":" + config.getPort() + "/"
-							+ config.getDatabase() + " " + config.getUser() + " " + config.getPassword());
+					"Trying with connection string: " + "jdbc:mariadb://" + config.getHost() + ":" + config.getPort()
+							+ "/" + config.getDatabase() + " " + config.getUser() + " " + config.getPassword());
 			connection = DriverManager.getConnection(
-					"jdbc:mariadb://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase(), config.getUser(),
-					config.getPassword());
+					"jdbc:mariadb://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase(),
+					config.getUser(), config.getPassword());
 
 		} catch (SQLException e) {
 			log.out(Level.CRITICAL, "Connector", "Error invalid database connection");

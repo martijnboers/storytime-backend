@@ -32,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 import model.State;
 import controller.Json;
 import dao.Connector;
+import dao.ConnectorFactory;
 import exceptions.DatabaseException;
 import exceptions.MissingPropertiesFile;
 
@@ -61,8 +62,7 @@ public class IndexRequest {
 	@Path("/up")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String available(@HeaderParam("user-agent") String useragent) throws Exception {
-		Connector con = new Connector();
-		Connection connection = con.getConnection();
+		Connection con = ConnectorFactory.getConnection();
 
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -71,6 +71,6 @@ public class IndexRequest {
 				: "";
 		return json.createJson(State.PASSED,
 				"yes " + InetAddress.getLocalHost().getHostName() + " is running. Is database connection valid: "
-						+ connection.isValid(20) + ". time to prevent caching: " + sdf.format(cal.getTime()) + apple);
+						+ con.isValid(20) + ". time to prevent caching: " + sdf.format(cal.getTime()) + apple);
 	}
 }
