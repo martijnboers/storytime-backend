@@ -49,12 +49,12 @@ public class Roadmap {
 		this.achievement = achievement;
 	}
 	
-	public void addStep(Step s) {
-		steps.add(s);
+	public boolean addStep(Step s) {
+		return steps.add(s);
 	}
 	
-	public void removeStep(Step s) {
-		steps.remove(s);
+	public boolean removeStep(Step s) {
+		return steps.remove(s);
 	}
 
 	public List<Step> getSteps() {
@@ -73,11 +73,11 @@ public class Roadmap {
 		this.categories = categories;
 	}
 	
-	public void addCategory(Category c) {
-		categories.add(c);
+	public boolean addCategory(Category c) {
+		return categories.add(c);
 	}
 	
-	public void removeCategory(Category c) {
-		steps.remove(c);
+	public boolean removeCategory(Category c) {
+		return steps.remove(c);
 	}
 }
