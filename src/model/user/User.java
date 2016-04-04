@@ -11,6 +11,14 @@ public abstract class User {
 
 	public User() {
 	}
+	
+	public User(String username, String password, Image profilePicture, String name) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.profilePicture = profilePicture;
+		this.name = name;
+	}
 
 	protected String getUsername() {
 		return username;

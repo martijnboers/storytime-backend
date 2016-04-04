@@ -13,6 +13,13 @@ public class Mentor extends User {
 	public Mentor() {
 	}
 
+	public Mentor(String email, List<Child> theChildren, List<Roadmap> theRoadmaps) {
+		super();
+		this.email = email;
+		this.theChildren = theChildren;
+		this.theRoadmaps = theRoadmaps;
+	}
+
 	protected String getEmail() {
 		return email;
 	}
@@ -28,13 +35,29 @@ public class Mentor extends User {
 	protected void setTheChildren(List<Child> theChildren) {
 		this.theChildren = theChildren;
 	}
+	
+	protected boolean addChild(Child child){
+		return theChildren.add(child);
+	}
 
+	protected boolean remvoveChild(Child child){
+		return theChildren.remove(child);
+	}
+			
 	protected List<Roadmap> getTheRoadmaps() {
 		return theRoadmaps;
 	}
 
 	protected void setTheRoadmaps(List<Roadmap> theRoadmaps) {
 		this.theRoadmaps = theRoadmaps;
+	}
+	
+	protected boolean addRoadmap(Roadmap roadmap){
+		return theRoadmaps.add(roadmap);
+	}
+
+	protected boolean remvoveRoadmap(Roadmap roadmap){
+		return theRoadmaps.remove(roadmap);
 	}
 	
 	@Override

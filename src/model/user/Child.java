@@ -10,6 +10,12 @@ public class Child extends User {
 	public Child() {
 	}
 
+	public Child(Date dateOfBirth, String gender) {
+		super();
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+	}
+
 	protected Date getDateOfBirth() {
 		return dateOfBirth;
 	}
