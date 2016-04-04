@@ -19,6 +19,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import dao.Connector;
 import logging.*;
 
 /**
@@ -49,5 +50,8 @@ public class StartServer {
 		server.start();
 		server.join();
 		mainLogger.out(Level.INFORMATIVE, "Main", "Server started");
+		
+		Connector con = new Connector();
+		
 	}
 }

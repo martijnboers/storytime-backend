@@ -37,8 +37,8 @@ public class DatabaseProperties {
 		Logger log = new Logger();
 		DbConfiguration configuration = null;
 		Properties prop = new Properties();
-		String propFileName = "storytime.properties";
-		inputStream = this.getClass().getClassLoader().getResource("init/storytime.properties").openStream();
+		String propFileName = "init/storytime.properties";
+		inputStream = this.getClass().getClassLoader().getResource(propFileName).openStream();
 
 		if (inputStream != null) {
 			prop.load(inputStream);

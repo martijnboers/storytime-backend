@@ -3,7 +3,7 @@
 #	THIS IS AN EXAMPLE!
 # 	Move to storytime.properties
 
-host=
+host
 user=
 password=
 database=
