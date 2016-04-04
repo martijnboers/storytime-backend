@@ -22,9 +22,7 @@ public class QuizDAO {
 			PreparedStatement statement;
 			try {
 				statement = con.prepareStatement("SELECT Quiz.name, Quiz.description, Question.question, Question.completed, Answer.answer, Answer.correct"
-						+ "FROM Quiz, Question, Answer"
-						+ "JOIN Mentor on mentor_id = Mentor.mentor_id"
-						+ "JOIN User on Mentor.user_id = User.user_id"
+						+ "FROM Quiz, Question, Answer,User"
 						+ "WHERE User.username = ?;");
 				statement.setString(1, username);
 				ResultSet result = statement.executeQuery();
