@@ -39,11 +39,20 @@ public class QuizDAO {
 						theQuizes.add(quiz);
 					}else{
 						for(Quiz q : theQuizes){
+							Question question = new Question(result.getString("question"),result.getBoolean("completed"));
 							if(q.equals(quiz)){
-								Question question = new Question(result.getString("question"),result.getBoolean("completed"));
+								if(!q.getTheQuestions().contains(question)){
 								Answer answer = new Answer(result.getString("answer"),result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
 								q.getTheQuestions().add(question);
+								} else{
+									for(Question qu: q.getTheQuestions()){
+										if(qu.equals(question)){
+											Answer answer = new Answer(result.getString("answer"),result.getBoolean("correct"));
+											qu.getTheAnswers().add(answer);
+										}
+									}
+								}
 							}
 						}
 					}
