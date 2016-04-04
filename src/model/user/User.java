@@ -1,15 +1,13 @@
 package model.user;
 
 import java.awt.Image;
-import javax.xml.bind.annotation.*;
 
-@XmlRootElement
 public abstract class User {
 
-	@XmlElement protected String username;
-	@XmlElement protected String password;
+	protected String username;
+	protected String password;
 	protected Image profilePicture;
-	@XmlElement protected String name;
+	protected String name;
 
 	public User() {
 	}

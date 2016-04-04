@@ -17,15 +17,17 @@ package view;
 import java.net.UnknownHostException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.Gson;
+
 import controller.Json;
 import model.State;
 import model.user.Mentor;
-import model.user.User;
 
 @Path("/")
 public class UserRequest {
@@ -40,9 +42,25 @@ public class UserRequest {
 	@POST @Consumes("application/json")
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String register(final Mentor input) throws UnknownHostException {
-		System.out.println("param1 = " + input.getEmail());
-	    System.out.println("param2 = " + input.getName());
+	public String register(String input) throws UnknownHostException {
+		Gson gson = new Gson();
+		Mentor theMentor = gson.fromJson(input, Mentor.class);
+		System.out.println("param1 = " + theMentor.getEmail());
+	    System.out.println("param2 = " + theMentor.getName());
 		return json.createJson(State.PASSED, "Succesvol geregistreerd");
+	}
+	
+	@GET
+	@Path("/getAccount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMentor() {
+		Mentor m = new Mentor();
+		m.setEmail("Plop");
+		m.setName("Henk");
+		m.setPassword("Henkie123");
+		Gson gson = new Gson();
+		String json = gson.toJson(m);
+		return json;
+
 	}
 }
