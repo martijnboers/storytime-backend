@@ -30,8 +30,7 @@ import model.State;
 import model.user.Mentor;
 
 @Path("/")
-public class UserRequest {
-	public Json json = new Json();
+public class UserRequest extends ViewSuper {
 
 	/**
 	 * TODO: register function. @ xml notation everywere
@@ -43,7 +42,6 @@ public class UserRequest {
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(String input) throws UnknownHostException {
-		Gson gson = new Gson();
 		Mentor theMentor = gson.fromJson(input, Mentor.class);
 		System.out.println("param1 = " + theMentor.getEmail());
 	    System.out.println("param2 = " + theMentor.getName());
