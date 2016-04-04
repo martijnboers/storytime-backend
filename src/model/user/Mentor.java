@@ -3,13 +3,11 @@ package model.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import model.roadmap.Roadmap;
 
 public class Mentor extends User {
 
-	@XmlElement private String email;
+	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
