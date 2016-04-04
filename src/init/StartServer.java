@@ -25,7 +25,6 @@ import logging.*;
  * @author martijn
  * 
  *         Use this file to start server
- *         TODO: Make logger static
  *
  */
 public class StartServer {
@@ -34,7 +33,7 @@ public class StartServer {
 	{
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 		context.setContextPath("/");
-		Logger mainLogger = new Logger();
+		Logger mainLogger = Logger.getInstance();
 		mainLogger.out(Level.INFORMATIVE, "Main", "Starting server");
 		Server server = new Server(8080);
 		mainLogger.out(Level.INFORMATIVE, "Main", "Set handler");

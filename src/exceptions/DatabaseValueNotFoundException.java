@@ -24,7 +24,7 @@ import logging.Logger;
 public class DatabaseValueNotFoundException extends Exception{
 	public DatabaseValueNotFoundException(String message){
 		super(message);
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		log.out(Level.CRITICAL, "DatabaseException", message);
 	}
 }

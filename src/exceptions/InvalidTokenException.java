@@ -24,7 +24,7 @@ import logging.Logger;
 public class InvalidTokenException extends Exception{
 	public InvalidTokenException(String message){
 		super(message);
-		Logger log = new Logger();
+		Logger log = Logger.getInstance();
 		log.out(Level.CRITICAL, "InvalidTokenException", message);
 	}
 }
