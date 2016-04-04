@@ -78,6 +78,6 @@ public class Roadmap {
 	}
 	
 	public boolean removeCategory(Category c) {
-		return steps.remove(c);
+		return categories.remove(c);
 	}
 }
