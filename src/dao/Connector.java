@@ -42,29 +42,19 @@ public class Connector {
 
 
 	public Connector() throws IOException, DatabaseException, MissingPropertiesFile {
-		log = new Logger();
+		Logger log = Logger.getInstance();
 		dbProp = new DatabaseProperties();
 		config =  dbProp.getPropValues();
 
 		try {
-			Class.forName("com.mariadb.jdbc.Driver");
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			log.out(Level.CRITICAL, "Connector", "Classpath not found");
-			return;
-		}
-
-		try {
 			log.out(Level.INFORMATIVE, "Connector",
-					"Trying with connection string: " + "jdbc:mariadb:@" + config.getHost() + ":" + config.getPort() + "/"
+					"Trying with connection string: " + "jdbc:mariadb://" + config.getHost() + ":" + config.getPort() + "/"
 							+ config.getDatabase() + " " + config.getUser() + " " + config.getPassword());
 			connection = DriverManager.getConnection(
-					"jdbc:mariadb:@" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase(), config.getUser(),
+					"jdbc:mariadb://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase(), config.getUser(),
 					config.getPassword());
 
 		} catch (SQLException e) {
-			System.out.println(e.getStackTrace());
 			log.out(Level.CRITICAL, "Connector", "Error invalid database connection");
 			DatabaseException exception = new DatabaseException("Error invalid database connection");
 			throw exception;

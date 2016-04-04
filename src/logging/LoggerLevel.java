@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import exceptions.MissingPropertiesFile;
+import init.StartServer;
 
 /**
  * @author martijn
@@ -30,8 +31,8 @@ public class LoggerLevel {
 
 	public String getPropValues() throws IOException, MissingPropertiesFile {
 		Properties prop = new Properties();
-		String propFileName = "storytime.properties";
-		inputStream = this.getClass().getClassLoader().getResource("init/storytime.properties").openStream();
+		String propFileName = "init/storytime.properties";
+		inputStream = this.getClass().getClassLoader().getResource(propFileName).openStream();
 
 		if (inputStream != null) {
 			prop.load(inputStream);

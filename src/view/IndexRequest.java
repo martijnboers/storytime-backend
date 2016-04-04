@@ -17,6 +17,7 @@ package view;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -30,6 +31,9 @@ import javax.ws.rs.core.MediaType;
 
 import model.State;
 import controller.Json;
+import dao.Connector;
+import exceptions.DatabaseException;
+import exceptions.MissingPropertiesFile;
 
 /**
  * @author martijn
@@ -52,14 +56,21 @@ public class IndexRequest {
 	public byte[] favicon() throws IOException {
 		return IO.readBytes(this.getClass().getClassLoader().getResource("init/favicon.ico").openStream());
 	}
-	
+
 	@GET
 	@Path("/up")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String available(@HeaderParam("user-agent") String useragent) throws UnknownHostException {
+	public String available(@HeaderParam("user-agent") String useragent) throws Exception {
+		Connector con = new Connector();
+		Connection connection = con.getConnection();
+
 		Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String apple = (useragent.contains("Macintosh")) ? "<br><br><a href=\"https://www.debian.org/\">Apple user detected, please switch operating systeem</a>" : "";
-		return json.createJson(State.PASSED, "yes " + InetAddress.getLocalHost().getHostName() + " is running, time to prevent caching: " + sdf.format(cal.getTime()) + apple);
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		String apple = (useragent.contains("Macintosh"))
+				? "<br><br><a href=\"https://www.debian.org/\">Apple user detected, please switch operating systeem</a>"
+				: "";
+		return json.createJson(State.PASSED,
+				"yes " + InetAddress.getLocalHost().getHostName() + " is running. Is database connection valid: "
+						+ connection.isValid(20) + ". time to prevent caching: " + sdf.format(cal.getTime()) + apple);
 	}
 }

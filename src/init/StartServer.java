@@ -14,6 +14,8 @@
  *******************************************************************************/
 package init;
 
+import java.sql.Connection;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -49,8 +51,5 @@ public class StartServer {
 		server.start();
 		server.join();
 		mainLogger.out(Level.INFORMATIVE, "Main", "Server started");
-		
-		Connector con = new Connector();
-		
 	}
 }
