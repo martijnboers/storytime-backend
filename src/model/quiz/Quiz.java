@@ -1,11 +1,15 @@
 package model.quiz;
 import java.util.ArrayList;
 import java.util.List;
+import model.user.Child;
+import model.user.Mentor;
 
 public class Quiz {
 	private String name;
 	private boolean completed;
 	private String description;
+	private Mentor mentor;
+	private List<Child> theChilderen = new ArrayList<Child>();
 	private List<Question> theQuestions = new ArrayList<Question>();
 	
 	public Quiz(){}
@@ -48,6 +52,15 @@ public class Quiz {
 		this.theQuestions = theQuestions;
 	}
 	
+	
+	public List<Child> getTheChilderen() {
+		return theChilderen;
+	}
+
+	public void setTheChilderen(List<Child> theChilderen) {
+		this.theChilderen = theChilderen;
+	}
+
 	public boolean addQuestion(Question question){
 		return theQuestions.add(question);
 	}
