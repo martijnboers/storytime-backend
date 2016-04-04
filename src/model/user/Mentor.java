@@ -1,5 +1,6 @@
 package model.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.roadmap.Roadmap;
@@ -7,8 +8,8 @@ import model.roadmap.Roadmap;
 public class Mentor extends User {
 
 	protected String email;
-	protected List<Child> theChildren;
-	protected List<Roadmap> theRoadmaps;
+	protected List<Child> theChildren = new ArrayList<Child>();
+	protected List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
 	public Mentor() {
 	}
@@ -35,15 +36,15 @@ public class Mentor extends User {
 	protected void setTheChildren(List<Child> theChildren) {
 		this.theChildren = theChildren;
 	}
-	
-	protected boolean addChild(Child child){
+
+	protected boolean addChild(Child child) {
 		return theChildren.add(child);
 	}
 
-	protected boolean remvoveChild(Child child){
+	protected boolean remvoveChild(Child child) {
 		return theChildren.remove(child);
 	}
-			
+
 	protected List<Roadmap> getTheRoadmaps() {
 		return theRoadmaps;
 	}
@@ -51,18 +52,19 @@ public class Mentor extends User {
 	protected void setTheRoadmaps(List<Roadmap> theRoadmaps) {
 		this.theRoadmaps = theRoadmaps;
 	}
-	
-	protected boolean addRoadmap(Roadmap roadmap){
+
+	protected boolean addRoadmap(Roadmap roadmap) {
 		return theRoadmaps.add(roadmap);
 	}
 
-	protected boolean remvoveRoadmap(Roadmap roadmap){
+	protected boolean remvoveRoadmap(Roadmap roadmap) {
 		return theRoadmaps.remove(roadmap);
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString() + "Mentor [email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps + "]";
+		return super.toString() + "Mentor [email=" + email + ", theChildren=" + theChildren + ", theRoadmaps="
+				+ theRoadmaps + "]";
 	}
 
 	@Override

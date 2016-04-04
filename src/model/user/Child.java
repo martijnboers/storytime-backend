@@ -31,7 +31,7 @@ public class Child extends User {
 	protected void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "Child [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
