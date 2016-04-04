@@ -1,13 +1,15 @@
 package model.user;
 
 import java.awt.Image;
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement
 public abstract class User {
 
-	protected String username;
-	protected String password;
+	@XmlElement protected String username;
+	@XmlElement protected String password;
 	protected Image profilePicture;
-	protected String name;
+	@XmlElement protected String name;
 
 	public User() {
 	}
@@ -20,35 +22,35 @@ public abstract class User {
 		this.name = name;
 	}
 
-	protected String getUsername() {
+	public String getUsername() {
 		return username;
 	}
 
-	protected void setUsername(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	protected String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	protected void setPassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	protected Image getProfilePicture() {
+	public Image getProfilePicture() {
 		return profilePicture;
 	}
 
-	protected void setProfilePicture(Image profilePicture) {
+	public void setProfilePicture(Image profilePicture) {
 		this.profilePicture = profilePicture;
 	}
 
-	protected String getName() {
+	public String getName() {
 		return name;
 	}
 
-	protected void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

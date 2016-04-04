@@ -3,13 +3,15 @@ package model.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import model.roadmap.Roadmap;
 
 public class Mentor extends User {
 
-	protected String email;
-	protected List<Child> theChildren = new ArrayList<Child>();
-	protected List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
+	@XmlElement private String email;
+	private List<Child> theChildren = new ArrayList<Child>();
+	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
 	public Mentor() {
 	}
@@ -21,43 +23,43 @@ public class Mentor extends User {
 		this.theRoadmaps = theRoadmaps;
 	}
 
-	protected String getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
-	protected void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	protected List<Child> getTheChildren() {
+	public List<Child> getTheChildren() {
 		return theChildren;
 	}
 
-	protected void setTheChildren(List<Child> theChildren) {
+	public void setTheChildren(List<Child> theChildren) {
 		this.theChildren = theChildren;
 	}
 
-	protected boolean addChild(Child child) {
+	public boolean addChild(Child child) {
 		return theChildren.add(child);
 	}
 
-	protected boolean remvoveChild(Child child) {
+	public boolean remvoveChild(Child child) {
 		return theChildren.remove(child);
 	}
 
-	protected List<Roadmap> getTheRoadmaps() {
+	public List<Roadmap> getTheRoadmaps() {
 		return theRoadmaps;
 	}
 
-	protected void setTheRoadmaps(List<Roadmap> theRoadmaps) {
+	public void setTheRoadmaps(List<Roadmap> theRoadmaps) {
 		this.theRoadmaps = theRoadmaps;
 	}
 
-	protected boolean addRoadmap(Roadmap roadmap) {
+	public boolean addRoadmap(Roadmap roadmap) {
 		return theRoadmaps.add(roadmap);
 	}
 
-	protected boolean remvoveRoadmap(Roadmap roadmap) {
+	public boolean removeRoadmap(Roadmap roadmap) {
 		return theRoadmaps.remove(roadmap);
 	}
 

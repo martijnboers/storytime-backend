@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Child extends User {
 
-	protected Date dateOfBirth;
-	protected String gender;
+	private Date dateOfBirth;
+	private String gender;
 
 	public Child() {
 	}
@@ -16,19 +16,19 @@ public class Child extends User {
 		this.gender = gender;
 	}
 
-	protected Date getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	protected void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	protected String getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	protected void setGender(String gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
