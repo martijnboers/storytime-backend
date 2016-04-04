@@ -17,9 +17,8 @@ public class Quiz {
 	public Quiz() {
 	}
 
-	public Quiz(String name, boolean completed, String descprition) {
+	public Quiz(String name, String descprition) {
 		this.name = name;
-		this.completed = completed;
 		this.description = descprition;
 	}
 

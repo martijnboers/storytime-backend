@@ -13,7 +13,6 @@ public class Question {
 	}
 
 	public Question(String question, boolean completed) {
-		super();
 		this.question = question;
 		this.completed = completed;
 	}

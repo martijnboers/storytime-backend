@@ -6,7 +6,8 @@ import java.util.List;
 import model.roadmap.Roadmap;
 
 public class Mentor extends User {
-
+	
+	private int id;
 	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -14,11 +15,19 @@ public class Mentor extends User {
 	public Mentor() {
 	}
 
-	public Mentor(String email, List<Child> theChildren, List<Roadmap> theRoadmaps) {
-		super();
+	public Mentor(int id, String email, List<Child> theChildren, List<Roadmap> theRoadmaps) {
+		this.id = id;
 		this.email = email;
 		this.theChildren = theChildren;
 		this.theRoadmaps = theRoadmaps;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -72,6 +81,7 @@ public class Mentor extends User {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((theChildren == null) ? 0 : theChildren.hashCode());
 		result = prime * result + ((theRoadmaps == null) ? 0 : theRoadmaps.hashCode());
 		return result;
@@ -91,6 +101,8 @@ public class Mentor extends User {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
+		if (id != other.id)
+			return false;
 		if (theChildren == null) {
 			if (other.theChildren != null)
 				return false;
@@ -103,4 +115,5 @@ public class Mentor extends User {
 			return false;
 		return true;
 	}
+
 }
