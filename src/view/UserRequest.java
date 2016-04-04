@@ -51,7 +51,7 @@ public class UserRequest {
 	}
 	
 	@GET
-	@Path("/getAccount")
+	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMentor() {
 		Mentor m = new Mentor();
