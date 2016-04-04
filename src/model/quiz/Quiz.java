@@ -61,13 +61,21 @@ public class Quiz {
 		this.theChilderen = theChilderen;
 	}
 
-	public boolean addQuestion(Question question){
+	public Mentor getMentor() {
+		return mentor;
+	}
+
+	public void setMentor(Mentor mentor) {
+		this.mentor = mentor;
+	}
+
+	/*public boolean addQuestion(Question question){
 		return theQuestions.add(question);
 	}
 
 	public boolean remvoveQuestion(Question question){
 		return theQuestions.remove(question);
-	}
+	}*/
 			
 	public boolean completedQuiz(){
 		for(Question q: theQuestions){

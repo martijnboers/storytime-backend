@@ -32,16 +32,16 @@ public class Question {
 	public List<Answer> getTheAnswers() {
 		return theAnswers;
 	}
-
-	public void setTheAnswers(List<Answer> theAnswers) {
-		this.theAnswers = theAnswers;
-	}
 	
+	public void setTheAnswers(List<Answer> theAnswers) {
+		this.theAnswers = theAnswers;  
+	}
+	/*
 	public boolean addAnswer(Answer answer){
 		return theAnswers.add(answer);
-	}
+	} 
 	
 	public boolean removeAnswer(Answer answer){
 		return theAnswers.remove(answer);
-	}
+	}*/
 }
