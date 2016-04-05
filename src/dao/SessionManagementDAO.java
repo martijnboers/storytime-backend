@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import logging.Level;
+import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
 import model.user.User;
@@ -163,6 +164,36 @@ public class SessionManagementDAO extends DataAccesObject {
 				clean.close();
 			} catch (Exception e) {
 				log.out(Level.ERROR, "getUserFromToken", "Can't close database streams");
+			}
+		}
+		return null;
+	}
+
+	public Child getChildFromToken(String token) throws SQLException {
+		try {
+			statement = con.prepareStatement("SELECT user_id FROM Tokens WHERE token=?");
+			statement.setString(1, token);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				clean = con.createStatement();
+				ResultSet results = clean.executeQuery(
+						"SELECT * FROM User INNER JOIN Child On User.user_id=Child.user_id WHERE User.user_id="
+								+ result.getInt("user_id"));
+				while (results.next()) {
+					return new Child(results.getInt("user_id"), results.getDate("date_of_birth"),
+							results.getString("gender"), results.getString("username"), null,
+							"/account/profilepic/" + results.getInt("user_id"), results.getString("name"));
+				}
+			}
+		} catch (Exception e) {
+			log.out(Level.ERROR, "GetChildFromToken", "Can't get user from token");
+		} finally {
+			try {
+				statement.close();
+				clean.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "getChildFromToken", "Can't close database streams");
 			}
 		}
 		return null;

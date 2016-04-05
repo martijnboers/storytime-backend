@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 import dao.SessionManagementDAO;
 import exceptions.InvalidTokenException;
+import model.user.Child;
 import model.user.Mentor;
 import model.user.User;
 
@@ -54,5 +55,14 @@ public class SessionController {
 		}
 		
 		return user;
+	}
+
+	public Child getChildFromToken(String token) throws SQLException, InvalidTokenException {
+		Child child = dao.getChildFromToken(token);
+		if (child == null) {
+			throw new InvalidTokenException("User niet gevonden of verkeerde token meegegeven");
+		}
+		
+		return child;
 	}
 }

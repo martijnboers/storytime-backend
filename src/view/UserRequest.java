@@ -35,6 +35,7 @@ import controller.Json;
 import controller.UserController;
 import exceptions.InvalidTokenException;
 import model.State;
+import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
 
@@ -72,7 +73,7 @@ public class UserRequest extends ViewSuper {
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMentor(@HeaderParam("token") String token ) throws SQLException, InvalidTokenException {
-		Mentor men = session.getMentorFromToken(token);
+		Child men = session.getChildFromToken(token);
 		Mentor m = new Mentor();
 		m.setEmail("Plop");
 		m.setName("Henk");
