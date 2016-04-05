@@ -1,19 +1,33 @@
 package model.user;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import model.roadmap.Roadmap;
 
 public class Child extends User {
 
+	private int id;
 	private Date dateOfBirth;
 	private String gender;
+	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
 	public Child() {
 	}
 
-	public Child(Date dateOfBirth, String gender) {
-		super();
+	public Child(int id, Date dateOfBirth, String gender) {
+		this.id = id;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getDateOfBirth() {
@@ -32,9 +46,26 @@ public class Child extends User {
 		this.gender = gender;
 	}
 
+	public List<Roadmap> getTheRoadmaps() {
+		return theRoadmaps;
+	}
+
+	public void setTheRoadmaps(List<Roadmap> theRoadmaps) {
+		this.theRoadmaps = theRoadmaps;
+	}
+
+	public boolean addRoadmap(Roadmap roadmap) {
+		return theRoadmaps.add(roadmap);
+	}
+
+	public boolean removeRoadmap(Roadmap roadmap) {
+		return theRoadmaps.remove(roadmap);
+	}
+
 	@Override
 	public String toString() {
-		return super.toString() + "Child [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
+		return "Child [id=" + id + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
+				+ theRoadmaps + "]";
 	}
 
 	@Override
@@ -43,6 +74,7 @@ public class Child extends User {
 		int result = super.hashCode();
 		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -64,6 +96,8 @@ public class Child extends User {
 			if (other.gender != null)
 				return false;
 		} else if (!gender.equals(other.gender))
+			return false;
+		if (id != other.id)
 			return false;
 		return true;
 	}

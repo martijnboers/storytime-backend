@@ -72,8 +72,8 @@ public class Mentor extends User {
 
 	@Override
 	public String toString() {
-		return super.toString() + "Mentor [email=" + email + ", theChildren=" + theChildren + ", theRoadmaps="
-				+ theRoadmaps + "]";
+		return "Mentor [id=" + id + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps
+				+ "]";
 	}
 
 	@Override
@@ -115,5 +115,4 @@ public class Mentor extends User {
 			return false;
 		return true;
 	}
-
 }

@@ -7,8 +7,8 @@ import model.category.Category;
 
 public class Roadmap {
 
+	private int id;
 	private String name;
-	private boolean completed;
 	private String description;
 	private Achievement achievement;
 	private List<Category> categories = new ArrayList<Category>();
@@ -17,13 +17,21 @@ public class Roadmap {
 	public Roadmap() {
 	}
 
-	public Roadmap(String nm, boolean com, String description, Achievement ach) {
+	public Roadmap(int id, String nm, String description, Achievement ach) {
+		this.id = id;
 		this.name = nm;
-		this.completed = com;
 		this.description = description;
 		this.setAchievement(ach);
 	}
+	
+	public int getId() {
+		return id;
+	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -32,12 +40,12 @@ public class Roadmap {
 		this.name = name;
 	}
 
+	/**
+	 * TODO: Check is roadmap completed by checking steps
+	 * @return
+	 */
 	public boolean isCompleted() {
-		return completed;
-	}
-
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
+		return false;
 	}
 
 	public String getDescription() {
@@ -90,8 +98,8 @@ public class Roadmap {
 
 	@Override
 	public String toString() {
-		return "Roadmap [name=" + name + ", completed=" + completed + ", description=" + description + ", achievement="
-				+ achievement + ", categories=" + categories + ", steps=" + steps + "]";
+		return "Roadmap [id=" + id + ", name=" + name + ", description=" + description + ", achievement=" + achievement
+				+ ", categories=" + categories + ", steps=" + steps + "]";
 	}
 
 	@Override
@@ -100,8 +108,8 @@ public class Roadmap {
 		int result = 1;
 		result = prime * result + ((achievement == null) ? 0 : achievement.hashCode());
 		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
-		result = prime * result + (completed ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((steps == null) ? 0 : steps.hashCode());
 		return result;
@@ -126,12 +134,12 @@ public class Roadmap {
 				return false;
 		} else if (!categories.equals(other.categories))
 			return false;
-		if (completed != other.completed)
-			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
 			return false;
 		if (name == null) {
 			if (other.name != null)
