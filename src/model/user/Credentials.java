@@ -16,6 +16,7 @@
 package model.user;
 
 public class Credentials {
+	
 	private String username;
 	private String password;
 

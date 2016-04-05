@@ -4,6 +4,7 @@ import java.awt.Image;
 
 public abstract class User {
 
+	private int id;
 	protected String username;
 	protected String password;
 	protected Image profilePicture;
@@ -12,12 +13,20 @@ public abstract class User {
 	public User() {
 	}
 
-	public User(String username, String password, Image profilePicture, String name) {
-		super();
+	public User(int id, String username, String password, Image profilePicture, String name) {
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.profilePicture = profilePicture;
 		this.name = name;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -54,13 +63,15 @@ public abstract class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", profilePicture=" + profilePicture + ", name=" + name + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profilePicture="
+				+ profilePicture + ", name=" + name + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((profilePicture == null) ? 0 : profilePicture.hashCode());
@@ -77,6 +88,8 @@ public abstract class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (id != other.id)
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

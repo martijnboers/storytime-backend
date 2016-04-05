@@ -18,14 +18,14 @@ public class RoadmapDAO {
 		Boolean completed = false;
 		
 		try {
-			statement = con.prepareStatement("SELECT *"
+			statement = con.prepareStatement("SELECT Step.step_id, Step.name, Step.description, Step.completed"
 					+ "FROM  Step"
 					+ "WHERE Step.roadmap_id = ?;");
 			statement.setInt(1, roadmap.getId());
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Step step = new Step(result.getString("name"), result.getString("description"), result.getBoolean("completed"));
+				Step step = new Step(result.getShort("step_id"), result.getString("name"), result.getString("description"), result.getBoolean("completed"));
 				if(!step.isCompleted()) {
 					break;
 				}

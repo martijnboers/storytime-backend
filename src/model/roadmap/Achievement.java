@@ -2,16 +2,25 @@ package model.roadmap;
 
 public class Achievement {
 
+	private int id;
 	private String name;
 	private double points;
 
 	public Achievement() {
 	}
 
-	public Achievement(String name, double points) {
-		super();
+	public Achievement(int id, String name, double points) {
+		this.id = id;
 		this.name = name;
 		this.points = points;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -32,13 +41,14 @@ public class Achievement {
 
 	@Override
 	public String toString() {
-		return "Achievement [name=" + name + ", points=" + points + "]";
+		return "Achievement [id=" + id + ", name=" + name + ", points=" + points + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(points);
@@ -55,6 +65,8 @@ public class Achievement {
 		if (getClass() != obj.getClass())
 			return false;
 		Achievement other = (Achievement) obj;
+		if (id != other.id)
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

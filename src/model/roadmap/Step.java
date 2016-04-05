@@ -2,6 +2,7 @@ package model.roadmap;
 
 public class Step {
 
+	private int id;
 	private String name;
 	private String description;
 	private boolean completed;
@@ -9,10 +10,19 @@ public class Step {
 	public Step() {
 	}
 
-	public Step(String name, String description, boolean completed) {
+	public Step(int id, String name, String description, boolean completed) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.completed = completed;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -41,7 +51,7 @@ public class Step {
 
 	@Override
 	public String toString() {
-		return "Step [name=" + name + ", description=" + description + ", completed=" + completed + "]";
+		return "Step [id=" + id + ", name=" + name + ", description=" + description + ", completed=" + completed + "]";
 	}
 
 	@Override
@@ -50,6 +60,7 @@ public class Step {
 		int result = 1;
 		result = prime * result + (completed ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -69,6 +80,8 @@ public class Step {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
 			return false;
 		if (name == null) {
 			if (other.name != null)
