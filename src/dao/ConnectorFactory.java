@@ -35,5 +35,4 @@ public class ConnectorFactory {
 			return local.getConnection();
 		}
 	}
-
 }

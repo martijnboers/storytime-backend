@@ -32,6 +32,5 @@ public class DataAccesObject {
 
 	public DataAccesObject() throws Exception {
 		con = ConnectorFactory.getConnection();
-
 	}
 }

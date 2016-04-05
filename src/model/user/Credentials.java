@@ -20,7 +20,6 @@ public class Credentials {
 	private String password;
 
 	public Credentials() {
-
 	}
 
 	public String getUsername() {
