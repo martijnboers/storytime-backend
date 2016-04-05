@@ -114,6 +114,12 @@ public class UserDAO extends DataAccesObject {
 		return true;
 	}
 	
+	/**
+	 * Delete user, should not be public, and can only be called by deleteMentor or deleteUser
+	 * @param userID the user to delete
+	 * @return
+	 * @throws SQLException
+	 */
 	private boolean deleteUser(int userID) throws SQLException {
 		try {
 			PreparedStatement statement = con.prepareStatement("DELETE FROM user WHERE user_id = ?");
@@ -130,6 +136,13 @@ public class UserDAO extends DataAccesObject {
 		return true;
 	}
 	
+	/**
+	 * Deletes the specific mentor. All dependencies get the mentor_id 999,
+	 * this is an anonymous account
+	 * @param mentorID
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean deleteMentor(int mentorID) throws SQLException
 	{
 		try {
@@ -176,6 +189,12 @@ public class UserDAO extends DataAccesObject {
 		return true;
 	}
 	
+	/**
+	 * Delete child and remove dependencies
+	 * @param childID the childID to remove
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean deleteChild(int childID) throws SQLException
 	{
 		try {
