@@ -59,14 +59,7 @@ public class UserRequest extends ViewSuper {
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(String input) throws UnknownHostException {
-		Mentor theMentor = gson.fromJson(input, Mentor.class);
-		if (userController.userExists(theMentor.getUsername())) {
-			return json.createJson(State.ERROR, "User bestaat al");
-		}
-		if (userController.addMentor(theMentor)) {
-			return json.createJson(State.PASSED, "Succesvol geregistreerd");
-		}
-		return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
+		return userController.addMentor(gson.fromJson(input, Mentor.class));
 	}
 
 	@GET
