@@ -1,8 +1,10 @@
 package model.roadmap;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.RoadmapDAO;
 import model.category.Category;
 
 public class Roadmap {
@@ -38,14 +40,6 @@ public class Roadmap {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * TODO: Check is roadmap completed by checking steps
-	 * @return
-	 */
-	public boolean isCompleted() {
-		return false;
 	}
 
 	public String getDescription() {
@@ -94,6 +88,32 @@ public class Roadmap {
 
 	public boolean removeCategory(Category c) {
 		return categories.remove(c);
+	}
+	
+	/**
+	 * TODO: Service provider voor DOA's
+	 * @return
+	 */
+	public boolean isCompleted() {
+		RoadmapDAO roadmapDAO = new RoadmapDAO();
+		try {
+			return roadmapDAO.isCompleted(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public double getPercentageOfCompletion(int roadmap_id) {
+		double totalSteps = 0;
+		double totalCompleted = 0;
+		for(Step step : steps) {
+			totalSteps += 1;
+			if(step.isCompleted()) {
+				totalCompleted += 1;
+			}
+		}
+		return (totalCompleted/totalSteps)*100;
 	}
 
 	@Override

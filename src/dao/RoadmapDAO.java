@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-import model.roadmap.Roadmap;
 import model.roadmap.Step;
 
 public class RoadmapDAO {
@@ -14,14 +13,14 @@ public class RoadmapDAO {
 	protected Connection con;
 	private PreparedStatement statement;
 
-	public Boolean isCompleted(Roadmap roadmap) throws SQLException {
+	public Boolean isCompleted(int roadmap_id) throws SQLException {
 		Boolean completed = true;
 		
 		try {
 			statement = con.prepareStatement("SELECT Step.step_id, Step.name, Step.description, Step.completed"
 					+ "FROM  Step"
 					+ "WHERE Step.roadmap_id = ?;");
-			statement.setInt(1, roadmap.getId());
+			statement.setInt(1, roadmap_id);
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {

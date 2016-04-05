@@ -11,14 +11,13 @@ import java.util.logging.Logger;
 import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
 import model.roadmap.Step;
-import model.user.Child;
 
 public class AchievementDAO {
 	protected Logger log = Logger.getGlobal();
 	protected Connection con;
 	private PreparedStatement statement;
 
-	public List<Roadmap> getAllCompletedAchievementsByChild(Child child) throws SQLException {
+	public List<Roadmap> getAllCompletedAchievementsByChild(int child_id) throws SQLException {
 		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
 		try {
@@ -28,7 +27,7 @@ public class AchievementDAO {
 							+ "JOIN Step ON Roadmap.roadmap_id = Step.roadmap_id"
 							+ "JOIN Child_has_Roadmap ON Roadmap.roadmap_id = Child_has_Roadmap.roadmap_id"
 							+ "WHERE Child_has_Roadmap.child_id = ?;");
-			statement.setInt(1, child.getId());
+			statement.setInt(1, child_id);
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -38,7 +37,10 @@ public class AchievementDAO {
 				if (!theRoadmaps.contains(roadmap)) {
 					Step step = new Step(result.getInt("step_id"), result.getString("name"), result.getString("Step.description"), result.getBoolean("completed"));
 					roadmap.addStep(step);
-					theRoadmaps.add(roadmap);
+					
+					if(roadmap.isCompleted()) {
+						theRoadmaps.add(roadmap);
+					}
 				} else {
 					for (Roadmap r : theRoadmaps) {
 						if (r.equals(achievement)) {
@@ -68,7 +70,7 @@ public class AchievementDAO {
 		return theRoadmaps;
 	}
 
-	public List<Achievement> getAllAchievementsByChild(Child child) throws SQLException {
+	public List<Achievement> getAllAchievementsByChild(int child_id) throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 
 		try {
@@ -76,9 +78,8 @@ public class AchievementDAO {
 					+ "FROM Roadmap JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
 					+ "JOIN Child_has_Roadmap ON Roadmap.roadmap_id = Child_has_Roadmap.roadmap_id"
 					+ "WHERE Child_has_Roadmap.child_id = ?;");
-			statement.setInt(1, child.getId());
+			statement.setInt(1, child_id);
 
-			// Loop through results and add a result to the list.
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Achievement achievement = new Achievement(result.getShort("achievement_id"), result.getString("name"), result.getDouble("points"));

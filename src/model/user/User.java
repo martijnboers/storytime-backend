@@ -15,6 +15,7 @@ public abstract class User {
 	protected String profilePicture;
 	protected String name;
 
+
 	public User() {
 	}
 
