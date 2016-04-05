@@ -3,11 +3,8 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import logging.Level;
-import model.roadmap.Roadmap;
-import model.user.Child;
 import model.user.Mentor;
 import model.user.User;
 
