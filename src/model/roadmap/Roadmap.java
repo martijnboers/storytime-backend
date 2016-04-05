@@ -19,11 +19,17 @@ public class Roadmap {
 	public Roadmap() {
 	}
 
-	public Roadmap(int id, String nm, String description, Achievement ach) {
+	public Roadmap(int id, String nm, String description) {
 		this.id = id;
 		this.name = nm;
 		this.description = description;
-		this.setAchievement(ach);
+	}
+	
+	public Roadmap(int id, String nm, String description, Achievement achievement) {
+		this.id = id;
+		this.name = nm;
+		this.description = description;
+		this.setAchievement(achievement);
 	}
 	
 	public int getId() {
@@ -104,7 +110,7 @@ public class Roadmap {
 		return false;
 	}
 	
-	public double getPercentageOfCompletion(int roadmap_id) {
+	public double getPercentageOfCompletion() {
 		double totalSteps = 0;
 		double totalCompleted = 0;
 		for(Step step : steps) {
@@ -113,13 +119,13 @@ public class Roadmap {
 				totalCompleted += 1;
 			}
 		}
-		return (totalCompleted/totalSteps)*100;
+		return Math.ceil((totalCompleted/totalSteps)*100);
 	}
 
 	@Override
 	public String toString() {
 		return "Roadmap [id=" + id + ", name=" + name + ", description=" + description + ", achievement=" + achievement
-				+ ", categories=" + categories + ", steps=" + steps + "]";
+				+ "(" + getPercentageOfCompletion() + "%), categories=" + categories + ", steps=" + steps + "]";
 	}
 
 	@Override
