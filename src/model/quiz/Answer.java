@@ -39,7 +39,6 @@ public class Answer {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((answer == null) ? 0 : answer.hashCode());
-		result = prime * result + (correct ? 1231 : 1237);
 		return result;
 	}
 
@@ -56,8 +55,6 @@ public class Answer {
 			if (other.answer != null)
 				return false;
 		} else if (!answer.equals(other.answer))
-			return false;
-		if (correct != other.correct)
 			return false;
 		return true;
 	}

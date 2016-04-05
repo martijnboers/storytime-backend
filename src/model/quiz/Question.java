@@ -5,15 +5,29 @@ import java.util.List;
 
 public class Question {
 	
+	private int id;
 	private String question;
 	private boolean completed = false;
 	private List<Answer> theAnswers = new ArrayList<Answer>();
 
 	public Question() {
 	}
-
+	
 	public Question(String question) {
 		this.question = question;
+	}
+
+	public Question(int id,String question) {
+		this.id = id;
+		this.question = question;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getQuestion() {
@@ -39,10 +53,11 @@ public class Question {
 	public void setTheAnswers(List<Answer> theAnswers) {
 		this.theAnswers = theAnswers;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Question [question=" + question + ", completed=" + completed + ", theAnswers=" + theAnswers + "]";
+		return "Question [id=" + id + ", question=" + question + ", completed=" + completed + ", theAnswers="
+				+ theAnswers + "]";
 	}
 
 	@Override
@@ -78,11 +93,9 @@ public class Question {
 			return false;
 		return true;
 	}
+
 	
-	/*
-	 * public boolean addAnswer(Answer answer){ return theAnswers.add(answer); }
-	 * 
-	 * public boolean removeAnswer(Answer answer){ return
-	 * theAnswers.remove(answer); }
-	 */
+	
+	
+	
 }

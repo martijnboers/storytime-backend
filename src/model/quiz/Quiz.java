@@ -19,6 +19,11 @@ public class Quiz {
 
 	public Quiz() {}
 
+	public Quiz(String name, String descprition) {
+		this.name = name;
+		this.description = descprition;
+	}
+	
 	public Quiz(int id, String name, String descprition) {
 		this.id = id;
 		this.name = name;
@@ -102,19 +107,21 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [name=" + name + ", completed=" + completed + ", description=" + description + ", mentor=" + mentor
-				+ ", theChilderen=" + theChilderen + ", theQuestions=" + theQuestions + "]";
+		return "Quiz [id=" + id + ", name=" + name + ", completed=" + completed + ", description=" + description
+				+ ", mentor=" + mentor + ", theChilderen=" + theChilderen + ", theQuestions=" + theQuestions
+				+ ", theCategories=" + theCategories + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (completed ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((mentor == null) ? 0 : mentor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((theCategories == null) ? 0 : theCategories.hashCode());
+		result = prime * result + ((theChilderen == null) ? 0 : theChilderen.hashCode());
+		result = prime * result + ((theQuestions == null) ? 0 : theQuestions.hashCode());
 		return result;
 	}
 
@@ -127,14 +134,10 @@ public class Quiz {
 		if (getClass() != obj.getClass())
 			return false;
 		Quiz other = (Quiz) obj;
-		if (completed != other.completed)
-			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
-			return false;
-		if (id != other.id)
 			return false;
 		if (mentor == null) {
 			if (other.mentor != null)
@@ -146,6 +149,23 @@ public class Quiz {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (theCategories == null) {
+			if (other.theCategories != null)
+				return false;
+		} else if (!theCategories.equals(other.theCategories))
+			return false;
+		if (theChilderen == null) {
+			if (other.theChilderen != null)
+				return false;
+		} else if (!theChilderen.equals(other.theChilderen))
+			return false;
+		if (theQuestions == null) {
+			if (other.theQuestions != null)
+				return false;
+		} else if (!theQuestions.equals(other.theQuestions))
+			return false;
 		return true;
-	}	
+	}
+
+		
 }
