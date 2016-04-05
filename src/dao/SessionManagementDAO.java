@@ -122,10 +122,9 @@ public class SessionManagementDAO extends DataAccesObject {
 						"SELECT * FROM User INNER JOIN Mentor On User.user_id=Mentor.user_id WHERE User.user_id="
 								+ result.getInt("user_id"));
 				while (results.next()) {
-					// TODO: Needs seperate functions that will bee added in
-					// other DAO's
-					return new Mentor(results.getInt("user_id"), results.getString("email"), null, null,
-							results.getString("username"), "", "link_profilepic.jpg", results.getString("name"));
+					return new Mentor(results.getInt("user_id"), results.getString("email"),
+							result.getString("username"), "", "/account/profilepic/" + results.getInt("user_id"),
+							results.getString("name"));
 				}
 			}
 		} catch (Exception e) {
