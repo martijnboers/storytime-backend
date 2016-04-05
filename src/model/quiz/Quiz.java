@@ -6,7 +6,7 @@ import model.user.Child;
 import model.user.Mentor;
 
 public class Quiz {
-	
+	private int id;
 	private String name;
 	private boolean completed;
 	private String description;
@@ -17,9 +17,18 @@ public class Quiz {
 	public Quiz() {
 	}
 
-	public Quiz(String name, String descprition) {
+	public Quiz(int id, String name, String descprition) {
+		this.id = id;
 		this.name = name;
 		this.description = descprition;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -101,6 +110,7 @@ public class Quiz {
 		int result = 1;
 		result = prime * result + (completed ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((mentor == null) ? 0 : mentor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((theChilderen == null) ? 0 : theChilderen.hashCode());
@@ -124,6 +134,8 @@ public class Quiz {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (id != other.id)
+			return false;
 		if (mentor == null) {
 			if (other.mentor != null)
 				return false;
@@ -146,4 +158,6 @@ public class Quiz {
 			return false;
 		return true;
 	}
+
+	
 }
