@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.RoadmapDAO;
 import model.category.Category;
 
 public class Roadmap {
@@ -96,18 +95,15 @@ public class Roadmap {
 		return categories.remove(c);
 	}
 	
-	/**
-	 * TODO: Service provider voor DOA's
-	 * @return
-	 */
-	public boolean isCompleted() {
-		RoadmapDAO roadmapDAO = new RoadmapDAO();
-		try {
-			return roadmapDAO.isCompleted(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public Boolean isCompleted() throws SQLException {
+		Boolean completed = true;
+		for(Step step : steps) {
+			if(!step.isCompleted()) {
+				completed = false;
+				break;
+			}
 		}
-		return false;
+		return completed;
 	}
 	
 	public double getPercentageOfCompletion() {
