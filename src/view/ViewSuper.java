@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import controller.Json;
 import controller.Security;
+import controller.SessionController;
 import dao.SessionManagementDAO;
 
 /**
@@ -31,7 +32,7 @@ import dao.SessionManagementDAO;
 public class ViewSuper {
 	protected Gson gson = new Gson();
 	protected Json json = new Json();
-	protected SessionManagementDAO session = new SessionManagementDAO();
+	protected SessionController session = new SessionController();
 	protected Security sec;
 	
 	public ViewSuper() throws Exception{

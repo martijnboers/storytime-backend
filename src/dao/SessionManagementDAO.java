@@ -61,9 +61,9 @@ public class SessionManagementDAO extends DataAccesObject {
 				String uuid = UUID.randomUUID().toString();
 
 				clean = con.createStatement();
-				clean.executeUpdate("DELETE FROM Tokens WHERE userid = " + id);
+				clean.executeUpdate("DELETE FROM Tokens WHERE user_id = " + id);
 
-				token = con.prepareStatement("INSERT INTO Tokens (token, userid) Values (?, ?)");
+				token = con.prepareStatement("INSERT INTO Tokens (token, user_id) Values (?, ?)");
 				token.setString(1, uuid);
 				token.setInt(2, id);
 				token.executeUpdate();
@@ -101,15 +101,14 @@ public class SessionManagementDAO extends DataAccesObject {
 	}
 	public Mentor getMentorFromToken(String token) throws SQLException {
 		try {
-			statement = con.prepareStatement("SELECT userid FROM Tokens WHERE token=?");
+			statement = con.prepareStatement("SELECT user_id FROM Tokens WHERE token=?");
 			statement.setString(1, token);
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				clean = con.createStatement();
 				ResultSet results = clean.executeQuery(
 						"SELECT * FROM User INNER JOIN Mentor On User.user_id=Mentor.user_id WHERE User.user_id="
-								+ result.getInt("userid"));
+								+ result.getInt("user_id"));
 				while (results.next()) {
 					// TODO: Needs seperate functions that will bee added in
 					// other DAO's
@@ -126,15 +125,15 @@ public class SessionManagementDAO extends DataAccesObject {
 		return null;
 	}
 
-	public User getUserFromToken(String token) {
+	public User getUserFromToken(String token) throws SQLException {
 		try {
-			statement = con.prepareStatement("SELECT userid FROM Tokens WHERE token=?");
+			statement = con.prepareStatement("SELECT user_id FROM Tokens WHERE token=?");
 			statement.setString(1, token);
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
 				clean = con.createStatement();
-				ResultSet results = clean.executeQuery("SELECT * FROM User WHERE user_id=" + result.getInt("userid"));
+				ResultSet results = clean.executeQuery("SELECT * FROM User WHERE user_id=" + result.getInt("user_id"));
 				while (results.next()) {
 					return new User(results.getInt("user_id"), results.getString("username"), null,
 							"/user/profilepic/" + results.getInt("user_id"), results.getString("name")) {
@@ -143,6 +142,9 @@ public class SessionManagementDAO extends DataAccesObject {
 			}
 		} catch (Exception e) {
 			log.out(Level.ERROR, "GetUserFromToken", "Can't get user from token");
+		} finally {
+			statement.close();
+			clean.close();
 		}
 		return null;
 	}

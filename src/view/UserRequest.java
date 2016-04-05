@@ -33,6 +33,7 @@ import com.google.gson.JsonSyntaxException;
 
 import controller.Json;
 import controller.UserController;
+import exceptions.InvalidTokenException;
 import model.State;
 import model.user.Credentials;
 import model.user.Mentor;
@@ -70,7 +71,7 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor(@HeaderParam("token") String token ) throws SQLException {
+	public String getMentor(@HeaderParam("token") String token ) throws SQLException, InvalidTokenException {
 		Mentor men = session.getMentorFromToken(token);
 		Mentor m = new Mentor();
 		m.setEmail("Plop");
@@ -93,7 +94,7 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Produces("image/png")
 	@Path("/profilepic/{id}")
-	public byte[] getProfilePicture(@PathParam("id") int id) throws SQLException {
+	public byte[] getProfilePicture(@PathParam("id") int id) throws SQLException, InvalidTokenException {
 		return userController.getProfilePicture(session.getUserFromId(id));
 	}
 }
