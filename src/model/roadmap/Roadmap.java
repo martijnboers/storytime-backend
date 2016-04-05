@@ -1,6 +1,5 @@
 package model.roadmap;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,15 +94,13 @@ public class Roadmap {
 		return categories.remove(c);
 	}
 	
-	public Boolean isCompleted() throws SQLException {
-		Boolean completed = true;
+	public Boolean isCompleted() {
 		for(Step step : steps) {
 			if(!step.isCompleted()) {
-				completed = false;
-				break;
+				return false;
 			}
 		}
-		return completed;
+		return true;
 	}
 	
 	public double getPercentageOfCompletion() {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import model.roadmap.Roadmap;
 
+// TODO: Total (achievement) points of a kid
 public class Child extends User {
 
 	private Date dateOfBirth;

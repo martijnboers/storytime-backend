@@ -18,31 +18,53 @@ public class RoadmapDAO extends DataAccesObject{
 		super();
 	}
 	
-	public List<Roadmap> getAllRoadmapsByMentor(int id) throws SQLException {
+	public List<Roadmap> getAllRoadmaps() throws SQLException {
+		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
+
+		try {
+			statement = con.prepareStatement("SELECT Roadmap.roadmap_id, Roadmap.name, Roadmap.description, Roadmap.mentor_id, Roadmap.achievement_id FROM Roadmap");
+			ResultSet result = statement.executeQuery();
+			
+			// TODO: Add categories and steps to roadmap
+			while (result.next()) {
+				Roadmap roadmap = new Roadmap(result.getInt("roadmap_id"),result.getString("roadmapName"), result.getString("roadmapDescription"));
+				if (!theRoadmaps.contains(roadmap)) {
+					theRoadmaps.add(roadmap);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return theRoadmaps;
+	}	
+	
+	public List<Roadmap> getAllRoadmapsByMentor(int mentor_id) throws SQLException {
 		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 
 		try {
 			statement = con.prepareStatement(
-					"SELECT Roadmap.name, Roadmap.description, Step.step_id, Step.name, Step.description, "
-					+ "Step.completed,Achievement.achievement_id, Achievement.name, Achievement.points"
+					"SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.name as stepName, Step.description as stepDescription, "
+					+ "Step.completed,Achievement.achievement_id, Achievement.name as achievementName, Achievement.points"
 					+ "FROM Roadmap"
 					+ "JOIN Step ON Roadmap.roadmap_id = Step.roadmap_id"
 					+ "JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
-					+ "WHERE Roadmap.mentor_id = 1;");
-			statement.setInt(1, id);
+					+ "WHERE Roadmap.mentor_id = ?;");
+			statement.setInt(1, mentor_id);
 						
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Roadmap roadmap = new Roadmap(result.getInt("roadmap_id"),result.getString("Roadmap.name"), result.getString("Roadmap.description"));
+				Roadmap roadmap = new Roadmap(result.getInt("roadmap_id"),result.getString("roadmapName"), result.getString("roadmapDescription"));
 				if (!theRoadmaps.contains(roadmap)) {
-					Achievement achievement = new Achievement(result.getInt("achievement_id"), result.getString("Achievement.name"), result.getDouble("points"));
+					Achievement achievement = new Achievement(result.getInt("achievement_id"), result.getString("achievementName"), result.getDouble("points"));
 					roadmap.setAchievement(achievement);
-					Step step = new Step(result.getInt("step_id"),result.getString("Step.description"),result.getString("Step.name"),result.getBoolean("completed"));
+					Step step = new Step(result.getInt("step_id"),result.getString("stepDescription"),result.getString("stepName"),result.getBoolean("completed"));
 					roadmap.addStep(step);
 					theRoadmaps.add(roadmap);
 				} else {
 					for (Roadmap r : theRoadmaps){
-						Step step = new Step(result.getInt("step_id"),result.getString("Step.description"),result.getString("Step.name"),result.getBoolean("completed"));
+						Step step = new Step(result.getInt("step_id"),result.getString("stepDescription"),result.getString("stepName"),result.getBoolean("completed"));
 						r.getSteps().add(step);
 					}
 				}
@@ -58,7 +80,7 @@ public class RoadmapDAO extends DataAccesObject{
 	public boolean addRoadmap(String name, String description, int mentor_id, int achievement_id) throws SQLException {
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("INSERT INTO `storytime`.`Roadmap` (`roadmap_id`, `name`, `description`, `mentor_id`, `achievement_id`) VALUES (NULL, ?, ?, ?, ?);");
+			statement = con.prepareStatement("INSERT INTO Roadmap (`roadmap_id`, `name`, `description`, `mentor_id`, `achievement_id`) VALUES (NULL, ?, ?, ?, ?);");
 			statement.setString(1, name);
 			statement.setString(2, description);
 			statement.setInt(3, mentor_id);
@@ -76,11 +98,11 @@ public class RoadmapDAO extends DataAccesObject{
 		return succes;
 	}
 	
-	public boolean updateRoadmap(int id, String name, String description, int mentor_id, int achievement_id) throws SQLException {
+	public boolean updateRoadmap(int roadmap_id, String name, String description, int mentor_id, int achievement_id) throws SQLException {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Roadmap SET `name` = ?, `description` = ?, `mentor_id` = ?, `achievement_id` = ? WHERE Roadmap.roadmap_id = ?;");
-			statement.setInt(5, id);
+			statement.setInt(5, roadmap_id);
 			statement.setString(1, name);
 			statement.setString(2, description);
 			statement.setInt(3, mentor_id);
@@ -98,11 +120,11 @@ public class RoadmapDAO extends DataAccesObject{
 		return succes;
 	}
 	
-	public boolean deleteRoadmap(int id) throws SQLException {
+	public boolean deleteRoadmap(int roadmap_id) throws SQLException {
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("DELETE FROM Roadmap WHERE `Roadmap`.`roadmap_id` = ?");
-			statement.setInt(1, id);
+			statement = con.prepareStatement("DELETE FROM Roadmap WHERE Roadmap.roadmap_id = ?");
+			statement.setInt(1, roadmap_id);
 			
 			if(statement.execute() == true) {
 				succes = true;

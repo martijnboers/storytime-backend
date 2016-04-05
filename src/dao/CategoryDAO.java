@@ -17,6 +17,10 @@ public class CategoryDAO extends DataAccesObject {
 		super();
 	}
 
+	
+	// TODO: getCategoryById
+	
+	
 	public List<Category> getAllCategories() throws SQLException {
 		List<Category> theCategories = new ArrayList<Category>();
 

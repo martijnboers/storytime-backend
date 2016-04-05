@@ -14,15 +14,13 @@
  *******************************************************************************/
 package init;
 
-import java.sql.Connection;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import dao.Connector;
-import logging.*;
+import logging.Level;
+import logging.Logger;
 
 /**
  * @author martijn
@@ -32,6 +30,12 @@ import logging.*;
  */
 public class StartServer {
 
+	/** TODO: Make parameters as small as possible because GSON objects
+	 *  e.g. User user -> int user_id
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception
 	{
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
