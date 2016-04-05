@@ -59,6 +59,11 @@ public class Security {
 	}
 	
 	public String logout(User user) {
-		session.logout(user);
+		boolean loggedout = session.logout(user);
+		if (loggedout) {
+			return json.createJson(State.PASSED, "Gebruiker is uitgelogd");
+		} else {
+			return json.createJson(State.ERROR, "Er is iets mis gegaan");
+		}
 	}
 }
