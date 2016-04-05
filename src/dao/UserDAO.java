@@ -66,6 +66,22 @@ public class UserDAO extends DataAccesObject {
 		}
 		return true;
 	}
+	
+	private boolean deleteUser(int userID) throws SQLException {
+		try {
+			statement = con.prepareStatement("DELETE FROM user WHERE user_id = ?");
+			statement.setInt(1, userID);
+			if(statement.execute() != true) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Deleting the user has failed");
+		} finally {
+			statement.close();
+		}
+		return true;
+	}
 
 	public byte[] getProfilePicture(User user) throws SQLException {
 		try {
