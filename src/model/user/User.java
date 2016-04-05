@@ -5,10 +5,10 @@ import java.awt.Image;
 public abstract class User {
 
 	private int id;
-	protected String username;
-	protected String password;
-	protected Image profilePicture;
-	protected String name;
+	private String username;
+	private String password;
+	private Image profilePicture;
+	private String name;
 
 	public User() {
 	}
