@@ -10,8 +10,7 @@ import model.quiz.Question;
 import model.quiz.Quiz;
 
 public class QuizDAO extends DataAccesObject {
-	public QuizDAO() throws Exception {
-	}
+	public QuizDAO() throws Exception {super();}
 
 	private PreparedStatement statement;
 

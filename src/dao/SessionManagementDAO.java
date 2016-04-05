@@ -23,6 +23,7 @@ import java.sql.Statement;
 import logging.Level;
 import model.user.Credentials;
 import model.user.Mentor;
+import model.user.User;
 
 import java.util.UUID;
 
@@ -80,7 +81,25 @@ public class SessionManagementDAO extends DataAccesObject {
 		return null;
 	}
 
-	public Mentor getMentorFromToken(String token) {
+	public User getUserFromId(int id) throws SQLException {
+		try {
+			statement = con.prepareStatement("SELECT * FROM User WHERE user_id=?");
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+
+			while (results.next()) {
+				return new User(results.getInt("user_id"), results.getString("username"), null,
+						"/user/profilepic/" + results.getInt("user_id"), results.getString("name")) {
+				};
+			}
+		} catch (Exception e) {
+			log.out(Level.ERROR, "getUserFromID", "Can't get user from id");
+		} finally {
+			statement.close();
+		}
+		return null;
+	}
+	public Mentor getMentorFromToken(String token) throws SQLException {
 		try {
 			statement = con.prepareStatement("SELECT userid FROM Tokens WHERE token=?");
 			statement.setString(1, token);
@@ -100,6 +119,30 @@ public class SessionManagementDAO extends DataAccesObject {
 			}
 		} catch (Exception e) {
 			log.out(Level.ERROR, "GetMentorFromToken", "Can't get mentor from token");
+		} finally {
+			statement.close();
+			clean.close();
+		}
+		return null;
+	}
+
+	public User getUserFromToken(String token) {
+		try {
+			statement = con.prepareStatement("SELECT userid FROM Tokens WHERE token=?");
+			statement.setString(1, token);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				clean = con.createStatement();
+				ResultSet results = clean.executeQuery("SELECT * FROM User WHERE user_id=" + result.getInt("userid"));
+				while (results.next()) {
+					return new User(results.getInt("user_id"), results.getString("username"), null,
+							"/user/profilepic/" + results.getInt("user_id"), results.getString("name")) {
+					};
+				}
+			}
+		} catch (Exception e) {
+			log.out(Level.ERROR, "GetUserFromToken", "Can't get user from token");
 		}
 		return null;
 	}

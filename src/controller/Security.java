@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import java.sql.SQLException;
 
 import dao.SessionManagementDAO;
+import model.State;
 import model.user.Credentials;
 import model.user.Mentor;
 import model.user.User;
@@ -33,6 +34,7 @@ import model.user.User;
 
 public class Security {
 	private SessionManagementDAO session;
+	protected Json json = new Json();
 	
 	public Security() throws Exception{
 		session = new SessionManagementDAO();
@@ -48,10 +50,15 @@ public class Security {
 	}
 	
 	public String login(Credentials cred) throws SQLException {
-		return session.Login(cred);
+		String token = session.Login(cred);
+		if (token != null) {
+			return json.createJson(State.PASSED, token);
+		} else {
+			return json.createJson(State.ERROR, "Verkeerde inloggegevens");
+		}
 	}
 	
-	public Mentor getMenterFromToken(String token) {
+	public Mentor getMenterFromToken(String token) throws SQLException {
 		return session.getMentorFromToken(token);
 	}
 }
