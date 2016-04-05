@@ -101,10 +101,13 @@ public class Roadmap {
 	 * @return
 	 */
 	public boolean isCompleted() {
-		RoadmapDAO roadmapDAO = new RoadmapDAO();
+		
 		try {
+			RoadmapDAO roadmapDAO = new RoadmapDAO();
 			return roadmapDAO.isCompleted(id);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

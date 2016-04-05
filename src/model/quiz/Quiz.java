@@ -2,6 +2,8 @@ package model.quiz;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.category.Category;
 import model.user.Child;
 import model.user.Mentor;
 
@@ -13,9 +15,9 @@ public class Quiz {
 	private Mentor mentor;
 	private List<Child> theChilderen = new ArrayList<Child>();
 	private List<Question> theQuestions = new ArrayList<Question>();
+	private List<Category> theCategories = new ArrayList<Category>();
 
-	public Quiz() {
-	}
+	public Quiz() {}
 
 	public Quiz(int id, String name, String descprition) {
 		this.id = id;
@@ -79,13 +81,13 @@ public class Quiz {
 		this.mentor = mentor;
 	}
 
-	/*
-	 * public boolean addQuestion(Question question){ return
-	 * theQuestions.add(question); }
-	 * 
-	 * public boolean remvoveQuestion(Question question){ return
-	 * theQuestions.remove(question); }
-	 */
+	public List<Category> getTheCategories() {
+		return theCategories;
+	}
+
+	public void setTheCategories(List<Category> theCategories) {
+		this.theCategories = theCategories;
+	}
 
 	public boolean completedQuiz() {
 		for (Question q : theQuestions) {
@@ -113,8 +115,6 @@ public class Quiz {
 		result = prime * result + id;
 		result = prime * result + ((mentor == null) ? 0 : mentor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((theChilderen == null) ? 0 : theChilderen.hashCode());
-		result = prime * result + ((theQuestions == null) ? 0 : theQuestions.hashCode());
 		return result;
 	}
 
@@ -146,18 +146,6 @@ public class Quiz {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (theChilderen == null) {
-			if (other.theChilderen != null)
-				return false;
-		} else if (!theChilderen.equals(other.theChilderen))
-			return false;
-		if (theQuestions == null) {
-			if (other.theQuestions != null)
-				return false;
-		} else if (!theQuestions.equals(other.theQuestions))
-			return false;
 		return true;
-	}
-
-	
+	}	
 }
