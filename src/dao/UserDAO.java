@@ -57,6 +57,9 @@ public class UserDAO extends DataAccesObject {
 				PreparedStatement mentorQuery = con.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
 				mentorQuery.setString(1, theMentor.getEmail());
 				mentorQuery.setInt(2, generatedKey.getInt(1));
+				if(mentorQuery.execute() != true) {
+					return false;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
