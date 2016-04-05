@@ -22,6 +22,7 @@ import java.sql.Statement;
 
 import logging.Level;
 import model.user.Credentials;
+import model.user.Mentor;
 
 import java.util.UUID;
 
@@ -75,6 +76,30 @@ public class SessionManagementDAO extends DataAccesObject {
 			statement.close();
 			clean.close();
 			token.close();
+		}
+		return null;
+	}
+
+	public Mentor getMentorFromToken(String token) {
+		try {
+			statement = con.prepareStatement("SELECT userid FROM Tokens WHERE token=?");
+			statement.setString(1, token);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				clean = con.createStatement();
+				ResultSet results = clean.executeQuery(
+						"SELECT * FROM User INNER JOIN Mentor On User.user_id=Mentor.user_id WHERE User.user_id="
+								+ result.getInt("userid"));
+				while (results.next()) {
+					// TODO: Needs seperate functions that will bee added in
+					// other DAO's
+					return new Mentor(results.getInt("user_id"), results.getString("email"), null, null,
+							results.getString("username"), "", "link_profilepic.jpg", results.getString("name"));
+				}
+			}
+		} catch (Exception e) {
+			log.out(Level.ERROR, "GetMentorFromToken", "Can't get mentor from token");
 		}
 		return null;
 	}

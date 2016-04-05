@@ -2,18 +2,23 @@ package model.user;
 
 import java.awt.Image;
 
+/**
+ * TODO: Profile picture needs to be a link to the profile picture.
+ * Can't send it out via rest.
+ *
+ */
 public abstract class User {
 
 	private int id;
 	protected String username;
 	protected String password;
-	protected Image profilePicture;
+	protected String profilePicture;
 	protected String name;
 
 	public User() {
 	}
 
-	public User(int id, String username, String password, Image profilePicture, String name) {
+	public User(int id, String username, String password, String profilePicture, String name) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -45,11 +50,11 @@ public abstract class User {
 		this.password = password;
 	}
 
-	public Image getProfilePicture() {
+	public String getProfilePicture() {
 		return profilePicture;
 	}
 
-	public void setProfilePicture(Image profilePicture) {
+	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
 	}
 

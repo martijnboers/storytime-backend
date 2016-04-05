@@ -1,5 +1,6 @@
 package model.user;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import model.roadmap.Roadmap;
 
 public class Mentor extends User {
 	
-	private int id;
 	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -15,19 +15,11 @@ public class Mentor extends User {
 	public Mentor() {
 	}
 
-	public Mentor(int id, String email, List<Child> theChildren, List<Roadmap> theRoadmaps) {
-		this.id = id;
+	public Mentor(int id, String email, List<Child> theChildren, List<Roadmap> theRoadmaps, String username, String password, String profilePicture, String name) {
+		super(id, username, password, profilePicture, name);
 		this.email = email;
 		this.theChildren = theChildren;
 		this.theRoadmaps = theRoadmaps;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
@@ -70,10 +62,10 @@ public class Mentor extends User {
 		return theRoadmaps.remove(roadmap);
 	}
 
+
 	@Override
 	public String toString() {
-		return "Mentor [id=" + id + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps
-				+ "]";
+		return "Mentor [email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps + "]";
 	}
 
 	@Override
@@ -81,7 +73,6 @@ public class Mentor extends User {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((theChildren == null) ? 0 : theChildren.hashCode());
 		result = prime * result + ((theRoadmaps == null) ? 0 : theRoadmaps.hashCode());
 		return result;
@@ -100,8 +91,6 @@ public class Mentor extends User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
-			return false;
-		if (id != other.id)
 			return false;
 		if (theChildren == null) {
 			if (other.theChildren != null)
