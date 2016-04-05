@@ -69,7 +69,7 @@ public class UserDAO extends DataAccesObject {
 	
 	private boolean deleteUser(int userID) throws SQLException {
 		try {
-			statement = con.prepareStatement("DELETE FROM user WHERE user_id = ?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM user WHERE user_id = ?");
 			statement.setInt(1, userID);
 			if(statement.execute() != true) {
 				return false;
@@ -77,6 +77,52 @@ public class UserDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Deleting the user has failed");
+		} finally {
+			statement.close();
+		}
+		return true;
+	}
+	
+	public boolean deleteMentor(int mentorID) throws SQLException
+	{
+		try {
+			// remove child dependency
+			statement = con.prepareStatement("UPDATE Child SET mentor_id = 999 WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove quiz dependency
+			statement = con.prepareStatement("UPDATE Quiz SET mentor_id = 999 WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			if(statement.execute() != true) {
+				return false;
+			}
+
+			// remove roadmap dependency
+			statement = con.prepareStatement("UPDATE Roadmap SET mentor_id = 999 WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			if(statement.execute() != true) {
+				return false;
+			}
+
+			// remove mentor
+			statement = con.prepareStatement("DELETE FROM Mentor WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove user
+			statement = con.prepareStatement("SELECT * FROM Mentor WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				deleteUser(result.getInt("user_id"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Updating Achievement went wrong");
 		} finally {
 			statement.close();
 		}
