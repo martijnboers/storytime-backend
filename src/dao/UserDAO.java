@@ -122,7 +122,58 @@ public class UserDAO extends DataAccesObject {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Updating Achievement went wrong");
+			log.out(Level.ERROR, "", "Deleting mentor went wrong");
+		} finally {
+			statement.close();
+		}
+		return true;
+	}
+	
+	public boolean deleteChild(int childID) throws SQLException
+	{
+		try {
+			// remove quiz dependency
+			statement = con.prepareStatement("DELETE FROM Child_has_Quiz WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove question dependency
+			statement = con.prepareStatement("DELETE FROM Child_has_Question WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove roadmap dependency
+			statement = con.prepareStatement("DELETE FROM Child_has_Roadmap WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove step dependency
+			statement = con.prepareStatement("DELETE FROM Step_has_Child WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			if(statement.execute() != true) {
+				return false;
+			}
+
+			// remove child
+			statement = con.prepareStatement("DELETE FROM Child WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			if(statement.execute() != true) {
+				return false;
+			}
+			// remove user
+			statement = con.prepareStatement("SELECT * FROM Child WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				deleteUser(result.getInt("user_id"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Deleting child went wrong");
 		} finally {
 			statement.close();
 		}
