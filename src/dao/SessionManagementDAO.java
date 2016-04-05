@@ -59,7 +59,7 @@ public class SessionManagementDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("SELECT user_id FROM User WHERE username=? AND password=?");
 			statement.setString(1, cred.getUsername());
-			statement.setString(2, cred.getPassword());
+			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(cred.getPassword()));
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
