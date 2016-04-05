@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -66,14 +67,16 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor() {
+	public String getMentor(@HeaderParam("token") String token ) {
+		Mentor men = session.getMentorFromToken(token);
 		Mentor m = new Mentor();
 		m.setEmail("Plop");
 		m.setName("Henk");
 		m.setPassword("Henkie123");
 		Gson gson = new Gson();
 		String json = gson.toJson(m);
-		return json;
+//		return json;
+		return men.toString();
 
 	}
 

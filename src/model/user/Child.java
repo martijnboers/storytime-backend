@@ -8,7 +8,6 @@ import model.roadmap.Roadmap;
 
 public class Child extends User {
 
-	private int id;
 	private Date dateOfBirth;
 	private String gender;
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -16,18 +15,10 @@ public class Child extends User {
 	public Child() {
 	}
 
-	public Child(int id, Date dateOfBirth, String gender) {
-		this.id = id;
+	public Child(int id, Date dateOfBirth, String gender, String username, String password, String profilePicture, String name) {
+		super(id, username, password, profilePicture, name);
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Date getDateOfBirth() {
@@ -64,7 +55,7 @@ public class Child extends User {
 
 	@Override
 	public String toString() {
-		return "Child [id=" + id + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
+		return "dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
 				+ theRoadmaps + "]";
 	}
 
@@ -74,7 +65,6 @@ public class Child extends User {
 		int result = super.hashCode();
 		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-		result = prime * result + id;
 		return result;
 	}
 
@@ -96,8 +86,6 @@ public class Child extends User {
 			if (other.gender != null)
 				return false;
 		} else if (!gender.equals(other.gender))
-			return false;
-		if (id != other.id)
 			return false;
 		return true;
 	}

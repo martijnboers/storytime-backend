@@ -27,6 +27,7 @@ import java.sql.SQLException;
 
 import dao.SessionManagementDAO;
 import model.user.Credentials;
+import model.user.Mentor;
 import model.user.User;
 
 
@@ -48,5 +49,9 @@ public class Security {
 	
 	public String login(Credentials cred) throws SQLException {
 		return session.Login(cred);
+	}
+	
+	public Mentor getMenterFromToken(String token) {
+		return session.getMentorFromToken(token);
 	}
 }
