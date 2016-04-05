@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import logging.Level;
+import model.user.Child;
 import model.user.Mentor;
 import model.user.User;
 
@@ -35,28 +36,74 @@ public class UserDAO extends DataAccesObject {
 	}
 	
 	/**
-	 * Mentor should have a plaintext password in object. It hashes the password
-	 * automatically
+	 * Should be private, addUser can only be called when adding mentor or child
+	 * @param theUser
+	 * @return insertedID
+	 * @throws SQLException 
 	 */
-	public boolean addMentor(Mentor theMentor) throws SQLException {
+	private int addUser(User theUser) throws SQLException {
+		int id = 0;
 		try {
 			statement = con.prepareStatement("INSERT INTO  `storytime`.`User` (`username` , `password` , `profile_picture`, `name`)	VALUES (?,  ?,  ?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
-			statement.setString(1, theMentor.getUsername());
-			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(theMentor.getPassword()));
-			statement.setString(3, theMentor.getProfilePicture());
-			statement.setString(4, theMentor.getName());
+			statement.setString(1, theUser.getUsername());
+			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(theUser.getPassword()));
+			statement.setString(3, theUser.getProfilePicture());
+			statement.setString(4, theUser.getName());
 			if(statement.execute() != true) {
-				return false;
+				return 0;
 			}
 			ResultSet generatedKey = statement.getGeneratedKeys();
 			while(generatedKey.next())
 			{
-				PreparedStatement mentorQuery = con.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
-				mentorQuery.setString(1, theMentor.getEmail());
-				mentorQuery.setInt(2, generatedKey.getInt(1));
-				if(mentorQuery.execute() != true) {
-					return false;
-				}
+				id = generatedKey.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "adding mentor failed");
+		} finally {
+			statement.close();
+		}
+		return id;
+	}
+	
+	/**
+	 * Child should have a plaintext password in object. It hashes the password
+	 * automatically
+	 */
+	public boolean addChild(Mentor theMentor, Child theChild) throws SQLException {
+		try {
+			int userId = addUser(theChild);
+			PreparedStatement childQuery = con.prepareStatement("INSERT INTO  `storytime`.`Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+			childQuery.setString(1, theChild.getDateOfBirth().toString());
+			childQuery.setString(2, theChild.getGender());
+			childQuery.setInt(3, userId);
+			childQuery.setInt(3, theMentor.getId());
+		
+			if(childQuery.execute() != true) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "adding child failed");
+		} finally {
+			statement.close();
+		}
+		return true;
+	}
+	
+	/**
+	 * Mentor should have a plaintext password in object. It hashes the password
+	 * automatically
+	 */
+	public boolean addMentor(Mentor theMentor) throws SQLException {
+		
+		try {
+			int userId = addUser(theMentor);
+			PreparedStatement mentorQuery = con.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);");
+			mentorQuery.setString(1, theMentor.getEmail());
+			mentorQuery.setInt(2, userId);
+			if(mentorQuery.execute() != true) {
+				return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
