@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import controller.Json;
 import controller.Security;
+import dao.SessionManagementDAO;
 
 /**
  * Super class for view. Please add commonly used vars and functions here for
@@ -30,6 +31,7 @@ import controller.Security;
 public class ViewSuper {
 	protected Gson gson = new Gson();
 	protected Json json = new Json();
+	protected SessionManagementDAO session = new SessionManagementDAO();
 	protected Security sec;
 	
 	public ViewSuper() throws Exception{
