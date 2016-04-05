@@ -35,7 +35,6 @@ import controller.Json;
 import controller.UserController;
 import exceptions.InvalidTokenException;
 import model.State;
-import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
 
@@ -61,19 +60,20 @@ public class UserRequest extends ViewSuper {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(String input) throws UnknownHostException {
 		Mentor theMentor = gson.fromJson(input, Mentor.class);
-		if (!userController.usernameExists(theMentor.getUsername())) {
-			// Gebruiker bestaat nog niet
+		if (userController.userExists(theMentor.getUsername())) {
+			return json.createJson(State.ERROR, "User bestaat al");
 		}
-		System.out.println("param1 = " + theMentor.getEmail());
-		System.out.println("param2 = " + theMentor.getName());
-		return json.createJson(State.PASSED, "Succesvol geregistreerd");
+		if (userController.addMentor(theMentor)) {
+			return json.createJson(State.PASSED, "Succesvol geregistreerd");
+		}
+		return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
 	}
 
 	@GET
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMentor(@HeaderParam("token") String token ) throws SQLException, InvalidTokenException {
-		Child men = session.getChildFromToken(token);
+		Mentor men = session.getMentorFromToken(token);
 		Mentor m = new Mentor();
 		m.setEmail("Plop");
 		m.setName("Henk");

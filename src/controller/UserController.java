@@ -13,16 +13,19 @@ public class UserController {
 		userDAO = new UserDAO();
 	}
 	
-
-	public void registerMentor(Mentor theMentor) {
-
+	public boolean addMentor(Mentor theMentor) {
+		try {
+			return userDAO.addMentor(theMentor);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
-	public boolean usernameExists(String username) {
+	public boolean userExists(String username) {
 		try {
-			if (userDAO.getUsername(username) != null) {
-				return true;
-			}
+			return userDAO.userExists(username);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

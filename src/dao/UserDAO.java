@@ -1,12 +1,14 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import logging.Level;
-import logging.Logger;
+import model.roadmap.Roadmap;
+import model.user.Child;
+import model.user.Mentor;
 import model.user.User;
 
 public class UserDAO extends DataAccesObject {
@@ -16,23 +18,53 @@ public class UserDAO extends DataAccesObject {
 
 	private PreparedStatement statement;
 
-	public String getUsername(String username) throws SQLException {
-		String theUser = null;
+	public boolean userExists(String username) throws SQLException {
+		boolean found = false;
 
 		try {
-			statement = con.prepareStatement("SELECT * FROM User WHERE username = ?;");
+			statement = con.prepareStatement("SELECT username FROM User WHERE username = ?;");
 			statement.setString(1, username);
-
+			
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				theUser = result.getString("username");
+				found = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			statement.close();
 		}
-		return theUser;
+		return found;
+	}
+	
+	/**
+	 * Mentor should have a plaintext password in object. It hashes the password
+	 * automatically
+	 */
+	public boolean addMentor(Mentor theMentor) throws SQLException {
+		try {
+			statement = con.prepareStatement("INSERT INTO  `storytime`.`User` (`username` , `password` , `profile_picture`, `name`)	VALUES (?,  ?,  ?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+			statement.setString(1, theMentor.getUsername());
+			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(theMentor.getPassword()));
+			statement.setString(3, theMentor.getProfilePicture());
+			statement.setString(4, theMentor.getName());
+			if(statement.execute() != true) {
+				return false;
+			}
+			ResultSet generatedKey = statement.getGeneratedKeys();
+			while(generatedKey.next())
+			{
+				PreparedStatement mentorQuery = con.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+				mentorQuery.setString(1, theMentor.getEmail());
+				mentorQuery.setInt(2, generatedKey.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "adding mentor failed");
+		} finally {
+			statement.close();
+		}
+		return true;
 	}
 
 	public byte[] getProfilePicture(User user) throws SQLException {

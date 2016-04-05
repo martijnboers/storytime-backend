@@ -1,7 +1,5 @@
 package model.user;
 
-import java.awt.Image;
-
 /**
  * TODO: Profile picture needs to be a link to the profile picture.
  * Can't send it out via rest.
