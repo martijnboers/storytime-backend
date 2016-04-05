@@ -22,8 +22,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import org.eclipse.jetty.server.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -34,7 +37,7 @@ import model.State;
 import model.user.Credentials;
 import model.user.Mentor;
 
-@Path("/")
+@Path("/user")
 public class UserRequest extends ViewSuper {
 	private UserController userController = new UserController();
 	
@@ -67,7 +70,7 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Path("/account")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor(@HeaderParam("token") String token ) {
+	public String getMentor(@HeaderParam("token") String token ) throws SQLException {
 		Mentor men = session.getMentorFromToken(token);
 		Mentor m = new Mentor();
 		m.setEmail("Plop");
@@ -84,11 +87,13 @@ public class UserRequest extends ViewSuper {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(String credentials) throws JsonSyntaxException, SQLException {
-		String token = sec.login(gson.fromJson(credentials, Credentials.class));
-		if (token != null) {
-			return json.createJson(State.PASSED, token);
-		} else {
-			return json.createJson(State.ERROR, "Verkeerde inloggegevens");
-		}
+		return sec.login(gson.fromJson(credentials, Credentials.class));
+	}
+	
+	@GET
+	@Produces("image/png")
+	@Path("/profilepic/{id}")
+	public byte[] getProfilePicture(@PathParam("id") int id) throws SQLException {
+		return userController.getProfilePicture(session.getUserFromId(id));
 	}
 }
