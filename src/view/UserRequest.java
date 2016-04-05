@@ -28,15 +28,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import controller.Json;
+import controller.UserController;
 import model.State;
 import model.user.Credentials;
 import model.user.Mentor;
 
 @Path("/")
 public class UserRequest extends ViewSuper {
-
+	private UserController userController = new UserController();
+	
 	public UserRequest() throws Exception {
 		super();
+		
 	}
 
 	/**
@@ -52,6 +55,9 @@ public class UserRequest extends ViewSuper {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(String input) throws UnknownHostException {
 		Mentor theMentor = gson.fromJson(input, Mentor.class);
+		if (!userController.usernameExists(theMentor.getUsername())) {
+			// Gebruiker bestaat nog niet
+		}
 		System.out.println("param1 = " + theMentor.getEmail());
 		System.out.println("param2 = " + theMentor.getName());
 		return json.createJson(State.PASSED, "Succesvol geregistreerd");
