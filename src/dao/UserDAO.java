@@ -9,7 +9,7 @@ import logging.Level;
 import logging.Logger;
 import model.user.User;
 
-public class UserDAO extends DataAccesObject{
+public class UserDAO extends DataAccesObject {
 	public UserDAO() throws Exception {
 		super();
 	}
@@ -47,7 +47,11 @@ public class UserDAO extends DataAccesObject{
 		} catch (Exception e) {
 			log.out(Level.ERROR, "getProfilePicture", "Error while getting profilepicture from database");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "getProfilePicture", "Can't close database streams");
+			}
 		}
 		return null;
 	}

@@ -39,6 +39,7 @@ public class SessionManagementDAO extends DataAccesObject {
 	 */
 	public SessionManagementDAO() throws Exception {
 		super();
+		log.out(Level.INFORMATIVE, "SessionManagementDAO", "init SessionManagementDao");
 	}
 
 	/**
@@ -74,9 +75,14 @@ public class SessionManagementDAO extends DataAccesObject {
 		} catch (Exception e) {
 			log.out(Level.ERROR, "Login", "Kan niet inloggen");
 		} finally {
-			statement.close();
-			clean.close();
-			token.close();
+			try {
+				statement.close();
+				clean.close();
+				token.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "Login", "Can't close database streams");
+			}
+
 		}
 		return null;
 	}
@@ -95,10 +101,15 @@ public class SessionManagementDAO extends DataAccesObject {
 		} catch (Exception e) {
 			log.out(Level.ERROR, "getUserFromID", "Can't get user from id");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "getUserFromId", "Can't close database streams");
+			}
 		}
 		return null;
 	}
+
 	public Mentor getMentorFromToken(String token) throws SQLException {
 		try {
 			statement = con.prepareStatement("SELECT user_id FROM Tokens WHERE token=?");
@@ -119,8 +130,12 @@ public class SessionManagementDAO extends DataAccesObject {
 		} catch (Exception e) {
 			log.out(Level.ERROR, "GetMentorFromToken", "Can't get mentor from token");
 		} finally {
-			statement.close();
-			clean.close();
+			try {
+				statement.close();
+				clean.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "getMentofFromeToken", "Can't close database streams");
+			}
 		}
 		return null;
 	}
@@ -143,8 +158,12 @@ public class SessionManagementDAO extends DataAccesObject {
 		} catch (Exception e) {
 			log.out(Level.ERROR, "GetUserFromToken", "Can't get user from token");
 		} finally {
-			statement.close();
-			clean.close();
+			try {
+				statement.close();
+				clean.close();
+			} catch (Exception e) {
+				log.out(Level.ERROR, "getUserFromToken", "Can't close database streams");
+			}
 		}
 		return null;
 	}
