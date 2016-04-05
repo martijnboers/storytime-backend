@@ -1,7 +1,7 @@
 # StoryTime database Configuration
 # 
 #	THIS IS AN EXAMPLE!
-# 	Move to storytime.properties
+# 	Copy to storytime.properties
 
 host=
 user=
