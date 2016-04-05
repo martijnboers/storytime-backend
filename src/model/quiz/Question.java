@@ -6,15 +6,14 @@ import java.util.List;
 public class Question {
 	
 	private String question;
-	private boolean completed;
+	private boolean completed = false;
 	private List<Answer> theAnswers = new ArrayList<Answer>();
 
 	public Question() {
 	}
 
-	public Question(String question, boolean completed) {
+	public Question(String question) {
 		this.question = question;
-		this.completed = completed;
 	}
 
 	public String getQuestion() {
