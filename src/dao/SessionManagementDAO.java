@@ -32,6 +32,7 @@ public class SessionManagementDAO extends DataAccesObject {
 	private PreparedStatement statement;
 	private PreparedStatement token;
 	private Statement clean;
+	private Statement logger;
 
 	/**
 	 * Database functions for SessionManagement
@@ -52,6 +53,9 @@ public class SessionManagementDAO extends DataAccesObject {
 	 * @throws SQLException
 	 */
 	public String Login(Credentials cred) throws SQLException {
+		boolean loggedIn = false;
+		int id = 0;
+		
 		try {
 			statement = con.prepareStatement("SELECT user_id FROM User WHERE username=? AND password=?");
 			statement.setString(1, cred.getUsername());
@@ -59,7 +63,8 @@ public class SessionManagementDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				int id = result.getInt("user_id");
+				loggedIn = true;
+				id = result.getInt("user_id");
 				String uuid = UUID.randomUUID().toString();
 
 				clean = con.createStatement();
@@ -71,8 +76,10 @@ public class SessionManagementDAO extends DataAccesObject {
 				token.executeUpdate();
 
 				return uuid;
-
 			}
+			logger = con.createStatement();
+			logger.executeUpdate("INSERT INTO Logs (ip, user_id) VALUES ('null', " + id + ")");	
+			
 		} catch (Exception e) {
 			log.out(Level.ERROR, "Login", "Kan niet inloggen");
 		} finally {
@@ -80,6 +87,8 @@ public class SessionManagementDAO extends DataAccesObject {
 				statement.close();
 				clean.close();
 				token.close();
+				logger.close();
+				
 			} catch (Exception e) {
 				log.out(Level.ERROR, "Login", "Can't close database streams");
 			}
