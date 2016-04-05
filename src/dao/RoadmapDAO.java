@@ -14,8 +14,8 @@ public class RoadmapDAO {
 	protected Connection con;
 	private PreparedStatement statement;
 
-	public Boolean getAllAchievementsByChild(Roadmap roadmap) throws SQLException {
-		Boolean completed = false;
+	public Boolean isCompleted(Roadmap roadmap) throws SQLException {
+		Boolean completed = true;
 		
 		try {
 			statement = con.prepareStatement("SELECT Step.step_id, Step.name, Step.description, Step.completed"
@@ -27,6 +27,7 @@ public class RoadmapDAO {
 			while (result.next()) {
 				Step step = new Step(result.getShort("step_id"), result.getString("name"), result.getString("description"), result.getBoolean("completed"));
 				if(!step.isCompleted()) {
+					completed = false;
 					break;
 				}
 			}
