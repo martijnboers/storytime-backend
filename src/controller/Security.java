@@ -58,7 +58,7 @@ public class Security {
 		}
 	}
 	
-	public Mentor getMenterFromToken(String token) throws SQLException {
-		return session.getMentorFromToken(token);
+	public String logout(User user) {
+		session.logout(user);
 	}
 }

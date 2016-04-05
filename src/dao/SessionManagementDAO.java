@@ -206,4 +206,9 @@ public class SessionManagementDAO extends DataAccesObject {
 		}
 		return null;
 	}
+	
+	public boolean logout(User user) {
+		// TODO
+		return true;
+	}
 }

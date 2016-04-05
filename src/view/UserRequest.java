@@ -87,6 +87,13 @@ public class UserRequest extends ViewSuper {
 	}
 	
 	@GET
+	@Path("/logout")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String logout(@HeaderParam("token") String token) throws InvalidTokenException, SQLException {
+		return sec.logout(session.getUserFromToken(token));
+	}
+	
+	@GET
 	@Produces("image/png")
 	@Path("/profilepic/{id}")
 	public byte[] getProfilePicture(@PathParam("id") int id) throws SQLException, InvalidTokenException {
