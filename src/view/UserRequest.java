@@ -66,7 +66,7 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Path("/info")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor(@HeaderParam("token") String token ) throws SQLException, InvalidTokenException {
+	public String getMentor(@HeaderParam("token") String token ) throws Exception {
 		return userController.getUserInfo(token);
 
 	}
