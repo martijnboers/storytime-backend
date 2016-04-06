@@ -18,6 +18,11 @@ public class Quiz {
 	private List<Category> theCategories = new ArrayList<Category>();
 
 	public Quiz() {}
+	
+	public Quiz(String name, String descprition) {
+		this.name = name;
+		this.description = descprition;
+	}
 
 	public Quiz(int id, String name, String descprition) {
 		this.id = id;

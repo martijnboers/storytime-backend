@@ -11,6 +11,10 @@ public class Question {
 
 	public Question() {
 	}
+	
+	public Question(int id, String question) {
+		this.question = question;
+	}
 
 	public Question(String question) {
 		this.question = question;
