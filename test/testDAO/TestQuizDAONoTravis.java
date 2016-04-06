@@ -1,4 +1,4 @@
-package users;
+package testDAO;
 
 import static org.junit.Assert.assertTrue;
 
@@ -61,13 +61,18 @@ public class TestQuizDAONoTravis {
 		question.setTheAnswers(theAnswers);
 		theQuestions.add(question);
 		
-		quiz.setTheQuestions(theQuestions);
-				
+		quiz.setTheQuestions(theQuestions);				
 	}
-	
 	
 	@Test
 	public void testAddQuizd() throws Exception{		
 			QuizDAO quizDAO = new QuizDAO();			
 			assertTrue(quizDAO.addQuiz(quiz, mentor.getId()));	}
+	
+	@Test
+	public void testDeleteQuiz() throws Exception{
+		QuizDAO quizDAO = new QuizDAO();
+		int quizId = quizDAO.getLatestIdQuestion();
+		System.out.println(quizId);
+		assertTrue(quizDAO.deleteQuiz(quizId));}
 }

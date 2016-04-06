@@ -20,9 +20,9 @@ public class QuizDAO extends DataAccesObject {
 		super();
 	}
 
-	private PreparedStatement statement,statement2;
+	private PreparedStatement statement;
 
-	public List<Quiz> getAllQuizesByMentor(int id) throws SQLException {
+	public List<Quiz> getAllQuizesByMentor(int mentorId) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 
 		try {
@@ -30,7 +30,7 @@ public class QuizDAO extends DataAccesObject {
 					"SELECT Quiz.quiz_id, Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer, Answer.correct "
 							+ "FROM Quiz " + "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id " + "WHERE mentor_id = ?;");
-			statement.setInt(1, id);
+			statement.setInt(1, mentorId);
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -69,8 +69,8 @@ public class QuizDAO extends DataAccesObject {
 			statement.close();
 		}
 		return theQuizes;
-	}
-
+	}	
+	
 	public List<Quiz> getAllQuizesByChild(int id) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 
@@ -127,7 +127,8 @@ public class QuizDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement(
 					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Question.completed, Answer.answer, Answer.correct "
-							+ "FROM Quiz " + "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
+							+ "FROM Quiz " 
+							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
 							+ "JOIN Category_has_Quiz ON Quiz.quiz_id = Category_has_Quiz.quiz_id "
 							+ "WHERE Category_has_Quiz.Category_id = ?;");
@@ -219,7 +220,7 @@ public class QuizDAO extends DataAccesObject {
 		}
 		return theQuizes;
 	}
-	//TODO Inserts all but still returns false
+	
 	public boolean addQuiz(Quiz quiz, int mentorId) throws SQLException{
 		boolean succes = false;
 		int quizId = 0;
@@ -238,26 +239,11 @@ public class QuizDAO extends DataAccesObject {
 				      quizId = generatedKeyQuiz.getInt(1);
 				}
 				generatedKeyQuiz.close();
-				statement.clearBatch();
-				for(Question question : quiz.getTheQuestions()){
-					statement = con.prepareStatement("INSERT INTO Question "
-						+ "(question,quiz_id) VALUES(?,?)");
-					statement.setString(1,question.getQuestion());
-					statement.setInt(2,quizId);
-					if(statement.executeUpdate() >= 1){
-						
-						ResultSet generatedKeyQuestion = statement.getGeneratedKeys();
-						if(null != generatedKeyQuestion && generatedKeyQuestion.next()){
-							questionId = generatedKeyQuestion.getInt(1);
-						}
-						statement.clearBatch();
+				for(Question question : quiz.getTheQuestions()){			
+					questionId = addQuestion(question, quizId);
+					if(questionId != 0){
 						for(Answer answer : question.getTheAnswers()){
-							statement = con.prepareStatement("INSERT INTO Answer "
-									+ "(answer,correct,question_id) VALUES(?,?,?)");
-							statement.setString(1,answer.getAnswer());
-							statement.setBoolean(2, answer.isCorrect());
-							statement.setInt(3,questionId);
-							if(statement.executeUpdate() >= 1){
+							if(addAnswer(answer, questionId)){
 								succes = true;
 							}
 						}
@@ -269,9 +255,165 @@ public class QuizDAO extends DataAccesObject {
 			log.out(Level.ERROR, "", "Coudn't add a new question");
 		} finally {
 			statement.close();
-			statement2.close();
 		}
-		System.out.println("Succes is: " + succes);
 		return succes;
-	}	
+	}
+	
+	
+	private int addQuestion(Question question, int quizId) throws SQLException{
+		int questionId  = 0;
+		try {
+			statement = con.prepareStatement("INSERT INTO Question "
+					+ "(question,quiz_id) VALUES(?,?)");
+				statement.setString(1,question.getQuestion());
+				statement.setInt(2,quizId);
+
+			if(statement.executeUpdate() >= 1) {
+				ResultSet generatedKeyQuestion = statement.getGeneratedKeys();
+				if(null != generatedKeyQuestion && generatedKeyQuestion.next()){
+					questionId = generatedKeyQuestion.getInt(1);				}
+				generatedKeyQuestion.close();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return questionId;
+	}
+	
+	private boolean addAnswer(Answer answer, int questionId) throws SQLException{
+		boolean succes  = false;
+		try {
+			statement = con.prepareStatement("INSERT INTO Answer "
+					+ "(answer,correct,question_id) VALUES(?,?,?)");
+			statement.setString(1,answer.getAnswer());
+			statement.setBoolean(2, answer.isCorrect());
+			statement.setInt(3,questionId);
+
+			if(statement.executeUpdate() >= 1) {succes = true;}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
+	
+	public boolean updateQuiz(Quiz quiz) throws SQLException{
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ?, `mentor_id` = ?;");
+			statement.setString(1, quiz.getName());
+			statement.setString(2, quiz.getDescription());
+			statement.setInt(3, quiz.getMentor().getId());
+
+			if(statement.executeUpdate() >= 1) {
+				for(Question question : quiz.getTheQuestions()){
+					if(updateQuestion(question)){					
+						for(Answer answer : question.getTheAnswers()){
+							updateAnswer(answer);
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Updating Roadmap went wrong");
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
+	
+	private boolean updateQuestion(Question question) throws SQLException{
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("UPDATE Question SET question = ?");
+			statement.setString(1, question.getQuestion());
+
+			if(statement.executeUpdate() >= 1) {succes = true;}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
+	
+	private boolean updateAnswer(Answer answer) throws SQLException{
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("UPDATE Question SET question = ?, correct = ?");
+			statement.setString(1, answer.getAnswer());
+			statement.setBoolean(2, answer.isCorrect());
+
+			if(statement.executeUpdate() >= 1) {succes = true;}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
+	
+		
+	public boolean deleteQuiz(int quizId) throws SQLException{
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("SELECT question_id "
+					+ "FROM Question "
+					+ "WHERE quiz_id = ?");
+			statement.setInt(1, quizId);
+			
+			ResultSet result = statement.executeQuery();
+			result.next();
+			int questionId = result.getInt(1);
+			statement.clearBatch();
+			statement = con.prepareStatement("DELETE FROM Answer "
+					+ "WHERE Answer.question_id = ?;");
+			statement.setInt(1,questionId);
+			
+			if(statement.executeUpdate() > 0){
+				statement.clearBatch();
+				statement = con.prepareStatement("DELETE FROM Question "
+						+ "WHERE Question.question_id = ?;");
+				statement.setInt(1,questionId);
+				if(statement.executeUpdate() > 0){
+					statement.clearBatch();
+					statement = con.prepareStatement("DELETE FROM Quiz "  
+							+ "WHERE Quiz.quiz_id = ?");
+					statement.setInt(1,quizId);
+					
+					if(statement.executeUpdate() > 0){
+						succes = true;
+					}else{succes = false;}
+				}
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Coudn't add a new question");
+		} finally {
+			statement.close();
+		}		
+		return succes;
+	}
+	
+	public int getLatestIdQuestion() throws SQLException{
+		int questionId = 0;
+		try {
+			statement = con.prepareStatement("SELECT MAX(quiz_id) FROM Quiz");
+			ResultSet result = statement.executeQuery();
+			result.next();
+			questionId = result.getInt(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return questionId;
+	}
 }
