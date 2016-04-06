@@ -17,10 +17,11 @@ public class CategoryDAO extends DataAccesObject {
 		super();
 	}
 
-	
-	// TODO: getCategoryById
-	
-	
+	/**
+	 * 
+	 * @return List with all the categories
+	 * @throws SQLException
+	 */
 	public List<Category> getAllCategories() throws SQLException {
 		List<Category> theCategories = new ArrayList<Category>();
 
@@ -41,6 +42,12 @@ public class CategoryDAO extends DataAccesObject {
 		return theCategories;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return True is a category is added, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean addCategory(String name) throws SQLException {
 		boolean succes = false;
 		try {
@@ -59,6 +66,13 @@ public class CategoryDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @return True is a category is updated, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean updateCategory(int id, String name) throws SQLException {
 		boolean succes = false;
 		try {
@@ -78,6 +92,12 @@ public class CategoryDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return True is a category is deleted, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean deleteCategory(int id) throws SQLException {
 		boolean succes = false;
 		try {
