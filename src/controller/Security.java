@@ -58,7 +58,7 @@ public class Security {
 		}
 	}
 	
-	public String logout(User user) {
+	public String logout(User user) throws SQLException {
 		boolean loggedout = session.logout(user);
 		if (loggedout) {
 			return json.createJson(State.PASSED, "Gebruiker is uitgelogd");

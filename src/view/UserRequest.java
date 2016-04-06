@@ -64,18 +64,10 @@ public class UserRequest extends ViewSuper {
 	}
 
 	@GET
-	@Path("/account")
+	@Path("/info")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor(@HeaderParam("token") String token ) throws SQLException, InvalidTokenException {
-		Child men = session.getChildFromToken(token);
-		Mentor m = new Mentor();
-		m.setEmail("Plop");
-		m.setName("Henk");
-		m.setPassword("Henkie123");
-		Gson gson = new Gson();
-		String json = gson.toJson(m);
-//		return json;
-		return men.toString();
+	public String getMentor(@HeaderParam("token") String token ) throws Exception {
+		return userController.getUserInfo(token);
 
 	}
 
