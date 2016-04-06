@@ -1,14 +1,18 @@
 package model.user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import controller.AchievementController;
+import controller.UserController;
+import dao.AchievementDAO;
+import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
 
-// TODO: Total (achievement) points of a kid
 public class Child extends User {
-
+	
 	private Date dateOfBirth;
 	private String gender;
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -52,6 +56,18 @@ public class Child extends User {
 
 	public boolean removeRoadmap(Roadmap roadmap) {
 		return theRoadmaps.remove(roadmap);
+	}
+	
+	// TODO: Service DAO netjes maken
+	public double getAllAchievementPoints() throws SQLException {
+		//AchievementController achievementController = new AchievementController();
+		
+		double totalPoints = 0;
+	//	for(Roadmap roapmap : achievementController.getAllCompletedAchievementsByChild(getId())) {
+		//	totalPoints += roapmap.getPoints();
+	//	}
+		
+		return totalPoints;
 	}
 
 	@Override

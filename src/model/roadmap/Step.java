@@ -3,6 +3,7 @@ package model.roadmap;
 public class Step {
 
 	private int id;
+	private int orderID;
 	private String name;
 	private String description;
 	private boolean completed;
@@ -10,8 +11,16 @@ public class Step {
 	public Step() {
 	}
 
-	public Step(int id, String name, String description, boolean completed) {
+	public Step(int id, int orderID, String name, String description) {
 		this.id = id;
+		this.orderID = orderID;
+		this.name = name;
+		this.description = description;
+	}
+	
+	public Step(int id, int orderID, String name, String description, boolean completed) {
+		this.id = id;
+		this.orderID = orderID;
 		this.name = name;
 		this.description = description;
 		this.completed = completed;
@@ -23,6 +32,14 @@ public class Step {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getOrderID() {
+		return orderID;
+	}
+	
+	public void setOrderID(int orderID) {
+		this.orderID = orderID;
 	}
 
 	public String getName() {
@@ -51,7 +68,8 @@ public class Step {
 
 	@Override
 	public String toString() {
-		return "Step [id=" + id + ", name=" + name + ", description=" + description + ", completed=" + completed + "]";
+		return "Step [id=" + id + ", orderID=" + orderID + ", name=" + name + ", description=" + description
+				+ ", completed=" + completed + "]";
 	}
 
 	@Override
@@ -62,6 +80,7 @@ public class Step {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + orderID;
 		return result;
 	}
 
@@ -87,6 +106,8 @@ public class Step {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (orderID != other.orderID)
 			return false;
 		return true;
 	}
