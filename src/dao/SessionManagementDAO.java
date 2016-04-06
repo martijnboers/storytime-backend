@@ -207,8 +207,19 @@ public class SessionManagementDAO extends DataAccesObject {
 		return null;
 	}
 	
-	public boolean logout(User user) {
-		// TODO
-		return true;
+	public boolean logout(User user) throws SQLException {
+		boolean worked = false;
+		try {
+			clean = con.createStatement();
+			int affectedRows = clean.executeUpdate("DELETE FROM Tokens WHERE user_id = " + user.getId());
+			if (affectedRows >= 1) {
+				worked = true;
+			}
+		} catch (Exception e){
+			log.out(Level.ERROR, "logout", "Can't log out user");
+		} finally {
+			clean.close();
+		}
+		return worked;
 	}
 }
