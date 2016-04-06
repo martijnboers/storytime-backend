@@ -18,6 +18,11 @@ public class AchievementDAO extends DataAccesObject {
 		super();
 	}
 	
+	/**
+	 * 
+	 * @return List with all the achievements
+	 * @throws SQLException
+	 */
 	public List<Achievement> getAllAchievements() throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 
@@ -38,6 +43,12 @@ public class AchievementDAO extends DataAccesObject {
 		return theAchievements;
 	}
 	
+	/**
+	 * 
+	 * @param child_id
+	 * @return List with all the possible achievements of a child
+	 * @throws SQLException
+	 */
 	public List<Achievement> getAllAchievementsByChild(int child_id) throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 
@@ -63,12 +74,17 @@ public class AchievementDAO extends DataAccesObject {
 		return theAchievements;
 	}
 
-	public List<Roadmap> getAllCompletedAchievementsByChild(int child_id) throws SQLException {
-		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
+	/**
+	 * 
+	 * @param child_id
+	 * @return List with all the completed achievements of a child
+	 * @throws SQLException
+	 */
+	public List<Achievement> getAllCompletedAchievementsByChild(int child_id) throws SQLException {
+		List<Achievement> theAchievements = new ArrayList<Achievement>();
 
 		try {
-			statement = con.prepareStatement(
-					"SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.name AS stepName, Step.description AS stepDescription, Step_has_Child.completed, Achievement.achievement_id, Achievement.name AS achievementName, Achievement.points"
+			statement = con.prepareStatement("SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.order_id as orderID, Step.name AS stepName, Step.description AS stepDescription, Step_has_Child.completed, Achievement.achievement_id, Achievement.name AS achievementName, Achievement.points"
 							+ "FROM Roadmap"
 							+ "JOIN Step ON Roadmap.roadmap_id = Step.roadmap_id"
 							+ "JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
@@ -81,22 +97,12 @@ public class AchievementDAO extends DataAccesObject {
 				Achievement achievement = new Achievement(result.getInt("achievement_id"), result.getString("achievementName"), result.getDouble("points"));
 				Roadmap roadmap = new Roadmap(result.getShort("roadmap_id"), result.getString("roadmapName"), result.getString("roadmapDescription"), achievement);
 
-				if (!theRoadmaps.contains(roadmap)) {
-					Step step = new Step(result.getInt("step_id"), result.getString("stepName"), result.getString("stepDescription"), result.getBoolean("completed"));
+				if (!theAchievements.contains(achievement)) {
+					Step step = new Step(result.getInt("step_id"), result.getInt("orderID"), result.getString("stepName"), result.getString("stepDescription"), result.getBoolean("completed"));
 					roadmap.addStep(step);
 					
 					if(roadmap.isCompleted()) {
-						theRoadmaps.add(roadmap);
-					}
-				} else {
-					for (Roadmap r : theRoadmaps) {
-						if (r.equals(achievement)) {
-
-							Step step = new Step(result.getInt("step_id"), result.getString("stepName"), result.getString("stepDescription"), result.getBoolean("completed"));
-							if (!r.getSteps().contains(step)) {
-								roadmap.addStep(step);
-							}
-						}
+						theAchievements.add(achievement);
 					}
 				}
 			}
@@ -105,9 +111,16 @@ public class AchievementDAO extends DataAccesObject {
 		} finally {
 			statement.close();
 		}
-		return theRoadmaps;
+		return theAchievements;
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param points
+	 * @return True is a achievement is added, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean addAchievement(String name, double points) throws SQLException {
 		boolean succes = false;
 		try {
@@ -127,6 +140,14 @@ public class AchievementDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param achievement_id
+	 * @param name
+	 * @param points
+	 * @return True is a achievement is updated, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean updateAchievement(int achievement_id, String name, double points) throws SQLException {
 		boolean succes = false;
 		try {
@@ -147,6 +168,12 @@ public class AchievementDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param achievement_id
+	 * @return True is a achievement is deleted, false is something failed.
+	 * @throws SQLException
+	 */
 	public boolean deleteAchievement(int achievement_id) throws SQLException {
 		boolean succes = false;
 		try {
