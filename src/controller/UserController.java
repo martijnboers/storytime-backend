@@ -37,6 +37,17 @@ public class UserController {
 		return false;
 	}
 	
+	/**
+	 * Provides information about the user, wheter this is a Child or Mentor and the path\
+	 * the UI should point to
+	 * 
+	 * @param token
+	 * @return JSON String
+	 */
+	public String getUserInfo(String token) {
+		return null;
+	}
+	
 	public byte[] getProfilePicture(User user) throws SQLException{
 		return userDAO.getProfilePicture(user);
 	}
