@@ -14,14 +14,7 @@ public class Mentor extends User {
 
 	public Mentor() {
 	}
-	
-	public Mentor(String email, String username, String password, String profilePicture, String name) {
-		super(username, password, profilePicture, name);
-		this.email = email;
-		this.theChildren = theChildren;
-		this.theRoadmaps = theRoadmaps;
-	}
-	
+
 	public Mentor(int id, String email, String username, String password, String profilePicture, String name) {
 		super(id, username, password, profilePicture, name);
 		this.email = email;

@@ -16,13 +16,6 @@ public abstract class User {
 
 	public User() {
 	}
-	
-	public User(String username, String password, String profilePicture, String name) {
-		this.username = username;
-		this.password = password;
-		this.profilePicture = profilePicture;
-		this.name = name;
-	}
 
 	public User(int id, String username, String password, String profilePicture, String name) {
 		this.id = id;

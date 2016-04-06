@@ -95,7 +95,8 @@ public class AchievementDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Achievement achievement = new Achievement(result.getInt("achievement_id"), result.getString("achievementName"), result.getDouble("points"));
-				Roadmap roadmap = new Roadmap(result.getShort("roadmap_id"), result.getString("roadmapName"), result.getString("roadmapDescription"), achievement);
+				Roadmap roadmap = new Roadmap(result.getShort("roadmap_id"), result.getString("roadmapName"), result.getString("roadmapDescription"));
+				roadmap.setAchievement(achievement);
 
 				if (!theAchievements.contains(achievement)) {
 					Step step = new Step(result.getInt("step_id"), result.getInt("orderID"), result.getString("stepName"), result.getString("stepDescription"), result.getBoolean("completed"));

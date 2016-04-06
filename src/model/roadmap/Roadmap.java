@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.category.Category;
+import model.user.Mentor;
 
 public class Roadmap {
 
 	private int id;
 	private String name;
 	private String description;
+	private Mentor mentor;
 	private Achievement achievement;
 	private List<Category> categories = new ArrayList<Category>();
 	private List<Step> steps = new ArrayList<Step>();
@@ -23,13 +25,14 @@ public class Roadmap {
 		this.description = description;
 	}
 	
-	public Roadmap(int id, String nm, String description, Achievement achievement) {
+	public Roadmap(int id, String name, String description, Mentor mentor, Achievement achievement) {
 		this.id = id;
-		this.name = nm;
+		this.name = name;
 		this.description = description;
-		this.setAchievement(achievement);
+		this.mentor = mentor;
+		this.achievement = achievement;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -52,6 +55,14 @@ public class Roadmap {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Mentor getMentor() {
+		return mentor;
+	}
+
+	public void setMentor(Mentor mentor) {
+		this.mentor = mentor;
 	}
 
 	public Achievement getAchievement() {
@@ -117,8 +128,8 @@ public class Roadmap {
 
 	@Override
 	public String toString() {
-		return "Roadmap [id=" + id + ", name=" + name + ", description=" + description + ", achievement=" + achievement
-				+ "(" + getPercentageOfCompletion() + "%), categories=" + categories + ", steps=" + steps + "]";
+		return "Roadmap [id=" + id + ", name=" + name + ", description=" + description + ", mentor=" + mentor
+				+ ", achievement=" + achievement + "(" + getPercentageOfCompletion() + "), categories=" + categories + ", steps=" + steps + "]";
 	}
 
 	@Override
@@ -128,7 +139,7 @@ public class Roadmap {
 		result = prime * result + ((achievement == null) ? 0 : achievement.hashCode());
 		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((mentor == null) ? 0 : mentor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((steps == null) ? 0 : steps.hashCode());
 		return result;
@@ -158,7 +169,10 @@ public class Roadmap {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (id != other.id)
+		if (mentor == null) {
+			if (other.mentor != null)
+				return false;
+		} else if (!mentor.equals(other.mentor))
 			return false;
 		if (name == null) {
 			if (other.name != null)
