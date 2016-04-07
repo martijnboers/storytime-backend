@@ -4,13 +4,28 @@ public class Answer {
 
 	private String answer;
 	private boolean correct;
+	private int id;
 
 	public Answer() {
 	}
-
+	
 	public Answer(String answer, boolean correct) {
 		this.answer = answer;
 		this.correct = correct;
+	}
+
+	public Answer(int id, String answer, boolean correct) {
+		this.id = id;
+		this.answer = answer;
+		this.correct = correct;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getAnswer() {

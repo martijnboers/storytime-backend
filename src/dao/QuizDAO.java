@@ -27,9 +27,11 @@ public class QuizDAO extends DataAccesObject {
 
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id, Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer, Answer.correct "
-							+ "FROM Quiz " + "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
-							+ "JOIN Answer ON Question.question_id = Answer.question_id " + "WHERE mentor_id = ?;");
+					"SELECT Quiz.quiz_id, Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+							+ "FROM Quiz " 
+							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
+							+ "JOIN Answer ON Question.question_id = Answer.question_id " 
+							+ "WHERE mentor_id = ?;");
 			statement.setInt(1, mentorId);
 
 			ResultSet result = statement.executeQuery();
@@ -38,7 +40,8 @@ public class QuizDAO extends DataAccesObject {
 						result.getString("description"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
-					Answer answer = new Answer(result.getString("answer"), result.getBoolean("correct"));
+					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+							result.getBoolean("correct"));
 					question.getTheAnswers().add(answer);
 					quiz.getTheQuestions().add(question);
 					theQuizes.add(quiz);
@@ -47,13 +50,14 @@ public class QuizDAO extends DataAccesObject {
 						Question question = new Question(result.getInt("question_id"),result.getString("question"));
 						if (q.equals(quiz)) {
 							if (!q.getTheQuestions().contains(question)) {
-								Answer answer = new Answer(result.getString("answer"), result.getBoolean("correct"));
+								Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+										result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
 								q.getTheQuestions().add(question);
 							} else {
 								for (Question qu : q.getTheQuestions()) {
 									if (qu.equals(question)) {
-										Answer answer = new Answer(result.getString("answer"),
+										Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
 												result.getBoolean("correct"));
 										qu.getTheAnswers().add(answer);
 									}
@@ -71,16 +75,18 @@ public class QuizDAO extends DataAccesObject {
 		return theQuizes;
 	}	
 	
-	public List<Quiz> getAllQuizesByChild(int id) throws SQLException {
+	public List<Quiz> getAllQuizesByChild(int childId) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer, Answer.correct "
-							+ "FROM Quiz " + "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+							+ "FROM Quiz " 
+							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
-							+ "JOIN Child_has_Quiz ON Quiz.quiz_id = Child_has_Quiz.quiz_id " + "WHERE child_id = ?;");
-			statement.setInt(1, id);
+							+ "JOIN Child_has_Quiz ON Quiz.quiz_id = Child_has_Quiz.quiz_id " 
+							+ "WHERE child_id = ?;");
+			statement.setInt(1, childId);
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -88,7 +94,8 @@ public class QuizDAO extends DataAccesObject {
 						result.getString("description"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
-					Answer answer = new Answer(result.getString("answer"), result.getBoolean("correct"));
+					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+							result.getBoolean("correct"));
 					question.getTheAnswers().add(answer);
 					quiz.getTheQuestions().add(question);
 					theQuizes.add(quiz);
@@ -97,13 +104,15 @@ public class QuizDAO extends DataAccesObject {
 						Question question = new Question(result.getInt("question_id"),result.getString("question"));
 						if (q.equals(quiz)) {
 							if (!q.getTheQuestions().contains(question)) {
-								Answer answer = new Answer(result.getString("answer"), !result.getBoolean("correct"));
+								Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+										result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
+								question.setCompleted(isQuestionCompleted(childId, question.getId()));
 								q.getTheQuestions().add(question);
 							} else {
 								for (Question qu : q.getTheQuestions()) {
 									if (qu.equals(question)) {
-										Answer answer = new Answer(result.getString("answer"),
+										Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
 												result.getBoolean("correct"));
 										qu.getTheAnswers().add(answer);
 									}
@@ -120,13 +129,33 @@ public class QuizDAO extends DataAccesObject {
 		}
 		return theQuizes;
 	}
+	
+	private boolean isQuestionCompleted(int childId,int questionId) throws SQLException{
+		boolean completed = false;
+		try {
+			statement.clearBatch();
+			statement = con.prepareStatement("SELECT completed FROM Child_has_Question WHERE child_id = ? AND question_id = ?");
+			statement.setInt(1, childId);
+			statement.setInt(2, questionId);
+			
+			ResultSet result = statement.executeQuery();
+			while(result.next()){completed = result.getBoolean(1);}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Updating Roadmap went wrong");
+		} finally {
+			statement.close();
+		}
+		return completed;
+	}
 
 	public List<Quiz> getAllQuizesByCategorie(int id) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Question.completed, Answer.answer, Answer.correct "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id, Answer.answer, Answer.correct "
 							+ "FROM Quiz " 
 							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
@@ -140,7 +169,8 @@ public class QuizDAO extends DataAccesObject {
 						result.getString("description"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
-					Answer answer = new Answer(result.getString("answer"), result.getBoolean("correct"));
+					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+							result.getBoolean("correct"));
 					question.getTheAnswers().add(answer);
 					quiz.getTheQuestions().add(question);
 					theQuizes.add(quiz);
@@ -149,13 +179,14 @@ public class QuizDAO extends DataAccesObject {
 						Question question = new Question(result.getInt("question_id"),result.getString("question"));
 						if (q.equals(quiz)) {
 							if (!q.getTheQuestions().contains(question)) {
-								Answer answer = new Answer(result.getString("answer"), !result.getBoolean("correct"));
+								Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+										result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
 								q.getTheQuestions().add(question);
 							} else {
 								for (Question qu : q.getTheQuestions()) {
 									if (qu.equals(question)) {
-										Answer answer = new Answer(result.getString("answer"),
+										Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
 												result.getBoolean("correct"));
 										qu.getTheAnswers().add(answer);
 									}
@@ -178,8 +209,9 @@ public class QuizDAO extends DataAccesObject {
 
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer, Answer.correct "
-							+ "FROM Quiz " + "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+							+ "FROM Quiz " 
+							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id;");
 
 			ResultSet result = statement.executeQuery();
@@ -188,7 +220,8 @@ public class QuizDAO extends DataAccesObject {
 						result.getString("description"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
-					Answer answer = new Answer(result.getString("answer"), result.getBoolean("correct"));
+					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+							result.getBoolean("correct"));
 					question.getTheAnswers().add(answer);
 					quiz.getTheQuestions().add(question);
 					theQuizes.add(quiz);
@@ -197,13 +230,14 @@ public class QuizDAO extends DataAccesObject {
 						Question question = new Question(result.getInt("question_id"),result.getString("question"));
 						if (q.equals(quiz)) {
 							if (!q.getTheQuestions().contains(question)) {
-								Answer answer = new Answer(result.getString("answer"), !result.getBoolean("correct"));
+								Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
+										result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
 								q.getTheQuestions().add(question);
 							} else {
 								for (Question qu : q.getTheQuestions()) {
 									if (qu.equals(question)) {
-										Answer answer = new Answer(result.getString("answer"),
+										Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
 												result.getBoolean("correct"));
 										qu.getTheAnswers().add(answer);
 									}
@@ -252,15 +286,12 @@ public class QuizDAO extends DataAccesObject {
 					if(questionId != 0){
 						for(Answer answer : question.getTheAnswers()){
 							statement.clearBatch();
-							if(addAnswer(answer, questionId)){
-								succes = true;
+							addAnswer(answer, questionId);
 							}
 						}
 					}
-				}
-				
-			}
-			
+				}			
+			succes = true;			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -329,27 +360,45 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}	
 	
+	public boolean addQuizToChild(int quizId, int childId) throws SQLException{
+		boolean succes  = false;
+		try {
+			statement = con.prepareStatement("INSERT INTO Child_has_Quiz "
+					+ "(child_id,quiz_id) VALUES(?,?)");
+			statement.setInt(1,childId);
+			statement.setInt(2,quizId);
+
+			if(statement.executeUpdate() >= 1) {succes = true;}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
 	
 	public boolean updateQuiz(Quiz quiz) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ?, `mentor_id` = ?;");
+			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ? "
+					+ "WHERE quiz_id = ?");
 			statement.setString(1, quiz.getName());
 			statement.setString(2, quiz.getDescription());
-			statement.setInt(3, quiz.getMentor().getId());
+			statement.setInt(3, quiz.getId());
 
-			if(statement.executeUpdate() >= 1) {
+			if(statement.executeUpdate() >= 1){
 				for(Question question : quiz.getTheQuestions()){
-					if(updateQuestion(question)){					
-						for(Answer answer : question.getTheAnswers()){
-							updateAnswer(answer);
-						}
-					}
+					if(updateQuestion(question)){ succes = true;				
+							for(Answer answer : question.getTheAnswers()){
+								if(updateAnswer(answer)){ succes = true;}
+								else{return false;}
+							}
+					}else {return false;}
 				}
 			}
+				
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Updating Roadmap went wrong");
 		} finally {
 			statement.close();
 		}
@@ -359,8 +408,10 @@ public class QuizDAO extends DataAccesObject {
 	private boolean updateQuestion(Question question) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Question SET question = ?");
+			statement = con.prepareStatement("UPDATE Question SET question = ? "
+					+ "WHERE question_id = ?;");
 			statement.setString(1, question.getQuestion());
+			statement.setInt(2, question.getId());
 
 			if(statement.executeUpdate() >= 1) {succes = true;}
 		} catch (SQLException e) {
@@ -374,9 +425,11 @@ public class QuizDAO extends DataAccesObject {
 	private boolean updateAnswer(Answer answer) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Question SET question = ?, correct = ?");
+			statement = con.prepareStatement("UPDATE Answer SET answer = ?, correct = ? "
+					+ "WHERE answer_id = ?;");
 			statement.setString(1, answer.getAnswer());
 			statement.setBoolean(2, answer.isCorrect());
+			statement.setInt(3,answer.getId());
 
 			if(statement.executeUpdate() >= 1) {succes = true;}
 		} catch (SQLException e) {
@@ -384,6 +437,25 @@ public class QuizDAO extends DataAccesObject {
 		} finally {
 			statement.close();
 		}
+		return succes;
+	}
+	public boolean deleteQuizFromChild(int childId,int quizId) throws SQLException{
+		boolean succes = false;
+		
+		try {
+			statement = con.prepareStatement("DELETE FROM Child_has_Quiz "
+					+ "WHERE child_id = ? AND quiz_id = ?;");
+			statement.setInt(1,childId);
+			statement.setInt(2, quizId);
+			
+			if(statement.executeUpdate() == 0){succes = true;}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Coudn't add a new question");
+		} finally {
+			statement.close();
+		}	
 		return succes;
 	}
 	
@@ -437,24 +509,7 @@ public class QuizDAO extends DataAccesObject {
 		}		
 		return succes;
 	}
-	
-	public boolean addQuizToChild(int quizId, int childId) throws SQLException{
-		boolean succes  = false;
-		try {
-			statement = con.prepareStatement("INSERT INTO Child_has-Quiz "
-					+ "(child_id,quiz_id) VALUES(?,?,?)");
-			statement.setInt(1,childId);
-			statement.setInt(2,quizId);			
-
-			if(statement.executeUpdate() >= 1) {succes = true;}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			statement.close();
-		}
-		return succes;
-	}
-	
+		
 	public int getLatestIdQuestion() throws SQLException{
 		int questionId = 0;
 		try {

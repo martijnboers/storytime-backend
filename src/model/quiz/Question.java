@@ -6,6 +6,7 @@ import java.util.List;
 public class Question {
 	
 	private String question;
+	private int id;
 	private boolean completed = false;
 	private List<Answer> theAnswers = new ArrayList<Answer>();
 
@@ -13,6 +14,7 @@ public class Question {
 	}
 	
 	public Question(int id, String question) {
+		this.id = id;
 		this.question = question;
 	}
 
@@ -26,6 +28,14 @@ public class Question {
 
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public boolean isCompleted() {
