@@ -64,7 +64,7 @@ public class TestQuizDAONoTravis {
 	@Test
 	public void testGetAllQuizesByCategory() throws Exception{		
 		QuizDAO quizDAO = new QuizDAO();
-		List<Quiz> theQuizes = quizDAO.getAllQuizesByCategorie(1);
+		List<Quiz> theQuizes = quizDAO.getAllQuizesByCategory(1);
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);
 	}
 	
@@ -84,11 +84,13 @@ public class TestQuizDAONoTravis {
 	public void testAddQuiz() throws Exception{		
 		QuizDAO quizDAO = new QuizDAO();			
 		assertTrue(quizDAO.addQuiz(quiz, mentor.getId()));	}
+	
 	@Test
 	public void testAddQuizToChild() throws Exception{
 		QuizDAO quizDAO = new QuizDAO();
 		assertTrue(quizDAO.addQuizToChild(1,child.getId()));
 	}
+	
 	@Test
 	public void testUpdateQuiz() throws Exception{
 		QuizDAO quizDAO = new QuizDAO();
@@ -109,7 +111,5 @@ public class TestQuizDAONoTravis {
 		QuizDAO quizDAO = new QuizDAO();
 		int quizId = quizDAO.getLatestIdQuestion();
 		assertTrue(quizDAO.deleteQuiz(quizId));}
-	
-
 	
 }
