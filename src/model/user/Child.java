@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import controller.AchievementController;
-import controller.UserController;
-import dao.AchievementDAO;
-import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
 
+//TODO: List of Quizes
 public class Child extends User {
 	
 	private Date dateOfBirth;

@@ -11,6 +11,7 @@ import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
 import model.roadmap.Step;
 
+//TODO: Add log messages at queries
 public class AchievementDAO extends DataAccesObject {
 	private PreparedStatement statement;
 
@@ -25,7 +26,6 @@ public class AchievementDAO extends DataAccesObject {
 	 */
 	public List<Achievement> getAllAchievements() throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-
 		try {
 			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points FROM Achievement");
 			ResultSet result = statement.executeQuery();
@@ -51,7 +51,6 @@ public class AchievementDAO extends DataAccesObject {
 	 */
 	public List<Achievement> getAllAchievementsByChild(int child_id) throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-
 		try {
 			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points"
 					+ "FROM Roadmap"
@@ -82,7 +81,6 @@ public class AchievementDAO extends DataAccesObject {
 	 */
 	public List<Achievement> getAllCompletedAchievementsByChild(int child_id) throws SQLException {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-
 		try {
 			statement = con.prepareStatement("SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.order_id as orderID, Step.name AS stepName, Step.description AS stepDescription, Step_has_Child.completed, Achievement.achievement_id, Achievement.name AS achievementName, Achievement.points"
 							+ "FROM Roadmap"
@@ -117,17 +115,16 @@ public class AchievementDAO extends DataAccesObject {
 	
 	/**
 	 * 
-	 * @param name
-	 * @param points
+	 * @param achievement
 	 * @return True is a achievement is added, false is something failed.
 	 * @throws SQLException
 	 */
-	public boolean addAchievement(String name, double points) throws SQLException {
+	public boolean addAchievement(Achievement achievement) throws SQLException {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("INSERT INTO Achievement (`achievement_id` , `name` , `points`) VALUES (NULL, ?, ?);");
-			statement.setString(1, name);
-			statement.setDouble(2, points);
+			statement.setString(1, achievement.getName());
+			statement.setDouble(2, achievement.getPoints());
 			
 			if(statement.execute() == true) {
 				succes = true;
@@ -143,19 +140,17 @@ public class AchievementDAO extends DataAccesObject {
 	
 	/**
 	 * 
-	 * @param achievement_id
-	 * @param name
-	 * @param points
+	 * @param achievement
 	 * @return True is a achievement is updated, false is something failed.
 	 * @throws SQLException
 	 */
-	public boolean updateAchievement(int achievement_id, String name, double points) throws SQLException {
+	public boolean updateAchievement(Achievement achievement) throws SQLException {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Achievement SET name = ?, points = ? WHERE Achievement.achievement_id = ?;");
-			statement.setInt(3, achievement_id);
-			statement.setString(1, name);
-			statement.setDouble(2, points);
+			statement.setInt(3, achievement.getId());
+			statement.setString(1, achievement.getName());
+			statement.setDouble(2, achievement.getPoints());
 			
 			if(statement.execute() == true) {
 				succes = true;
@@ -171,15 +166,15 @@ public class AchievementDAO extends DataAccesObject {
 	
 	/**
 	 * 
-	 * @param achievement_id
+	 * @param achievement
 	 * @return True is a achievement is deleted, false is something failed.
 	 * @throws SQLException
 	 */
-	public boolean deleteAchievement(int achievement_id) throws SQLException {
+	public boolean deleteAchievement(Achievement achievement) throws SQLException {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM Achievement WHERE Achievement.achievement_id = ?");
-			statement.setInt(1, achievement_id);
+			statement.setInt(1, achievement.getId());
 			
 			if(statement.execute() == true) {
 				succes = true;

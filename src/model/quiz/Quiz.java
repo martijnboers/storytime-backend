@@ -104,11 +104,23 @@ public class Quiz {
 		completed = true;
 		return completed;
 	}
+	
+	public double getPercentageOfCompletion() {
+		double totalQuestions = 0;
+		double totalCompleted = 0;
+		for(Question question : theQuestions) {
+			totalQuestions += 1;
+			if(question.isCompleted()) {
+				totalCompleted += 1;
+			}
+		}
+		return Math.ceil((totalCompleted/totalQuestions)*100);
+	}
 
 	@Override
 	public String toString() {
 		return "Quiz [name=" + name + ", completed=" + completed + ", description=" + description + ", mentor=" + mentor
-				+ ", theChilderen=" + theChilderen + ", theQuestions=" + theQuestions + "]";
+				+ ", theChilderen=" + theChilderen + ", theQuestions=" + theQuestions + "(" + getPercentageOfCompletion() + ")]";
 	}
 
 	@Override

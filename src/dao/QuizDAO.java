@@ -6,14 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.runners.Parameterized.Parameters;
-
 import logging.Level;
 import model.category.Category;
 import model.quiz.Answer;
 import model.quiz.Question;
 import model.quiz.Quiz;
 
+// TODO: Add log messages at queries
 public class QuizDAO extends DataAccesObject {
 	
 	public QuizDAO() throws Exception {
@@ -22,9 +21,14 @@ public class QuizDAO extends DataAccesObject {
 	
 	private PreparedStatement statement;
 
+	/**
+	 * 
+	 * @param mentorId
+	 * @return A list with all the Quizes of Mentor
+	 * @throws SQLException
+	 */
 	public List<Quiz> getAllQuizesByMentor(int mentorId) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-
 		try {
 			statement = con.prepareStatement(
 					"SELECT Quiz.quiz_id, Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
@@ -75,12 +79,17 @@ public class QuizDAO extends DataAccesObject {
 		return theQuizes;
 	}	
 	
+	/**
+	 * 
+	 * @param childId
+	 * @return A list with all the Quizes of Child
+	 * @throws SQLException
+	 */
 	public List<Quiz> getAllQuizesByChild(int childId) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id, Answer.answer, Answer.correct "
 							+ "FROM Quiz " 
 							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
@@ -130,7 +139,14 @@ public class QuizDAO extends DataAccesObject {
 		return theQuizes;
 	}
 	
-	private boolean isQuestionCompleted(int childId,int questionId) throws SQLException{
+	/**
+	 * 
+	 * @param childId
+	 * @param questionId
+	 * @return True if a Question is completed
+	 * @throws SQLException
+	 */
+	private boolean isQuestionCompleted(int childId, int questionId) throws SQLException{
 		boolean completed = false;
 		try {
 			statement.clearBatch();
@@ -143,16 +159,20 @@ public class QuizDAO extends DataAccesObject {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Updating Roadmap went wrong");
 		} finally {
 			statement.close();
 		}
 		return completed;
 	}
 
-	public List<Quiz> getAllQuizesByCategorie(int id) throws SQLException {
+	/**
+	 * 
+	 * @param id
+	 * @return A list of Quizes of a Category
+	 * @throws SQLException
+	 */
+	public List<Quiz> getAllQuizesByCategory(int categoryId) throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-
 		try {
 			statement = con.prepareStatement(
 					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id, Answer.answer, Answer.correct "
@@ -161,7 +181,7 @@ public class QuizDAO extends DataAccesObject {
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
 							+ "JOIN Category_has_Quiz ON Quiz.quiz_id = Category_has_Quiz.quiz_id "
 							+ "WHERE Category_has_Quiz.Category_id = ?;");
-			statement.setInt(1, id);
+			statement.setInt(1, categoryId);
 
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -204,9 +224,13 @@ public class QuizDAO extends DataAccesObject {
 		return theQuizes;
 	}
 
+	/**
+	 * 
+	 * @return A list with allt he Quizes
+	 * @throws SQLException
+	 */
 	public List<Quiz> getAllQuizes() throws SQLException {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-
 		try {
 			statement = con.prepareStatement(
 					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
@@ -255,19 +279,24 @@ public class QuizDAO extends DataAccesObject {
 		return theQuizes;
 	}
 	
-	public boolean addQuiz(Quiz quiz, int mentorId) throws SQLException{
+	/**
+	 * 
+	 * @param quiz
+	 * @param mentorId
+	 * @return True when a Quiz is succesfully added
+	 * @throws SQLException
+	 */
+	public boolean addQuiz(Quiz quiz, int mentorId) throws SQLException {
 		boolean succes = false;
 		int quizId = 0;
 		int questionId = 0;
 		try {
-			statement = con.prepareStatement("INSERT INTO Quiz "
-					+ "(description,mentor_id,name) VALUES(?,?,?);");
+			statement = con.prepareStatement("INSERT INTO Quiz (description,mentor_id,name) VALUES(?,?,?);");
 			statement.setString(1, quiz.getDescription());
 			statement.setInt(2, mentorId);
-			statement.setString(3,quiz.getName());		
+			statement.setString(3, quiz.getName());		
 		
 			if(statement.executeUpdate() >= 1) {
-						
 				ResultSet generatedKeyQuiz = statement.getGeneratedKeys();
 				
 				if (null != generatedKeyQuiz && generatedKeyQuiz.next()) {
@@ -277,8 +306,11 @@ public class QuizDAO extends DataAccesObject {
 				
 				for(Category category : quiz.getTheCategories()){
 					statement.clearBatch();
-					if(addCategoryHasQuiz(category.getId(), quizId)){succes = true;}
-					else{return false;}
+					if(addCategoryHasQuiz(category.getId(), quizId)){
+						succes = true;
+					} else {
+						return false;
+					}
 				}
 				if(succes = true){
 					for(Question question : quiz.getTheQuestions()){
@@ -287,15 +319,19 @@ public class QuizDAO extends DataAccesObject {
 						if(questionId != 0){
 							for(Answer answer : question.getTheAnswers()){
 								statement.clearBatch();
-								if(addAnswer(answer, questionId)){succes = true;}
-								else {return false;}
+								if(addAnswer(answer, questionId)){
+									succes = true;
+								} else {
+									return false;
 								}
 							}
 						}
-				} else {return false;}
-				}			
+					}
+				} else {
+					return false;
+				}
+			}			
 			succes = true;			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
@@ -305,15 +341,23 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
-	private boolean addCategoryHasQuiz(int categoryId, int quizId) throws SQLException{
+	/**
+	 * 
+	 * @param categoryId
+	 * @param quizId
+	 * @return True when a CategoryHasQuiz is succesfully added
+	 * @throws SQLException
+	 */
+	private boolean addCategoryHasQuiz(int categoryId, int quizId) throws SQLException {
 		boolean succes  = false;
 		try {
-			statement = con.prepareStatement("INSERT INTO Category_has_Quiz "
-					+ "(category_id,quiz_id) VALUES(?,?)");
-			statement.setInt(1,categoryId);
-			statement.setInt(2,quizId);
+			statement = con.prepareStatement("INSERT INTO Category_has_Quiz (category_id,quiz_id) VALUES(?,?)");
+			statement.setInt(1, categoryId);
+			statement.setInt(2, quizId);
 
-			if(statement.executeUpdate() >= 1) {succes = true;}
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -322,20 +366,26 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
-	private int addQuestion(Question question, int quizId) throws SQLException{
+	/**
+	 * 
+	 * @param question
+	 * @param quizId
+	 * @return True when a Question is succesfully added
+	 * @throws SQLException
+	 */
+	private int addQuestion(Question question, int quizId) throws SQLException {
 		int questionId  = 0;
 		try {
-			statement = con.prepareStatement("INSERT INTO Question "
-					+ "(question,quiz_id) VALUES(?,?)");
-				statement.setString(1,question.getQuestion());
-				statement.setInt(2,quizId);
+			statement = con.prepareStatement("INSERT INTO Question (question,quiz_id) VALUES(?,?)");
+				statement.setString(1, question.getQuestion());
+				statement.setInt(2, quizId);
 
 			if(statement.executeUpdate() >= 1) {
 				ResultSet generatedKeyQuestion = statement.getGeneratedKeys();
 				if(null != generatedKeyQuestion && generatedKeyQuestion.next()){
-					questionId = generatedKeyQuestion.getInt(1);				}
+					questionId = generatedKeyQuestion.getInt(1);
+				}
 				generatedKeyQuestion.close();
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -345,16 +395,24 @@ public class QuizDAO extends DataAccesObject {
 		return questionId;
 	}
 	
+	/**
+	 * 
+	 * @param answer
+	 * @param questionId
+	 * @return True when a Answer is succesfully added
+	 * @throws SQLException
+	 */
 	private boolean addAnswer(Answer answer, int questionId) throws SQLException{
 		boolean succes  = false;
 		try {
-			statement = con.prepareStatement("INSERT INTO Answer "
-					+ "(answer,correct,question_id) VALUES(?,?,?)");
-			statement.setString(1,answer.getAnswer());
+			statement = con.prepareStatement("INSERT INTO Answer (answer,correct,question_id) VALUES(?,?,?)");
+			statement.setString(1, answer.getAnswer());
 			statement.setBoolean(2, answer.isCorrect());
-			statement.setInt(3,questionId);
+			statement.setInt(3, questionId);
 
-			if(statement.executeUpdate() >= 1) {succes = true;}
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -363,15 +421,23 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}	
 	
-	public boolean addQuizToChild(int quizId, int childId) throws SQLException{
+	/**
+	 * 
+	 * @param quizId
+	 * @param childId
+	 * @return True when a Quiz is added succesfully to a Child
+	 * @throws SQLException
+	 */
+	public boolean addQuizToChild(int quizId, int childId) throws SQLException {
 		boolean succes  = false;
 		try {
-			statement = con.prepareStatement("INSERT INTO Child_has_Quiz "
-					+ "(child_id,quiz_id) VALUES(?,?)");
-			statement.setInt(1,childId);
-			statement.setInt(2,quizId);
+			statement = con.prepareStatement("INSERT INTO Child_has_Quiz (child_id,quiz_id) VALUES(?,?)");
+			statement.setInt(1, childId);
+			statement.setInt(2, quizId);
 
-			if(statement.executeUpdate() >= 1) {succes = true;}
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -380,23 +446,34 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param quiz
+	 * @return True when a Quiz is succesfully updated
+	 * @throws SQLException
+	 */
 	public boolean updateQuiz(Quiz quiz) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ? "
-					+ "WHERE quiz_id = ?");
+			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ? WHERE quiz_id = ?");
 			statement.setString(1, quiz.getName());
 			statement.setString(2, quiz.getDescription());
 			statement.setInt(3, quiz.getId());
 
 			if(statement.executeUpdate() >= 1){
 				for(Question question : quiz.getTheQuestions()){
-					if(updateQuestion(question)){ succes = true;				
-							for(Answer answer : question.getTheAnswers()){
-								if(updateAnswer(answer)){ succes = true;}
-								else{return false;}
+					if(updateQuestion(question)){
+						succes = true;				
+						for(Answer answer : question.getTheAnswers()){
+							if(updateAnswer(answer)){
+								succes = true;
+							} else { 
+								return false;
 							}
-					}else {return false;}
+						}
+					} else {
+						return false;
+					}
 				}
 			}
 				
@@ -408,15 +485,22 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param question
+	 * @return True when a Question is succesfully updated
+	 * @throws SQLException
+	 */
 	private boolean updateQuestion(Question question) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Question SET question = ? "
-					+ "WHERE question_id = ?;");
+			statement = con.prepareStatement("UPDATE Question SET question = ? WHERE question_id = ?;");
 			statement.setString(1, question.getQuestion());
 			statement.setInt(2, question.getId());
 
-			if(statement.executeUpdate() >= 1) {succes = true;}
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -425,16 +509,23 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
+	/**
+	 * 
+	 * @param answer
+	 * @return True when a Answer is succesfully updated
+	 * @throws SQLException
+	 */
 	private boolean updateAnswer(Answer answer) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("UPDATE Answer SET answer = ?, correct = ? "
-					+ "WHERE answer_id = ?;");
+			statement = con.prepareStatement("UPDATE Answer SET answer = ?, correct = ? WHERE answer_id = ?;");
 			statement.setString(1, answer.getAnswer());
 			statement.setBoolean(2, answer.isCorrect());
 			statement.setInt(3,answer.getId());
 
-			if(statement.executeUpdate() >= 1) {succes = true;}
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -442,13 +533,19 @@ public class QuizDAO extends DataAccesObject {
 		}
 		return succes;
 	}
+	
+	/**
+	 * 
+	 * @param childId
+	 * @param quizId
+	 * @return True when a Quiz is succesfully deleted from a Child
+	 * @throws SQLException
+	 */
 	public boolean deleteQuizFromChild(int childId,int quizId) throws SQLException{
 		boolean succes = false;
-		
 		try {
-			statement = con.prepareStatement("DELETE FROM Child_has_Quiz "
-					+ "WHERE child_id = ? AND quiz_id = ?;");
-			statement.setInt(1,childId);
+			statement = con.prepareStatement("DELETE FROM Child_has_Quiz WHERE child_id = ? AND quiz_id = ?;");
+			statement.setInt(1, childId);
 			statement.setInt(2, quizId);
 			
 			if(statement.executeUpdate() >= 1){succes = true;}
@@ -462,13 +559,17 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
-		
+	// TODO: Split in little functions? (Add else)
+	/**
+	 * 
+	 * @param quizId
+	 * @return True when a Quiz is succesfully deleted
+	 * @throws SQLException
+	 */
 	public boolean deleteQuiz(int quizId) throws SQLException{
 		boolean succes = false;
 		try {
-			statement = con.prepareStatement("SELECT question_id "
-					+ "FROM Question "
-					+ "WHERE quiz_id = ?");
+			statement = con.prepareStatement("SELECT question_id FROM Question WHERE quiz_id = ?");
 			statement.setInt(1, quizId);
 			
 			ResultSet result = statement.executeQuery();
@@ -476,25 +577,21 @@ public class QuizDAO extends DataAccesObject {
 			int questionId = result.getInt(1);
 			statement.clearBatch();
 			
-			statement = con.prepareStatement("DELETE FROM Answer "
-					+ "WHERE Answer.question_id = ?;");
-			statement.setInt(1,questionId);
+			statement = con.prepareStatement("DELETE FROM Answer WHERE Answer.question_id = ?;");
+			statement.setInt(1, questionId);
 			
 			if(statement.executeUpdate() > 0){
 				statement.clearBatch();
-				statement = con.prepareStatement("DELETE FROM Question "
-						+ "WHERE Question.question_id = ?;");
-				statement.setInt(1,questionId);
+				statement = con.prepareStatement("DELETE FROM Question WHERE Question.question_id = ?;");
+				statement.setInt(1, questionId);
 				if(statement.executeUpdate() > 0){
 					statement.clearBatch();
-					statement = con.prepareStatement("DELETE FROM Category_has_Quiz "
-							+ "WHERE Category_has_Quiz.quiz_id = ?;");
-					statement.setInt(1,quizId);
+					statement = con.prepareStatement("DELETE FROM Category_has_Quiz WHERE Category_has_Quiz.quiz_id = ?;");
+					statement.setInt(1, quizId);
 					
 					if(statement.executeUpdate() > 0){
 						statement.clearBatch();
-						statement = con.prepareStatement("DELETE FROM Quiz "  
-							+ "WHERE Quiz.quiz_id = ?");
+						statement = con.prepareStatement("DELETE FROM Quiz WHERE Quiz.quiz_id = ?");
 						statement.setInt(1,quizId);					
 						if(statement.executeUpdate() > 0){
 							succes = true;
@@ -502,8 +599,6 @@ public class QuizDAO extends DataAccesObject {
 					}
 				}
 			}
-			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
@@ -512,7 +607,8 @@ public class QuizDAO extends DataAccesObject {
 		}		
 		return succes;
 	}
-		
+	
+	// For testing purpuse
 	public int getLatestIdQuestion() throws SQLException{
 		int questionId = 0;
 		try {
@@ -520,7 +616,6 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			result.next();
 			questionId = result.getInt(1);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

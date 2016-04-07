@@ -13,6 +13,14 @@ import model.roadmap.Roadmap;
 import model.roadmap.Step;
 import model.user.Mentor;
 
+// Logic and JavaDoc
+// TODO: Check if roadmap has an achievement added to it (Add achievement to roadmap)
+
+// Methods:
+// TODO: Add roadmap to child
+// TODO: Remove roadmap to child
+// TODO: getRoadmapsByChild
+// TODO: getAllRoadmapsByCategory
 public class RoadmapDAO extends DataAccesObject{
 	private PreparedStatement statement;
 
@@ -22,7 +30,6 @@ public class RoadmapDAO extends DataAccesObject{
 	
 	public List<Roadmap> getAllRoadmaps() throws Exception {
 		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
-
 		try {
 			statement = con.prepareStatement("SELECT Roadmap.roadmap_id, Roadmap.name, Roadmap.description, Roadmap.mentor_id, Roadmap.achievement_id FROM Roadmap");
 			ResultSet result = statement.executeQuery();
@@ -37,7 +44,7 @@ public class RoadmapDAO extends DataAccesObject{
 						roadmap.addCategory(category);
 					}
 					
-					for(Step step : getStepByRoadmap(roadmap)) {
+					for(Step step : getAllStepByRoadmap(roadmap)) {
 						roadmap.addStep(step);
 					}
 					theRoadmaps.add(roadmap);
@@ -53,12 +60,11 @@ public class RoadmapDAO extends DataAccesObject{
 	
 	public List<Roadmap> getAllRoadmapsByMentor(Mentor mentor) throws SQLException {
 		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
-
 		try {
-			statement = con.prepareStatement("SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.order_id as orderID, Step.name as stepName, Step.description as stepDescription, "
-					+ "Step.completed,Achievement.achievement_id, Achievement.name as achievementName, Achievement.points"
+			statement = con.prepareStatement("SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.order_id as orderID, Step.name as stepName, Step.description as stepDescription, Step_has_Child.completed ,Achievement.achievement_id, Achievement.name as achievementName, Achievement.points"
 					+ "FROM Roadmap"
 					+ "JOIN Step ON Roadmap.roadmap_id = Step.roadmap_id"
+					+ "JOIN Step_has_Child ON Step_has_Child.step_id = Step.step_id"
 					+ "JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
 					+ "WHERE Roadmap.mentor_id = ?;");
 			statement.setInt(1, mentor.getId());
@@ -190,7 +196,7 @@ public class RoadmapDAO extends DataAccesObject{
 	 * @return Returns a list with all the steps of a roadmap.
 	 * @throws SQLException
 	 */
-	private List<Step> getStepByRoadmap(Roadmap roadmap) throws SQLException {
+	private List<Step> getAllStepByRoadmap(Roadmap roadmap) throws SQLException {
 		List<Step> theSteps = new ArrayList<Step>();
 		
 		try {
