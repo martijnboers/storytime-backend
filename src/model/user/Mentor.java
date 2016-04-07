@@ -1,6 +1,5 @@
 package model.user;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import model.roadmap.Roadmap;
 // TODO: List of Quizes
 public class Mentor extends User {
 	
+	private int id;
 	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -17,17 +17,22 @@ public class Mentor extends User {
 	}
 	
 	public Mentor(String email, String username, String password, String profilePicture, String name) {
-		super( username, password, profilePicture, name);
+		super(username, password, profilePicture, name);
 		this.email = email;
-		this.theChildren = theChildren;
-		this.theRoadmaps = theRoadmaps;
 	}
 
 	public Mentor(int id, String email, String username, String password, String profilePicture, String name) {
-		super(id, username, password, profilePicture, name);
+		super(username, password, profilePicture, name);
+		this.id = id;
 		this.email = email;
-		this.theChildren = theChildren;
-		this.theRoadmaps = theRoadmaps;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -70,10 +75,10 @@ public class Mentor extends User {
 		return theRoadmaps.remove(roadmap);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Mentor [email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps + "]";
+		return "Mentor [id=" + id + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps
+				+ "]";
 	}
 
 	@Override

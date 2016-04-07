@@ -1,26 +1,37 @@
 package model.user;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import model.quiz.Quiz;
+import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
 
-//TODO: List of Quizes
 public class Child extends User {
 	
+	private int id;
 	private Date dateOfBirth;
 	private String gender;
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
+	private List<Quiz> theQuizes = new ArrayList<Quiz>();
 
 	public Child() {
 	}
 
 	public Child(int id, Date dateOfBirth, String gender, String username, String password, String profilePicture, String name) {
-		super(id, username, password, profilePicture, name);
+		super(username, password, profilePicture, name);
+		this.id = id;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getDateOfBirth() {
@@ -55,22 +66,51 @@ public class Child extends User {
 		return theRoadmaps.remove(roadmap);
 	}
 	
+	public List<Quiz> getTheQuizes() {
+		return theQuizes;
+	}
+
+	public void setTheQuizes(List<Quiz> theQuizes) {
+		this.theQuizes = theQuizes;
+	}
+	
+	public boolean addQuiz(Quiz quiz) {
+		return theQuizes.add(quiz);
+	}
+
+	public boolean removeQuiz(Quiz quiz) {
+		return theQuizes.remove(quiz);
+	}
+
 	// TODO: Service DAO netjes maken
-	public double getAllAchievementPoints() throws SQLException {
-		//AchievementController achievementController = new AchievementController();
+	public List<Achievement> getAllCompletedAchievements() {
+		List<Achievement> theAchievements = new ArrayList<Achievement>();
 		
+		// MAKE THIS ONE .... FIX roadmapDAO...
+		/*for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild()) {
+			if(roadmap.isCompleted()) {
+				theAchievements.add(roadmap.getAchievement());
+			}
+		}*/
+		return theAchievements;
+	}
+	
+	public double getAllAchievementPoints() {
 		double totalPoints = 0;
-	//	for(Roadmap roapmap : achievementController.getAllCompletedAchievementsByChild(getId())) {
-		//	totalPoints += roapmap.getPoints();
-	//	}
 		
+		// MAKE THIS ONE .... FIX roadmapDAO...
+		/*for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild()) {
+		if(roadmap.isCompleted()) {
+				totalPoints += roadmap.getAchievement().getPoints();
+			}
+		}*/
 		return totalPoints;
 	}
 
 	@Override
 	public String toString() {
-		return "dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
-				+ theRoadmaps + "]";
+		return "Child [id=" + id + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
+				+ theRoadmaps + ", theQuizes=" + theQuizes + "]";
 	}
 
 	@Override
