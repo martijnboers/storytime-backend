@@ -100,9 +100,9 @@ public class TestQuizDAONoTravis {
 	}
 	
 	@Test
-	public void testyDeleteQuizFromChild() throws Exception{
+	public void testxDeleteQuizFromChild() throws Exception{
 		QuizDAO quizDAO = new QuizDAO();
-		assertTrue(quizDAO.deleteQuizFromChild(child.getId(), quiz.getId()));}
+		assertTrue(quizDAO.deleteQuizFromChild(child.getId(), 1));}
 	
 	@Test
 	public void testzDeleteQuiz() throws Exception{

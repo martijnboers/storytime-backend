@@ -277,19 +277,22 @@ public class QuizDAO extends DataAccesObject {
 				
 				for(Category category : quiz.getTheCategories()){
 					statement.clearBatch();
-					addCategoryHasQuiz(category.getId(), quizId);
+					if(addCategoryHasQuiz(category.getId(), quizId)){succes = true;}
+					else{return false;}
 				}
-				
-				for(Question question : quiz.getTheQuestions()){
-					statement.clearBatch();
-					questionId = addQuestion(question, quizId);
-					if(questionId != 0){
-						for(Answer answer : question.getTheAnswers()){
-							statement.clearBatch();
-							addAnswer(answer, questionId);
+				if(succes = true){
+					for(Question question : quiz.getTheQuestions()){
+						statement.clearBatch();
+						questionId = addQuestion(question, quizId);
+						if(questionId != 0){
+							for(Answer answer : question.getTheAnswers()){
+								statement.clearBatch();
+								if(addAnswer(answer, questionId)){succes = true;}
+								else {return false;}
+								}
 							}
 						}
-					}
+				} else {return false;}
 				}			
 			succes = true;			
 			
@@ -448,7 +451,7 @@ public class QuizDAO extends DataAccesObject {
 			statement.setInt(1,childId);
 			statement.setInt(2, quizId);
 			
-			if(statement.executeUpdate() == 0){succes = true;}
+			if(statement.executeUpdate() >= 1){succes = true;}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
