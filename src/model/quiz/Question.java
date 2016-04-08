@@ -6,7 +6,7 @@ import java.util.List;
 public class Question {
 	
 	private String question;
-	private int id;
+	private int questionId;
 	private boolean completed = false;
 	private List<Answer> theAnswers = new ArrayList<Answer>();
 
@@ -14,7 +14,7 @@ public class Question {
 	}
 	
 	public Question(int id, String question) {
-		this.id = id;
+		this.questionId = id;
 		this.question = question;
 	}
 
@@ -30,12 +30,12 @@ public class Question {
 		this.question = question;
 	}
 
-	public int getId() {
-		return id;
+	public int getQuestionId() {
+		return questionId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setQuestionId(int id) {
+		this.questionId = id;
 	}
 
 	public boolean isCompleted() {

@@ -4,7 +4,7 @@ public class Answer {
 
 	private String answer;
 	private boolean correct;
-	private int id;
+	private int answerId;
 
 	public Answer() {
 	}
@@ -15,17 +15,17 @@ public class Answer {
 	}
 
 	public Answer(int id, String answer, boolean correct) {
-		this.id = id;
+		this.answerId = id;
 		this.answer = answer;
 		this.correct = correct;
 	}
 
-	public int getId() {
-		return id;
+	public int getAnswerId() {
+		return answerId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setAnswerId(int id) {
+		this.answerId = id;
 	}
 
 	public String getAnswer() {

@@ -10,7 +10,7 @@ import model.roadmap.Roadmap;
 
 public class Child extends User {
 	
-	private int id;
+	private int childId;
 	private Date dateOfBirth;
 	private String gender;
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -21,17 +21,17 @@ public class Child extends User {
 
 	public Child(int id, Date dateOfBirth, String gender, String username, String password, String profilePicture, String name) {
 		super(username, password, profilePicture, name);
-		this.id = id;
+		this.childId = id;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 	}
 	
-	public int getId() {
-		return id;
+	public int getChilId() {
+		return childId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setChildId(int id) {
+		this.childId = id;
 	}
 
 	public Date getDateOfBirth() {
@@ -109,7 +109,7 @@ public class Child extends User {
 
 	@Override
 	public String toString() {
-		return "Child [id=" + id + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
+		return "Child [id=" + childId + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
 				+ theRoadmaps + ", theQuizes=" + theQuizes + "]";
 	}
 

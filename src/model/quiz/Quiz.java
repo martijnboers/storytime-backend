@@ -13,7 +13,6 @@ public class Quiz {
 	private boolean completed;
 	private String description;
 	private Mentor mentor;
-	private List<Child> theChilderen = new ArrayList<Child>();
 	private List<Question> theQuestions = new ArrayList<Question>();
 	private List<Category> theCategories = new ArrayList<Category>();
 
@@ -70,14 +69,6 @@ public class Quiz {
 		this.theQuestions = theQuestions;
 	}
 
-	public List<Child> getTheChilderen() {
-		return theChilderen;
-	}
-
-	public void setTheChilderen(List<Child> theChilderen) {
-		this.theChilderen = theChilderen;
-	}
-
 	public Mentor getMentor() {
 		return mentor;
 	}
@@ -119,8 +110,7 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [name=" + name + ", completed=" + completed + ", description=" + description + ", mentor=" + mentor
-				+ ", theChilderen=" + theChilderen + ", theQuestions=" + theQuestions + "(" + getPercentageOfCompletion() + ")]";
+		return "Quiz [name=" + name + ", completed=" + completed + ", description=" + description + ", mentor=" + mentor + ", theQuestions=" + theQuestions + "(" + getPercentageOfCompletion() + ")]";
 	}
 
 	@Override

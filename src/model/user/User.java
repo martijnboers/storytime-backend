@@ -7,7 +7,7 @@ package model.user;
  */
 public abstract class User {
 
-	private int id;
+	private int userId;
 	protected String username;
 	protected String password;
 	protected String profilePicture;
@@ -25,19 +25,19 @@ public abstract class User {
 	}
 
 	public User(int id, String username, String password, String profilePicture, String name) {
-		this.id = id;
+		this.userId = id;
 		this.username = username;
 		this.password = password;
 		this.profilePicture = profilePicture;
 		this.name = name;
 	}
 	
-	public int getId() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(int id) {
+		this.userId = id;
 	}
 
 	public String getUsername() {
@@ -74,7 +74,7 @@ public abstract class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profilePicture="
+		return "User [id=" + userId + ", username=" + username + ", password=" + password + ", profilePicture="
 				+ profilePicture + ", name=" + name + "]";
 	}
 
@@ -82,7 +82,7 @@ public abstract class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + userId;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((profilePicture == null) ? 0 : profilePicture.hashCode());
@@ -99,7 +99,7 @@ public abstract class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id != other.id)
+		if (userId != other.userId)
 			return false;
 		if (name == null) {
 			if (other.name != null)

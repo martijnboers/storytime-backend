@@ -133,6 +133,7 @@ public class QuizDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
 		} finally {
 			statement.close();
 		}
