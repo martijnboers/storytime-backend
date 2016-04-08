@@ -26,7 +26,6 @@ public class QuizController {
 	public String getAllQuizes(){
 		Gson gson = new Gson();
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-		
 		try {
 			theQuizes = quizDAO.getAllQuizes();
 		} catch (SQLException e) {
@@ -35,11 +34,12 @@ public class QuizController {
 		if(theQuizes != null && !theQuizes.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theQuizes));
 		}
-		return json.createJson(State.ERROR, "Er zijn geen quizes");
+		return json.createJson(State.ERROR, "Er zijn geen quizes.");
 	}
 	
 	public String getAllQuizesByMentor(String id){
-		int mentorId = Integer.getInteger(id);
+		int mentorId = Integer.valueOf(id);
+		System.out.println(mentorId);
 		Gson gson = new Gson();
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		
@@ -51,11 +51,11 @@ public class QuizController {
 		if(theQuizes != null && !theQuizes.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theQuizes));
 		}
-		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
+		return json.createJson(State.ERROR, "Er zijn geen quizes.");
 	}
 	
 	public String getAllQuizesByChild(String id){
-		int childId = Integer.getInteger(id);
+		int childId = Integer.valueOf(id);
 		Gson gson = new Gson();
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		
@@ -67,11 +67,11 @@ public class QuizController {
 		if(theQuizes != null && !theQuizes.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theQuizes));
 		}
-		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
+		return json.createJson(State.ERROR, "Er zijn geen quizes.");
 	}
 	
 	public String getAllQuizesByCategory(String id){
-		int categoryId = Integer.getInteger(id);
+		int categoryId = Integer.valueOf(id);
 		Gson gson = new Gson();
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		
@@ -90,17 +90,44 @@ public class QuizController {
 	public String addQuiz(String input) {
 		Json json = new Json();
 		Gson gson = new Gson();
-		
 		Quiz quiz = gson.fromJson(input, Quiz.class);
+		System.out.println(quiz.toString());
 		try {
 			quizDAO.addQuiz(quiz, quiz.getMentor().getMentorId());
 		} catch (SQLException e) {
-			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van een Quiz");
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
 		}
 		return json.createJson(State.PASSED, "Quiz is toegevoegd");
-	}	
+	}
+	
+	public String addQuizToChild(String input) {
+		Json json = new Json();
+		Gson gson = new Gson();
+		
+		Quiz quiz = gson.fromJson(input, Quiz.class);
+		try {
+			quizDAO.addQuizToChild(quiz.getQuizId(), quiz.getMentor().getMentorId());
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz");
+		}
+		return json.createJson(State.PASSED, "Quiz is toegevoegd");
+	}
 	
 	//TODO all updates
+	
+	public String updateQuiz(String input){
+		Json json = new Json();
+		Gson gson = new Gson();
+		
+		Quiz quiz = gson.fromJson(input, Quiz.class);
+		try {
+			quizDAO.updateQuiz(quiz);
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het updaten van de Quiz");
+		}
+		return json.createJson(State.PASSED, "Quiz is geüpdated");
+		
+	}
 	
 	public String deleteQuiz(String id){
 		int quizId = Integer.getInteger(id);

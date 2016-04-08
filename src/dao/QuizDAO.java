@@ -459,7 +459,7 @@ public class QuizDAO extends DataAccesObject {
 			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ? WHERE quiz_id = ?");
 			statement.setString(1, quiz.getName());
 			statement.setString(2, quiz.getDescription());
-			statement.setInt(3, quiz.getId());
+			statement.setInt(3, quiz.getQuizId());
 
 			if(statement.executeUpdate() >= 1){
 				for(Question question : quiz.getTheQuestions()){

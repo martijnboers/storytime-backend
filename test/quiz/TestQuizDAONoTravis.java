@@ -25,6 +25,7 @@ public class TestQuizDAONoTravis {
 	private Answer answer;
 	private Mentor mentor;
 	private Child child;
+	private QuizDAO quizDAO;
 	
 	@Before
 	public void initObjects(){
@@ -56,45 +57,45 @@ public class TestQuizDAONoTravis {
 	
 	@Test
 	public void testGetAllQuizes() throws Exception{		
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		List<Quiz> theQuizes = quizDAO.getAllQuizes();
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);
 	}
 	
 	@Test
 	public void testGetAllQuizesByCategory() throws Exception{		
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByCategory(1);
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);
 	}
 	
 	@Test
 	public void testGetAllQuizesByMentor() throws Exception{		
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByMentor(1);
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);	}
 	
 	@Test
 	public void testGetAllQuizesByChild() throws Exception{		
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByChild(child.getChildId());
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);	}	
 	
 	@Test
 	public void testAddQuiz() throws Exception{		
-		QuizDAO quizDAO = new QuizDAO();			
+		quizDAO = new QuizDAO();			
 		assertTrue(quizDAO.addQuiz(quiz, mentor.getMentorId()));	}
 	
 	@Test
 	public void testAddQuizToChild() throws Exception{
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		assertTrue(quizDAO.addQuizToChild(1,child.getChildId()));
 	}
 	
 	@Test
 	public void testUpdateQuiz() throws Exception{
-		QuizDAO quizDAO = new QuizDAO();
-		quiz.setId(1);
+		quizDAO = new QuizDAO();
+		quiz.setQuizId(1);
 		question.setQuestionId(1);
 		answer.setAnswerId(1);
 		quiz.setDescription("Het werk nu goed");
@@ -103,12 +104,12 @@ public class TestQuizDAONoTravis {
 	
 	@Test
 	public void testxDeleteQuizFromChild() throws Exception{
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		assertTrue(quizDAO.deleteQuizFromChild(child.getChildId(), 1));}
 	
 	@Test
 	public void testzDeleteQuiz() throws Exception{
-		QuizDAO quizDAO = new QuizDAO();
+		quizDAO = new QuizDAO();
 		int quizId = quizDAO.getLatestIdQuestion();
 		assertTrue(quizDAO.deleteQuiz(quizId));}
 	
