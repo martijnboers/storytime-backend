@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import exceptions.DatabaseException;
+import exceptions.DatabaseInsertException;
 import logging.Level;
 import model.user.Child;
 import model.user.Mentor;
@@ -16,7 +18,7 @@ public class UserDAO extends DataAccesObject {
 
 	private PreparedStatement statement;
 
-	public boolean userExists(String username) throws SQLException {
+	public boolean userExists(String username) throws DatabaseException, SQLException {
 		boolean found = false;
 
 		try {
@@ -29,6 +31,7 @@ public class UserDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DatabaseException("gebruiker bestaat niet");
 		} finally {
 			statement.close();
 		}
@@ -40,8 +43,9 @@ public class UserDAO extends DataAccesObject {
 	 * @param theUser
 	 * @return insertedID
 	 * @throws SQLException 
+	 * @throws DatabaseException 
 	 */
-	private int addUser(User theUser) throws SQLException {
+	private int addUser(User theUser) throws SQLException, DatabaseException {
 		int id = 0;
 		try {
 			statement = con.prepareStatement("INSERT INTO  `storytime`.`User` (`username` , `password` , `profile_picture`, `name`)	VALUES (?,  ?,  ?,  ?);", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -59,7 +63,7 @@ public class UserDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "adding mentor failed");
+			throw new DatabaseException("Toevoegen van database gebruiker mislukt");
 		} finally {
 			statement.close();
 		}
@@ -70,7 +74,7 @@ public class UserDAO extends DataAccesObject {
 	 * Child should have a plaintext password in object. It hashes the password
 	 * automatically
 	 */
-	public boolean addChild(Mentor theMentor, Child theChild) throws SQLException {
+	public boolean addChild(Mentor theMentor, Child theChild) throws DatabaseException, SQLException {
 		try {
 			int userId = addUser(theChild);
 			PreparedStatement childQuery = con.prepareStatement("INSERT INTO  `storytime`.`Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -84,7 +88,7 @@ public class UserDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "adding child failed");
+			throw new DatabaseException("Kind toevoegen niet gelukt");
 		} finally {
 			statement.close();
 		}
@@ -95,7 +99,7 @@ public class UserDAO extends DataAccesObject {
 	 * Mentor should have a plaintext password in object. It hashes the password
 	 * automatically
 	 */
-	public boolean addMentor(Mentor theMentor) throws SQLException {
+	public boolean addMentor(Mentor theMentor) throws DatabaseException, SQLException {
 		
 		try {
 			int userId = addUser(theMentor);
@@ -107,7 +111,7 @@ public class UserDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "adding mentor failed");
+			throw new DatabaseException("Mentor toevoegen is niet gelukt");
 		} finally {
 			statement.close();
 		}
@@ -120,7 +124,7 @@ public class UserDAO extends DataAccesObject {
 	 * @return
 	 * @throws SQLException
 	 */
-	private boolean deleteUser(int userID) throws SQLException {
+	private boolean deleteUser(int userID) throws DatabaseException, SQLException {
 		try {
 			PreparedStatement statement = con.prepareStatement("DELETE FROM user WHERE user_id = ?");
 			statement.setInt(1, userID);
@@ -129,7 +133,7 @@ public class UserDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Deleting the user has failed");
+			throw new DatabaseException("User verwijderen is niet gelukt");
 		} finally {
 			statement.close();
 		}
@@ -143,7 +147,7 @@ public class UserDAO extends DataAccesObject {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean deleteMentor(int mentorID) throws SQLException
+	public boolean deleteMentor(int mentorID) throws DatabaseException, SQLException
 	{
 		try {
 			// remove child dependency
@@ -182,7 +186,7 @@ public class UserDAO extends DataAccesObject {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Deleting mentor went wrong");
+			throw new DatabaseException("Mentor verwijderen niet gelukt");
 		} finally {
 			statement.close();
 		}
@@ -195,7 +199,7 @@ public class UserDAO extends DataAccesObject {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean deleteChild(int childID) throws SQLException
+	public boolean deleteChild(int childID) throws DatabaseException, SQLException
 	{
 		try {
 			// remove quiz dependency
@@ -239,14 +243,14 @@ public class UserDAO extends DataAccesObject {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log.out(Level.ERROR, "", "Deleting child went wrong");
+			throw new DatabaseException("Verwijderen van een kind mislukt");
 		} finally {
 			statement.close();
 		}
 		return true;
 	}
 
-	public byte[] getProfilePicture(User user) throws SQLException {
+	public byte[] getProfilePicture(User user) throws DatabaseException, SQLException {
 		try {
 			statement = con.prepareStatement("SELECT profile_picture FROM User WHERE user_id = ?");
 			statement.setInt(1, user.getId());
