@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 
 import dao.SessionManagementDAO;
 import dao.UserDAO;
+import exceptions.DatabaseException;
 import logging.Level;
 import logging.Logger;
 import model.State;
@@ -19,7 +20,11 @@ public class UserController {
 	Json json = new Json();
 
 	public UserController() throws Exception {
-		userDAO = new UserDAO();
+		try {
+			userDAO = new UserDAO();
+		} catch(SQLException e) {
+			
+		}
 	}
 
 	public String addMentor(Mentor theMentor) {
@@ -29,16 +34,20 @@ public class UserController {
 		try {
 			userDAO.addMentor(theMentor);
 		} catch (SQLException e) {
-			json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
+			return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
+		} catch (DatabaseException dE) {
+			return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
 		}
 		return json.createJson(State.PASSED, "Succesvol geregistreerd");
 	}
 
 	public boolean userExists(String username) {
 		try {
-			return userDAO.userExists(username);
-		} catch (SQLException e) {
-			logger.out(Level.ERROR, "userexist", "User already exist");
+			if (userDAO.userExists(username)) {
+				return true;
+			}
+		} catch (DatabaseException | SQLException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -82,8 +91,13 @@ public class UserController {
 				"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens");
 	}
 
-	public byte[] getProfilePicture(User user) throws SQLException {
-		return userDAO.getProfilePicture(user);
+	public byte[] getProfilePicture(User user) {
+		try {
+			return userDAO.getProfilePicture(user);
+		} catch (DatabaseException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
