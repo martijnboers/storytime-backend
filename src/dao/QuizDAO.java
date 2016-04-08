@@ -116,7 +116,7 @@ public class QuizDAO extends DataAccesObject {
 								Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
 										result.getBoolean("correct"));
 								question.getTheAnswers().add(answer);
-								question.setCompleted(isQuestionCompleted(childId, question.getId()));
+								question.setCompleted(isQuestionCompleted(childId, question.getQuestionId()));
 								q.getTheQuestions().add(question);
 							} else {
 								for (Question qu : q.getTheQuestions()) {
@@ -307,7 +307,7 @@ public class QuizDAO extends DataAccesObject {
 				
 				for(Category category : quiz.getTheCategories()){
 					statement.clearBatch();
-					if(addCategoryHasQuiz(category.getId(), quizId)){
+					if(addCategoryHasQuiz(category.getCategoryId(), quizId)){
 						succes = true;
 					} else {
 						return false;
@@ -497,7 +497,7 @@ public class QuizDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("UPDATE Question SET question = ? WHERE question_id = ?;");
 			statement.setString(1, question.getQuestion());
-			statement.setInt(2, question.getId());
+			statement.setInt(2, question.getQuestionId());
 
 			if(statement.executeUpdate() >= 1) {
 				succes = true;
@@ -522,7 +522,7 @@ public class QuizDAO extends DataAccesObject {
 			statement = con.prepareStatement("UPDATE Answer SET answer = ?, correct = ? WHERE answer_id = ?;");
 			statement.setString(1, answer.getAnswer());
 			statement.setBoolean(2, answer.isCorrect());
-			statement.setInt(3,answer.getId());
+			statement.setInt(3,answer.getAnswerId());
 
 			if(statement.executeUpdate() >= 1) {
 				succes = true;

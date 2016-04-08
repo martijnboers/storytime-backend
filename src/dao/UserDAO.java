@@ -81,7 +81,7 @@ public class UserDAO extends DataAccesObject {
 			childQuery.setString(1, theChild.getDateOfBirth().toString());
 			childQuery.setString(2, theChild.getGender());
 			childQuery.setInt(3, userId);
-			childQuery.setInt(3, theMentor.getId());
+			childQuery.setInt(3, theMentor.getMentorId());
 		
 			if(childQuery.execute() != true) {
 				return false;
@@ -253,7 +253,7 @@ public class UserDAO extends DataAccesObject {
 	public byte[] getProfilePicture(User user) throws DatabaseException, SQLException {
 		try {
 			statement = con.prepareStatement("SELECT profile_picture FROM User WHERE user_id = ?");
-			statement.setInt(1, user.getId());
+			statement.setInt(1, user.getUserId());
 
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {

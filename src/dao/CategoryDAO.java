@@ -120,7 +120,7 @@ public class CategoryDAO extends DataAccesObject {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Category SET name = ? WHERE Category.category_id = ?;");
-			statement.setInt(2, category.getId());
+			statement.setInt(2, category.getCategoryId());
 			statement.setString(1, category.getName());
 			
 			if(statement.execute() == true) {
@@ -139,7 +139,7 @@ public class CategoryDAO extends DataAccesObject {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM Category WHERE Category.category_id = ?");
-			statement.setInt(1, category.getId());
+			statement.setInt(1, category.getCategoryId());
 			
 			if(statement.execute() == true) {
 				succes = deleteCategoryHasQuiz(category) && deleteCategoryHasRoadmap(category);
@@ -157,7 +157,7 @@ public class CategoryDAO extends DataAccesObject {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM `storytime`.`Category_has_Quiz` WHERE `Category_has_Quiz`.`category_id` = ?");
-			statement.setInt(1, category.getId());
+			statement.setInt(1, category.getCategoryId());
 			
 			if(statement.execute() == true) {
 				succes = true;
@@ -175,7 +175,7 @@ public class CategoryDAO extends DataAccesObject {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM `storytime`.`Category_has_Roadmap` WHERE `Category_has_Roadmap`.`category_id` = ?");
-			statement.setInt(1, category.getId());
+			statement.setInt(1, category.getCategoryId());
 			
 			if(statement.execute() == true) {
 				succes = true;

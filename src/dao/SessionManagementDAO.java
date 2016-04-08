@@ -211,7 +211,7 @@ public class SessionManagementDAO extends DataAccesObject {
 		boolean worked = false;
 		try {
 			clean = con.createStatement();
-			int affectedRows = clean.executeUpdate("DELETE FROM Tokens WHERE user_id = " + user.getId());
+			int affectedRows = clean.executeUpdate("DELETE FROM Tokens WHERE user_id = " + user.getUserId());
 			if (affectedRows >= 1) {
 				worked = true;
 			}
