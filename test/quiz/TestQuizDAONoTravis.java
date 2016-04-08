@@ -1,4 +1,4 @@
-package users;
+package quiz;
 
 import static org.junit.Assert.assertTrue;
 
