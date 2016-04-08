@@ -1,0 +1,117 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.Gson;
+import dao.QuizDAO;
+import model.State;
+import model.quiz.Quiz;
+
+
+public class QuizController {
+	QuizDAO quizDAO;
+	
+	protected Json json = new Json();
+	
+	public QuizController(){
+		try {
+			quizDAO = new QuizDAO();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String getAllQuizes(){
+		Gson gson = new Gson();
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		
+		try {
+			theQuizes = quizDAO.getAllQuizes();
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes");
+		}
+		if(theQuizes != null && !theQuizes.isEmpty()){
+			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+		}
+		return json.createJson(State.ERROR, "Er zijn geen quizes");
+	}
+	
+	public String getAllQuizesByMentor(String id){
+		int mentorId = Integer.getInteger(id);
+		Gson gson = new Gson();
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		
+		try {
+			theQuizes = quizDAO.getAllQuizesByMentor(mentorId);
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
+		}
+		if(theQuizes != null && !theQuizes.isEmpty()){
+			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+		}
+		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
+	}
+	
+	public String getAllQuizesByChild(String id){
+		int childId = Integer.getInteger(id);
+		Gson gson = new Gson();
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		
+		try {
+			theQuizes = quizDAO.getAllQuizesByChild(childId);
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
+		}
+		if(theQuizes != null && !theQuizes.isEmpty()){
+			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+		}
+		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
+	}
+	
+	public String getAllQuizesByCategory(String id){
+		int categoryId = Integer.getInteger(id);
+		Gson gson = new Gson();
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		
+		try {
+			theQuizes = quizDAO.getAllQuizesByCategory(categoryId);
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
+		}
+		if(theQuizes != null && !theQuizes.isEmpty()){
+			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+		}
+		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
+	}
+	
+	//TODO all add
+	public String addQuiz(String input) {
+		Json json = new Json();
+		Gson gson = new Gson();
+		
+		Quiz quiz = gson.fromJson(input, Quiz.class);
+		try {
+			quizDAO.addQuiz(quiz, quiz.getMentor().getMentorId());
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van een Quiz");
+		}
+		return json.createJson(State.PASSED, "Quiz is toegevoegd");
+	}	
+	
+	//TODO all updates
+	
+	public String deleteQuiz(String id){
+		int quizId = Integer.getInteger(id);
+		Gson gson = new Gson();
+		
+		try {
+			quizDAO.deleteQuiz(quizId);
+		} catch (SQLException e) {
+			json.createJson(State.ERROR, "Quiz kon niet verwijderd worden.");
+		}
+		
+		return json.createJson(State.ERROR, "Quiz is verwijderd.");
+	}
+}

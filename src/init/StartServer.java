@@ -39,7 +39,6 @@ public class StartServer {
 	 */
 	public static void main(String[] args) throws Exception
 	{
-		test();
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 		context.setContextPath("/");
 		Logger mainLogger = Logger.getInstance();
@@ -57,10 +56,5 @@ public class StartServer {
 		server.start();
 		server.join();
 		mainLogger.out(Level.INFORMATIVE, "Main", "Server started");	
-	}
-	
-	public static void test(){
-		QuizController qc = new QuizController();
-		System.out.println(qc.getAllQuizes());
-	}
+	}	
 }

@@ -26,7 +26,7 @@ public class Child extends User {
 		this.gender = gender;
 	}
 	
-	public int getChilId() {
+	public int getChildId() {
 		return childId;
 	}
 
