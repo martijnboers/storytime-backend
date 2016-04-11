@@ -1,0 +1,7 @@
+{
+  "name": "Social Story Backend",
+  "version": "0.1.0",
+  "description": "All API routes",
+  "title": "api - StoryTime",
+  "url" : "https://api.story.social"
+}

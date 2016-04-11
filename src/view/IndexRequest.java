@@ -51,7 +51,7 @@ public class IndexRequest extends ViewSuper {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String index() {
-		return json.createJson(State.ERROR, "Nothing on index, please see documentation");
+		return json.createJson(State.ERROR, "Nothing on index, please see https://docs.story.social");
 	}
 
 	@GET
@@ -61,6 +61,21 @@ public class IndexRequest extends ViewSuper {
 		return IO.readBytes(this.getClass().getClassLoader().getResource("init/favicon.ico").openStream());
 	}
 
+	/**
+	 * @api {get} /up Gives status of system and database connection
+	 * 
+	 * @apiName up
+	 * @apiGroup Index
+	 * 
+	 * @apiSuccessExample Success-Response:
+	 *                    { MESSAGE:
+	 *                    "yes plebian is running. Is database connection valid: true. time to prevent caching: 15:49:29"
+	 *                    , STATE: "SUCCEEDED" } }
+	 * 
+	 * @param useragent
+	 * @return
+	 * @throws Exception
+	 */
 	@GET
 	@Path("/up")
 	@Produces(MediaType.APPLICATION_JSON)

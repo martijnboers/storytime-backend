@@ -42,14 +42,37 @@ import model.user.Mentor;
 @Path("/user")
 public class UserRequest extends ViewSuper {
 	private UserController userController = new UserController();
-	
+
 	public UserRequest() throws Exception {
 		super();
-		
+
 	}
 
 	/**
 	 * TODO: register function. @ xml notation everywere
+	 * 
+	 * @api {post} /user/register Registers a user
+	 * 
+	 * @apiName register
+	 * @apiGroup User
+	 * @apiParam {String} email Email adres.
+	 * @apiParam {String} username Username of user
+	 * @apiParam {String} password User password
+	 * @apiParam {String} profilepicture ProfilePicture
+	 * @apiParam {String} name Fullname of user
+	 * 
+	 * @apiError SQLException If there is a db error.
+	 * @apiError UserDuplicate If the user already exist.
+	 * 
+	 * 
+	 * @apiSuccessExample Success-Response:
+	 *                    { MESSAGE: "Succesvol geregistreerd" , STATE:
+	 *                    "SUCCEEDED" } }
+	 * 
+	 * @apiErrorExample Error-Response:
+	 *                  { MESSAGE:
+	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
+	 *                  STATE: "ERROR" } }
 	 * 
 	 * @param input
 	 * @return
@@ -66,7 +89,7 @@ public class UserRequest extends ViewSuper {
 	@GET
 	@Path("/info")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMentor(@HeaderParam("token") String token ) throws Exception {
+	public String getMentor(@HeaderParam("token") String token) throws Exception {
 		return userController.getUserInfo(token);
 
 	}
@@ -77,14 +100,14 @@ public class UserRequest extends ViewSuper {
 	public String login(String credentials) throws JsonSyntaxException, SQLException {
 		return sec.login(gson.fromJson(credentials, Credentials.class));
 	}
-	
+
 	@GET
 	@Path("/logout")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String logout(@HeaderParam("token") String token) throws InvalidTokenException, SQLException {
 		return sec.logout(session.getUserFromToken(token));
 	}
-	
+
 	@GET
 	@Produces("image/png")
 	@Path("/profilepic/{id}")
