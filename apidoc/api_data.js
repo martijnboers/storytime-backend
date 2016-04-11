@@ -19,9 +19,9 @@ define({ "api": [
     "groupTitle": "Index"
   },
   {
-    "type": "get",
+    "type": "post",
     "url": "/user/info",
-    "title": "Get basic info on user via token",
+    "title": "returns a mentor object based on token",
     "name": "info",
     "group": "User",
     "parameter": {
@@ -29,10 +29,10 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Header",
+            "type": "String",
             "optional": false,
-            "field": "Token",
-            "description": "<p>The user's token.</p>"
+            "field": "token",
+            "description": "<p>Token for mentor object.</p>"
           }
         ]
       }
@@ -45,19 +45,13 @@ define({ "api": [
             "optional": false,
             "field": "SQLException",
             "description": "<p>If there is a db error.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "UserDuplicate",
-            "description": "<p>If the user already exist.</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Error-Response: { MESSAGE:",
-          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
+          "title": "Error-Response:",
+          "content": "{ MESSAGE:\n\"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens\" ,\nSTATE: \"ERROR\" } }",
           "type": "json"
         }
       ]
@@ -66,7 +60,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\"MESSAGE\":{\"Type\":\"Child\",\"Username\":\"martijn\",\n\"Birthday\":2016-04-12,\"Gender\":\"m\",\"Name\":\"Martijn\"},\n\"STATE\":\"SUCCEEDED\"}",
+          "content": "{ {user info object} , STATE:\n\"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
@@ -141,8 +135,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Error-Response: { MESSAGE:",
-          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
+          "title": "Error-Response:",
+          "content": "{ MESSAGE:\n\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
           "type": "json"
         }
       ]
@@ -150,8 +144,8 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Success-Response: { MESSAGE: \"Succesvol geregistreerd\"",
-          "content": ", STATE: \"SUCCEEDED\" } }",
+          "title": "Success-Response:",
+          "content": "{ MESSAGE: \"Succesvol geregistreerd\" , STATE:\n\"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
