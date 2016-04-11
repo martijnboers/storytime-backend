@@ -19,6 +19,63 @@
     "groupTitle": "Index"
   },
   {
+    "type": "get",
+    "url": "/user/info",
+    "title": "Get basic info on user via token",
+    "name": "info",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Header",
+            "optional": false,
+            "field": "Token",
+            "description": "<p>The user's token.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "SQLException",
+            "description": "<p>If there is a db error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserDuplicate",
+            "description": "<p>If the user already exist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response: { MESSAGE:",
+          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\"MESSAGE\":{\"Type\":\"Child\",\"Username\":\"martijn\",\n\"Birthday\":2016-04-12,\"Gender\":\"m\",\"Name\":\"Martijn\"},\n\"STATE\":\"SUCCEEDED\"}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/view/UserRequest.java",
+    "groupTitle": "User"
+  },
+  {
     "type": "post",
     "url": "/user/register",
     "title": "Registers a user",
@@ -84,8 +141,8 @@
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "{ MESSAGE:\n\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
+          "title": "Error-Response: { MESSAGE:",
+          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
           "type": "json"
         }
       ]
@@ -93,8 +150,8 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{ MESSAGE: \"Succesvol geregistreerd\" , STATE:\n\"SUCCEEDED\" } }",
+          "title": "Success-Response: { MESSAGE: \"Succesvol geregistreerd\"",
+          "content": ", STATE: \"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
