@@ -65,12 +65,10 @@ public class UserRequest extends ViewSuper {
 	 * @apiError UserDuplicate If the user already exist.
 	 * 
 	 * 
-	 * @apiSuccessExample Success-Response:
-	 *                    { MESSAGE: "Succesvol geregistreerd" , STATE:
-	 *                    "SUCCEEDED" } }
+	 * @apiSuccessExample Success-Response: { MESSAGE: "Succesvol geregistreerd"
+	 *                    , STATE: "SUCCEEDED" } }
 	 * 
-	 * @apiErrorExample Error-Response:
-	 *                  { MESSAGE:
+	 * @apiErrorExample Error-Response: { MESSAGE:
 	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
 	 *                  STATE: "ERROR" } }
 	 * 
@@ -95,14 +93,12 @@ public class UserRequest extends ViewSuper {
 	 * @apiError SQLException If there is a db error.
 	 * 
 	 * 
-	 * @apiSuccessExample Success-Response:
-	 *                    { {user info object} , STATE:
+	 * @apiSuccessExample Success-Response: { {user info object} , STATE:
 	 *                    "SUCCEEDED" } }
 	 * 
-	 * @apiErrorExample Error-Response:
-	 *                  { MESSAGE:
-	 *                  "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens" ,
-	 *                  STATE: "ERROR" } }
+	 * @apiErrorExample Error-Response: { MESSAGE:
+	 *                  "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens"
+	 *                  , STATE: "ERROR" } }
 	 * 
 	 * @param input
 	 * @return
@@ -116,6 +112,25 @@ public class UserRequest extends ViewSuper {
 
 	}
 
+	/**
+	 * @api {post} /user/login Login function user
+	 * 
+	 * @apiName login
+	 * @apiGroup User
+	 * @apiParam {String} username Username of user
+	 * @apiParam {String} password User password
+	 * 
+	 * @apiError SQLException If there is a db error.
+	 * @apiError CredentialsMisMatch If the credentials are incorrect.
+	 * 
+	 * 
+	 * @apiSuccessExample Success-Response: { MESSAGE: "<token>"
+	 *                    , STATE: "SUCCEEDED" } }
+	 * 
+	 * @apiErrorExample Error-Response: { MESSAGE:
+	 *                  "Verkeerde inloggegevens" ,
+	 *                  STATE: "ERROR" } }
+	 **/
 	@POST
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
