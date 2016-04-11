@@ -85,7 +85,7 @@ public class UserRequest extends ViewSuper {
 	}
 
 	/**
-	 * @api {post} /user/info returns a mentor object based on token
+	 * @api {get} /user/info returns a mentor object based on token
 	 * 
 	 * @apiName info
 	 * @apiGroup User
@@ -124,7 +124,8 @@ public class UserRequest extends ViewSuper {
 	 * @apiError CredentialsMisMatch If the credentials are incorrect.
 	 * 
 	 * 
-	 * @apiSuccessExample Success-Response: { MESSAGE: "<token>"
+	 * @apiSuccessExample Success-Response: 
+	 *						{ MESSAGE: <token>
 	 *                    , STATE: "SUCCEEDED" } }
 	 * 
 	 * @apiErrorExample Error-Response: { MESSAGE:
