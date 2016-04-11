@@ -19,7 +19,7 @@ define({ "api": [
     "groupTitle": "Index"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/user/info",
     "title": "returns a mentor object based on token",
     "name": "info",
@@ -123,8 +123,8 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Success-Response: { MESSAGE: \"<token>\"",
-          "content": ", STATE: \"SUCCEEDED\" } }",
+          "title": "Success-Response: ",
+          "content": "\t\t\t\t\t\t{ MESSAGE: <token>\n                   , STATE: \"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
