@@ -65,12 +65,10 @@ public class UserRequest extends ViewSuper {
 	 * @apiError UserDuplicate If the user already exist.
 	 * 
 	 * 
-	 * @apiSuccessExample Success-Response:
-	 *                    { MESSAGE: "Succesvol geregistreerd" , STATE:
-	 *                    "SUCCEEDED" } }
+	 * @apiSuccessExample Success-Response: { MESSAGE: "Succesvol geregistreerd"
+	 *                    , STATE: "SUCCEEDED" } }
 	 * 
-	 * @apiErrorExample Error-Response:
-	 *                  { MESSAGE:
+	 * @apiErrorExample Error-Response: { MESSAGE:
 	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
 	 *                  STATE: "ERROR" } }
 	 * 
@@ -86,6 +84,26 @@ public class UserRequest extends ViewSuper {
 		return userController.addMentor(gson.fromJson(input, Mentor.class));
 	}
 
+	/**
+	 * @api {get} /user/info Get basic info on user via token
+	 * 
+	 * @apiName info
+	 * @apiGroup User
+	 * @apiParam {Header} Token The user's token.
+	 * 
+	 * @apiError SQLException If there is a db error.
+	 * @apiError UserDuplicate If the user already exist.
+	 * 
+	 * 
+	 * @apiSuccessExample Success-Response:
+	 *                    {"MESSAGE":{"Type":"Child","Username":"martijn",
+	 *                    "Birthday":2016-04-12,"Gender":"m","Name":"Martijn"},
+	 *                    "STATE":"SUCCEEDED"}
+	 * 
+	 * @apiErrorExample Error-Response: { MESSAGE:
+	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
+	 *                  STATE: "ERROR" } }
+	 **/
 	@GET
 	@Path("/info")
 	@Produces(MediaType.APPLICATION_JSON)
