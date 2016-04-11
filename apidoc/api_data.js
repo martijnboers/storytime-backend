@@ -50,8 +50,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "{ MESSAGE:\n\"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens\" ,\nSTATE: \"ERROR\" } }",
+          "title": "Error-Response: { MESSAGE:",
+          "content": "\"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens\"\n, STATE: \"ERROR\" } }",
           "type": "json"
         }
       ]
@@ -59,8 +59,72 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{ {user info object} , STATE:\n\"SUCCEEDED\" } }",
+          "title": "Success-Response: { {user info object} , STATE:",
+          "content": "\"SUCCEEDED\" } }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/view/UserRequest.java",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/user/login",
+    "title": "Login function user",
+    "name": "login",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>Username of user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>User password</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "SQLException",
+            "description": "<p>If there is a db error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "CredentialsMisMatch",
+            "description": "<p>If the credentials are incorrect.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response: { MESSAGE:",
+          "content": "\"Verkeerde inloggegevens\" ,\nSTATE: \"ERROR\" } }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: { MESSAGE: \"<token>\"",
+          "content": ", STATE: \"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
@@ -135,8 +199,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "{ MESSAGE:\n\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
+          "title": "Error-Response: { MESSAGE:",
+          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
           "type": "json"
         }
       ]
@@ -144,8 +208,8 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{ MESSAGE: \"Succesvol geregistreerd\" , STATE:\n\"SUCCEEDED\" } }",
+          "title": "Success-Response: { MESSAGE: \"Succesvol geregistreerd\"",
+          "content": ", STATE: \"SUCCEEDED\" } }",
           "type": "json"
         }
       ]
