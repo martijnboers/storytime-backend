@@ -82,7 +82,7 @@ public class Child extends User {
 		return theQuizes.remove(quiz);
 	}
 
-	// TODO: Service DAO netjes maken
+	// TODO: Service RoadmapDAO netjes maken en methode afmaken
 	public List<Achievement> getAllCompletedAchievements() {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 		

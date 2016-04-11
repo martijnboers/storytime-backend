@@ -5,7 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exceptions.DatabaseException;
-import exceptions.DatabaseInsertException;
+// Doei error
+//import exceptions.DatabaseInsertException;
 import logging.Level;
 import model.user.Child;
 import model.user.Mentor;

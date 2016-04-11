@@ -8,10 +8,7 @@ import java.util.List;
 
 import logging.Level;
 import model.roadmap.Achievement;
-import model.roadmap.Roadmap;
-import model.roadmap.Step;
 
-//TODO: Add log messages at queries
 public class AchievementDAO extends DataAccesObject {
 	private PreparedStatement statement;
 
@@ -57,7 +54,8 @@ public class AchievementDAO extends DataAccesObject {
 					+ "JOIN Mentor ON Roadmap.mentor_id = Mentor.mentor_id"
 					+ "JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
 					+ "JOIN Child ON Child.mentor_id = Mentor.mentor_id"
-					+ "WHERE Child.child_id = ?;");
+					+ "JOIN Child_has_Roadmap ON Child.child_id = Child_has_Roadmap.child_id"
+					+ "WHERE Roadmap.roadmap_id = Child_has_Roadmap.roadmap_id AND Child.child_id = ?;");
 			statement.setInt(1, child_id);
 
 			ResultSet result = statement.executeQuery();
@@ -72,51 +70,33 @@ public class AchievementDAO extends DataAccesObject {
 		}
 		return theAchievements;
 	}
-
+	
 	/**
 	 * 
-	 * @param child_id
-	 * @return List with all the completed achievements of a child
+	 * @param achievement_id
+	 * @return An achievement with the achievement_id that is given
 	 * @throws SQLException
 	 */
-	public List<Achievement> getAllCompletedAchievementsByChild(int child_id) throws SQLException {
-		List<Achievement> theAchievements = new ArrayList<Achievement>();
+	public Achievement getAchievementsById(int achievement_id) throws SQLException {
+		Achievement achievement = new Achievement();
 		try {
-			statement = con.prepareStatement("SELECT Roadmap.name AS roadmapName, Roadmap.description AS roadmapDescription, Step.step_id, Step.order_id as orderID, Step.name AS stepName, Step.description AS stepDescription, Step_has_Child.completed, Achievement.achievement_id, Achievement.name AS achievementName, Achievement.points"
-							+ "FROM Roadmap"
-							+ "JOIN Step ON Roadmap.roadmap_id = Step.roadmap_id"
-							+ "JOIN Achievement ON Roadmap.achievement_id = Achievement.achievement_id"
-							+ "JOIN Step_has_Child ON Step.step_id = Step_has_Child.step_id"
-							+ "WHERE Step_has_Child.child_id = ?");
-			statement.setInt(1, child_id);
-
+			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points FROM Achievement WHERE Achievement.achievement_id = ?;");
+			statement.setInt(1, achievement_id);
 			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				Achievement achievement = new Achievement(result.getInt("achievement_id"), result.getString("achievementName"), result.getDouble("points"));
-				Roadmap roadmap = new Roadmap(result.getShort("roadmap_id"), result.getString("roadmapName"), result.getString("roadmapDescription"));
-				roadmap.setAchievement(achievement);
-
-				if (!theAchievements.contains(achievement)) {
-					Step step = new Step(result.getInt("step_id"), result.getInt("orderID"), result.getString("stepName"), result.getString("stepDescription"), result.getBoolean("completed"));
-					roadmap.addStep(step);
-					
-					if(roadmap.isCompleted()) {
-						theAchievements.add(achievement);
-					}
-				}
-			}
+			result.next();
+			achievement = new Achievement(result.getShort("achievement_id"), result.getString("name"), result.getDouble("points"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			statement.close();
 		}
-		return theAchievements;
+		return achievement;
 	}
-	
+
 	/**
 	 * 
 	 * @param achievement
-	 * @return True is a achievement is added, false is something failed.
+	 * @return True if a achievement is added, false is something failed.
 	 * @throws SQLException
 	 */
 	public boolean addAchievement(Achievement achievement) throws SQLException {
@@ -141,16 +121,16 @@ public class AchievementDAO extends DataAccesObject {
 	/**
 	 * 
 	 * @param achievement
-	 * @return True is a achievement is updated, false is something failed.
+	 * @return True if a achievement is updated, false is something failed.
 	 * @throws SQLException
 	 */
 	public boolean updateAchievement(Achievement achievement) throws SQLException {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Achievement SET name = ?, points = ? WHERE Achievement.achievement_id = ?;");
-			statement.setInt(3, achievement.getId());
 			statement.setString(1, achievement.getName());
 			statement.setDouble(2, achievement.getPoints());
+			statement.setInt(3, achievement.getId());
 			
 			if(statement.execute() == true) {
 				succes = true;
@@ -167,7 +147,7 @@ public class AchievementDAO extends DataAccesObject {
 	/**
 	 * 
 	 * @param achievement
-	 * @return True is a achievement is deleted, false is something failed.
+	 * @return True if a achievement is deleted, false is something failed.
 	 * @throws SQLException
 	 */
 	public boolean deleteAchievement(Achievement achievement) throws SQLException {
@@ -177,11 +157,34 @@ public class AchievementDAO extends DataAccesObject {
 			statement.setInt(1, achievement.getId());
 			
 			if(statement.execute() == true) {
-				succes = true;
+				succes = resetAchievementInRoadmap(achievement);;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Deleting Achievement went wrong");
+		} finally {
+			statement.close();
+		}
+		return succes;
+	}
+	
+	/**
+	 * 
+	 * @param achievement
+	 * @return True if all achievement_id are deleted, false is something failed.
+	 * @throws SQLException
+	 */
+	private boolean resetAchievementInRoadmap(Achievement achievement) throws SQLException {
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("UPDATE `Roadmap` SET `achievement_id` = NULL WHERE `achievement_id` = ?");
+			statement.setInt(1, achievement.getId());
+			if(statement.execute() == true) {
+				succes = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR, "", "Resetting achievement_id went wrong");
 		} finally {
 			statement.close();
 		}
