@@ -20,6 +20,57 @@
   },
   {
     "type": "post",
+    "url": "/user/info",
+    "title": "returns a mentor object based on token",
+    "name": "info",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token for mentor object.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "SQLException",
+            "description": "<p>If there is a db error.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{ MESSAGE:\n\"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens\" ,\nSTATE: \"ERROR\" } }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ {user info object} , STATE:\n\"SUCCEEDED\" } }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/view/UserRequest.java",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
     "url": "/user/register",
     "title": "Registers a user",
     "name": "register",

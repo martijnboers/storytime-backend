@@ -65,10 +65,12 @@ public class UserRequest extends ViewSuper {
 	 * @apiError UserDuplicate If the user already exist.
 	 * 
 	 * 
-	 * @apiSuccessExample Success-Response: { MESSAGE: "Succesvol geregistreerd"
-	 *                    , STATE: "SUCCEEDED" } }
+	 * @apiSuccessExample Success-Response:
+	 *                    { MESSAGE: "Succesvol geregistreerd" , STATE:
+	 *                    "SUCCEEDED" } }
 	 * 
-	 * @apiErrorExample Error-Response: { MESSAGE:
+	 * @apiErrorExample Error-Response:
+	 *                  { MESSAGE:
 	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
 	 *                  STATE: "ERROR" } }
 	 * 
@@ -85,25 +87,27 @@ public class UserRequest extends ViewSuper {
 	}
 
 	/**
-	 * @api {get} /user/info Get basic info on user via token
+	 * @api {post} /user/info returns a mentor object based on token
 	 * 
 	 * @apiName info
 	 * @apiGroup User
-	 * @apiParam {Header} Token The user's token.
-	 * 
+	 * @apiParam {String} token Token for mentor object.
 	 * @apiError SQLException If there is a db error.
-	 * @apiError UserDuplicate If the user already exist.
 	 * 
 	 * 
 	 * @apiSuccessExample Success-Response:
-	 *                    {"MESSAGE":{"Type":"Child","Username":"martijn",
-	 *                    "Birthday":2016-04-12,"Gender":"m","Name":"Martijn"},
-	 *                    "STATE":"SUCCEEDED"}
+	 *                    { {user info object} , STATE:
+	 *                    "SUCCEEDED" } }
 	 * 
-	 * @apiErrorExample Error-Response: { MESSAGE:
-	 *                  "Er is iets fout gegaan met de mentor toevoegen" ,
+	 * @apiErrorExample Error-Response:
+	 *                  { MESSAGE:
+	 *                  "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens" ,
 	 *                  STATE: "ERROR" } }
-	 **/
+	 * 
+	 * @param input
+	 * @return
+	 * @throws UnknownHostException
+	 */
 	@GET
 	@Path("/info")
 	@Produces(MediaType.APPLICATION_JSON)
