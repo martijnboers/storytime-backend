@@ -13,7 +13,7 @@ public class UserController {
 	UserDAO userDAO;
 	Json json = new Json();
 
-	public UserController() throws Exception {
+	public UserController(){
 		userDAO = new UserDAO();
 	}
 
@@ -21,8 +21,10 @@ public class UserController {
 		if (userExists(theMentor.getUsername())) {
 			return json.createJson(State.ERROR, "User bestaat al");
 		}
-		userDAO.addMentor(theMentor);
-		return json.createJson(State.PASSED, "Succesvol geregistreerd");
+		if(userDAO.addMentor(theMentor)){
+			return json.createJson(State.PASSED, "Succesvol geregistreerd");
+		}
+		return json.createJson(State.ERROR, "Registreren is niet gelukt");
 	}
 
 	public boolean userExists(String username) {
@@ -69,7 +71,11 @@ public class UserController {
 		return json.createJson(State.ERROR, "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens");
 	}
 
-	public byte[] getProfilePicture(User user) {
-		return userDAO.getProfilePicture(user);
+	public byte[] getProfilePicture(User user) throws Exception {
+		byte[] profilePicture  = userDAO.getProfilePicture(user);
+		if(profilePicture.length > 0){
+			return profilePicture; 
+		}
+		throw new Exception("Kan profielfoto niet laden");
 	}
 }

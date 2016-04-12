@@ -241,7 +241,7 @@ public class QuizDAO extends DataAccesObject {
 
 	/**
 	 * 
-	 * @return A list with allt he Quizes
+	 * @return A list with all the Quizes
 	 */
 	public List<Quiz> getAllQuizes() {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
@@ -349,7 +349,6 @@ public class QuizDAO extends DataAccesObject {
 					return false;
 				}
 			}			
-			succes = true;			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
@@ -635,8 +634,9 @@ public class QuizDAO extends DataAccesObject {
 				statement.setInt(1,quizId);					
 				if(statement.executeUpdate() > 0) {
 					succes = true;
+				} else {
+					succes = false; 					
 				}
-				succes = false; 
 			} else {
 				succes = false;
 			}
@@ -718,7 +718,7 @@ public class QuizDAO extends DataAccesObject {
 	}
 	
 	// For testing purpose
-	public int getLatestIdQuestion() throws SQLException{
+	public int getLatestIdQuestion(){
 		int questionId = 0;
 		try {
 			statement = con.prepareStatement("SELECT MAX(quiz_id) FROM Quiz");
@@ -728,7 +728,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return questionId;
 	}

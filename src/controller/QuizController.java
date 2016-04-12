@@ -14,22 +14,18 @@ public class QuizController {
 	protected Json json = new Json();
 	
 	public QuizController(){
-		try {
 			quizDAO = new QuizDAO();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public String getAllQuizes(){
 		Gson gson = new Gson();
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
-			theQuizes = quizDAO.getAllQuizes();
-			json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes");
+		theQuizes = quizDAO.getAllQuizes();
+			
 		if(theQuizes != null && !theQuizes.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theQuizes));
 		}
-		return json.createJson(State.ERROR, "Er zijn geen quizes.");
+		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes");
 	}
 	
 	public String getAllQuizesByMentor(int mentorId){
@@ -69,7 +65,6 @@ public class QuizController {
 		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
 	}
 	
-	//TODO all add
 	public String addQuiz(String input) {
 		Json json = new Json();
 		Gson gson = new Gson();
@@ -92,7 +87,6 @@ public class QuizController {
 		
 		return json.createJson(State.PASSED, "Quiz is toegevoegd");
 	}
-	
 	
 	public String updateQuiz(String input){
 		Json json = new Json();

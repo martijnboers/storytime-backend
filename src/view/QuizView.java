@@ -47,7 +47,7 @@ public class QuizView extends ViewSuper{
 	}
 	
 	@GET
-	@Path("/quizes/all/categor/{id}")
+	@Path("/quizes/all/category/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByCategory(@PathParam("id") int id){
 		return quizController.getAllQuizesByCategory(id);
