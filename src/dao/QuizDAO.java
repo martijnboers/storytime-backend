@@ -677,7 +677,7 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
-	// For testing purpuse
+	// For testing purpose
 	public int getLatestIdQuestion() throws SQLException{
 		int questionId = 0;
 		try {

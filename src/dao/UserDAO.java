@@ -295,4 +295,34 @@ public class UserDAO extends DataAccesObject {
 		}
 		return null;
 	}
+	// For testing purpose
+	public int getLatestIdMentor() throws SQLException{
+		int mentorId = 0;
+		try {
+			statement = con.prepareStatement("SELECT MAX(mentor_id) FROM Mentor");
+			ResultSet result = statement.executeQuery();
+			result.next();
+			mentorId = result.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return mentorId;
+	}
+	// For testing purpose
+	public int getLatestIdChild() throws SQLException{
+		int childId = 0;
+		try {
+			statement = con.prepareStatement("SELECT MAX(child_id) FROM Child");
+			ResultSet result = statement.executeQuery();
+			result.next();
+			childId = result.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			statement.close();
+		}
+		return childId;
+	}
 }
