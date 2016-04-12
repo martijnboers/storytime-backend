@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dao.QuizDAO;
+import dao.RoadmapDAO;
 import model.quiz.Quiz;
 import model.roadmap.Achievement;
 import model.roadmap.Roadmap;
@@ -82,34 +84,61 @@ public class Child extends User {
 		return theQuizes.remove(quiz);
 	}
 
-	// TODO: Service RoadmapDAO netjes maken en methode afmaken
+	public List<Achievement> getAllUncompletedAchievements() {
+		List<Achievement> theAchievements = new ArrayList<Achievement>();
+		RoadmapDAO roadmapDAO = new RoadmapDAO();
+		for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild(this)) {
+			if(!roadmap.isCompleted()) {
+				theAchievements.add(roadmap.getAchievement());
+			}
+		}
+		return theAchievements;
+	}
+	
 	public List<Achievement> getAllCompletedAchievements() {
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-		
-		// MAKE THIS ONE .... FIX roadmapDAO...
-		/*for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild()) {
+		RoadmapDAO roadmapDAO = new RoadmapDAO();
+		for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild(this)) {
 			if(roadmap.isCompleted()) {
 				theAchievements.add(roadmap.getAchievement());
 			}
-		}*/
+		}
 		return theAchievements;
 	}
 	
 	public double getAllAchievementPoints() {
 		double totalPoints = 0;
-		
-		// MAKE THIS ONE .... FIX roadmapDAO...
-		/*for(Roadmap roadmap : roadmapDAO.getAllRoadmapsByChild()) {
-		if(roadmap.isCompleted()) {
-				totalPoints += roadmap.getAchievement().getPoints();
-			}
-		}*/
+		for(Achievement achievement : getAllCompletedAchievements()) {
+			totalPoints += achievement.getPoints();
+		}
 		return totalPoints;
+	}
+	
+	public List<Quiz> getAllUncompletedQuizes() {
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		QuizDAO quizDAO = new QuizDAO();
+		for(Quiz quiz : quizDAO.getAllQuizesByChild(getChildId())) {
+			if(!quiz.isCompleted()) {
+				theQuizes.add(quiz);
+			}
+		}
+		return theQuizes;
+	}
+	
+	public List<Quiz> getAllCompletedQuizes() {
+		List<Quiz> theQuizes = new ArrayList<Quiz>();
+		QuizDAO quizDAO = new QuizDAO();
+		for(Quiz quiz : quizDAO.getAllQuizesByChild(getChildId())) {
+			if(quiz.isCompleted()) {
+				theQuizes.add(quiz);
+			}
+		}
+		return theQuizes;
 	}
 
 	@Override
 	public String toString() {
-		return "Child [id=" + childId + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
+		return "Child [childId=" + childId + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", theRoadmaps="
 				+ theRoadmaps + ", theQuizes=" + theQuizes + "]";
 	}
 

@@ -3,15 +3,16 @@ package model.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.quiz.Quiz;
 import model.roadmap.Roadmap;
 
-// TODO: List of Quizes
 public class Mentor extends User {
 	
 	private int MentorId;
 	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
+	private List<Quiz> theQuizes = new ArrayList<Quiz>();
 
 	public Mentor() {
 	}
@@ -74,11 +75,27 @@ public class Mentor extends User {
 	public boolean removeRoadmap(Roadmap roadmap) {
 		return theRoadmaps.remove(roadmap);
 	}
+	
+	public List<Quiz> getTheQuizes() {
+		return theQuizes;
+	}
+
+	public void setTheQuizes(List<Quiz> theQuizes) {
+		this.theQuizes = theQuizes;
+	}
+	
+	public boolean addQuiz(Quiz quiz) {
+		return theQuizes.add(quiz);
+	}
+
+	public boolean removeQuiz(Quiz quiz) {
+		return theQuizes.remove(quiz);
+	}
 
 	@Override
 	public String toString() {
-		return "Mentor [id=" + MentorId + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps=" + theRoadmaps
-				+ "]";
+		return "Mentor [MentorId=" + MentorId + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps="
+				+ theRoadmaps + ", theQuizes=" + theQuizes + "]";
 	}
 
 	@Override
@@ -87,6 +104,7 @@ public class Mentor extends User {
 		int result = super.hashCode();
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((theChildren == null) ? 0 : theChildren.hashCode());
+		result = prime * result + ((theQuizes == null) ? 0 : theQuizes.hashCode());
 		result = prime * result + ((theRoadmaps == null) ? 0 : theRoadmaps.hashCode());
 		return result;
 	}
@@ -109,6 +127,11 @@ public class Mentor extends User {
 			if (other.theChildren != null)
 				return false;
 		} else if (!theChildren.equals(other.theChildren))
+			return false;
+		if (theQuizes == null) {
+			if (other.theQuizes != null)
+				return false;
+		} else if (!theQuizes.equals(other.theQuizes))
 			return false;
 		if (theRoadmaps == null) {
 			if (other.theRoadmaps != null)
