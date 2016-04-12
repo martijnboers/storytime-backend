@@ -113,7 +113,6 @@ public class QuizController {
 		return json.createJson(State.PASSED, "Quiz is toegevoegd");
 	}
 	
-	//TODO all updates
 	
 	public String updateQuiz(String input){
 		Json json = new Json();
@@ -131,7 +130,6 @@ public class QuizController {
 	
 	public String deleteQuiz(String id){
 		int quizId = Integer.getInteger(id);
-		Gson gson = new Gson();
 		
 		try {
 			quizDAO.deleteQuiz(quizId);
@@ -139,6 +137,6 @@ public class QuizController {
 			json.createJson(State.ERROR, "Quiz kon niet verwijderd worden.");
 		}
 		
-		return json.createJson(State.ERROR, "Quiz is verwijderd.");
+		return json.createJson(State.PASSED, "Quiz is verwijderd.");
 	}
 }
