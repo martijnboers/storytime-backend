@@ -171,22 +171,31 @@ public class UserDAO extends DataAccesObject {
 			// remove child dependency
 			statement = con.prepareStatement("UPDATE Child SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.executeUpdate() <= 0) {
+			if(statement.executeUpdate() < 0) {
 				System.out.println("execute error");
 				return false;
 			}
 			// remove quiz dependency
 			statement = con.prepareStatement("UPDATE Quiz SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.executeUpdate() <= 0) {
+			if(statement.executeUpdate() < 0) {
 				return false;
 			}
 
 			// remove roadmap dependency
 			statement = con.prepareStatement("UPDATE Roadmap SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.executeUpdate() <= 0) {
+			if(statement.executeUpdate() < 0) {
 				return false;
+			}
+			
+			// get to removed user ID
+			int userId = 0;
+			statement = con.prepareStatement("SELECT * FROM Mentor WHERE mentor_id = ?;");
+			statement.setInt(1, mentorID);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				userId = result.getInt("user_id");
 			}
 
 			// remove mentor
@@ -195,12 +204,11 @@ public class UserDAO extends DataAccesObject {
 			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
-			// remove user
-			statement = con.prepareStatement("SELECT * FROM Mentor WHERE mentor_id = ?;");
-			statement.setInt(1, mentorID);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				deleteUser(result.getInt("user_id"));
+			// finally remove user
+			statement = con.prepareStatement("DELETE FROM User WHERE user_id = ?;");
+			statement.setInt(1, userId);
+			if(statement.executeUpdate() <= 0) {
+				return false;
 			}
 			
 		} catch (SQLException e) {
@@ -249,6 +257,15 @@ public class UserDAO extends DataAccesObject {
 			if(statement.executeUpdate() < 0) {
 				return false;
 			}
+			
+			// get to removed user ID
+			int userId = 0;
+			statement = con.prepareStatement("SELECT * FROM Child WHERE child_id = ?;");
+			statement.setInt(1, childID);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				userId = result.getInt("user_id");
+			}
 
 			// remove child
 			statement = con.prepareStatement("DELETE FROM Child WHERE child_id = ?;");
@@ -256,14 +273,12 @@ public class UserDAO extends DataAccesObject {
 			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
-			// remove user
-			statement = con.prepareStatement("SELECT * FROM Child WHERE child_id = ?;");
-			statement.setInt(1, childID);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				deleteUser(result.getInt("user_id"));
-			}
-			
+			// finally remove user
+			statement = con.prepareStatement("DELETE FROM User WHERE user_id = ?;");
+			statement.setInt(1, userId);
+			if(statement.executeUpdate() <= 0) {
+				return false;
+			}			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR,"", "Couldn't delete Child");
