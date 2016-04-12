@@ -21,13 +21,13 @@ public class TestUserDAONoTravis {
 	
 	@Before
 	public void initObjects() {
-		uDAO = new UserDAO();		
+		uDAO = new UserDAO();	
+		mentor = new Mentor("testedmentor@test.nl", "testMentor", "plainPassword", null, "Mentor naam");	
 	}
 	
 	@Test
 	public void testbAddMentor() throws Exception {
 		uDAO = new UserDAO();// Add child and mentor for deleting
-		mentor = new Mentor("testedmentor@test.nl", "testMentor", "plainPassword", null, "Mentor naam");
 		assertTrue(uDAO.addMentor(mentor));
 	}
 	
@@ -46,7 +46,8 @@ public class TestUserDAONoTravis {
 		child.setUsername("testChild");
 		child.setPassword("plainPassword");
 		child.setName("kind naam");
-		
+		System.out.println(uDAO.getLatestIdMentor());
+		mentor.setMentorId(uDAO.getLatestIdMentor());
 		assertTrue(uDAO.addChild(mentor, child));
 	}
 	

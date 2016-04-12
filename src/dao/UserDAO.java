@@ -87,12 +87,13 @@ public class UserDAO extends DataAccesObject {
 			childQuery.setString(1, theChild.getDateOfBirth().toString());
 			childQuery.setString(2, theChild.getGender());
 			childQuery.setInt(3, userId);
-			childQuery.setInt(3, theMentor.getMentorId());
+			childQuery.setInt(4, theMentor.getMentorId());
 		
-			if(childQuery.execute() != true) {
+			if(childQuery.executeUpdate() <= 0) {
 				return false;
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			log.out(Level.ERROR,"", "Couldn't add child");
 		} finally {
 			try {
@@ -116,7 +117,7 @@ public class UserDAO extends DataAccesObject {
 			PreparedStatement mentorQuery = con.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);");
 			mentorQuery.setString(1, theMentor.getEmail());
 			mentorQuery.setInt(2, userId);
-			if(mentorQuery.execute() != true) {
+			if(mentorQuery.executeUpdate() <= 0) {
 				return false;
 			}
 		} catch (SQLException e) {
@@ -170,27 +171,28 @@ public class UserDAO extends DataAccesObject {
 			// remove child dependency
 			statement = con.prepareStatement("UPDATE Child SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() <= 0) {
+				System.out.println("execute error");
 				return false;
 			}
 			// remove quiz dependency
 			statement = con.prepareStatement("UPDATE Quiz SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
 
 			// remove roadmap dependency
 			statement = con.prepareStatement("UPDATE Roadmap SET mentor_id = 999 WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
 
 			// remove mentor
 			statement = con.prepareStatement("DELETE FROM Mentor WHERE mentor_id = ?;");
 			statement.setInt(1, mentorID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
 			// remove user
@@ -226,32 +228,32 @@ public class UserDAO extends DataAccesObject {
 			// remove quiz dependency
 			statement = con.prepareStatement("DELETE FROM Child_has_Quiz WHERE child_id = ?;");
 			statement.setInt(1, childID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() < 0) {
 				return false;
 			}
 			// remove question dependency
 			statement = con.prepareStatement("DELETE FROM Child_has_Question WHERE child_id = ?;");
 			statement.setInt(1, childID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() < 0) {
 				return false;
 			}
 			// remove roadmap dependency
 			statement = con.prepareStatement("DELETE FROM Child_has_Roadmap WHERE child_id = ?;");
 			statement.setInt(1, childID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() < 0) {
 				return false;
 			}
 			// remove step dependency
 			statement = con.prepareStatement("DELETE FROM Step_has_Child WHERE child_id = ?;");
 			statement.setInt(1, childID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() < 0) {
 				return false;
 			}
 
 			// remove child
 			statement = con.prepareStatement("DELETE FROM Child WHERE child_id = ?;");
 			statement.setInt(1, childID);
-			if(statement.execute() != true) {
+			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
 			// remove user
