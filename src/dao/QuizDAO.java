@@ -15,7 +15,7 @@ import model.quiz.Quiz;
 // TODO: Add log messages at queries
 public class QuizDAO extends DataAccesObject {
 	
-	public QuizDAO() throws Exception {
+	public QuizDAO() {
 		super();
 	}
 	
@@ -25,9 +25,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param mentorId
 	 * @return A list with all the Quizes of Mentor
-	 * @throws SQLException
 	 */
-	public List<Quiz> getAllQuizesByMentor(int mentorId) throws SQLException {
+	public List<Quiz> getAllQuizesByMentor(int mentorId) {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
@@ -74,7 +73,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theQuizes;
 	}	
@@ -83,9 +87,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param childId
 	 * @return A list with all the Quizes of Child
-	 * @throws SQLException
 	 */
-	public List<Quiz> getAllQuizesByChild(int childId) throws SQLException {
+	public List<Quiz> getAllQuizesByChild(int childId){
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
@@ -135,7 +138,12 @@ public class QuizDAO extends DataAccesObject {
 			e.printStackTrace();
 			
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theQuizes;
 	}
@@ -145,9 +153,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param childId
 	 * @param questionId
 	 * @return True if a Question is completed
-	 * @throws SQLException
 	 */
-	private boolean isQuestionCompleted(int childId, int questionId) throws SQLException{
+	private boolean isQuestionCompleted(int childId, int questionId){
 		boolean completed = false;
 		try {
 			statement.clearBatch();
@@ -161,7 +168,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return completed;
 	}
@@ -170,9 +182,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param id
 	 * @return A list of Quizes of a Category
-	 * @throws SQLException
 	 */
-	public List<Quiz> getAllQuizesByCategory(int categoryId) throws SQLException {
+	public List<Quiz> getAllQuizesByCategory(int categoryId){
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
@@ -220,7 +231,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theQuizes;
 	}
@@ -228,9 +244,8 @@ public class QuizDAO extends DataAccesObject {
 	/**
 	 * 
 	 * @return A list with allt he Quizes
-	 * @throws SQLException
 	 */
-	public List<Quiz> getAllQuizes() throws SQLException {
+	public List<Quiz> getAllQuizes() {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
@@ -275,7 +290,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theQuizes;
 	}
@@ -285,9 +305,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param quiz
 	 * @param mentorId
 	 * @return True when a Quiz is succesfully added
-	 * @throws SQLException
 	 */
-	public boolean addQuiz(Quiz quiz, int mentorId) throws SQLException {
+	public boolean addQuiz(Quiz quiz, int mentorId) {
 		boolean succes = false;
 		int quizId = 0;
 		int questionId = 0;
@@ -337,7 +356,12 @@ public class QuizDAO extends DataAccesObject {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -347,9 +371,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param categoryId
 	 * @param quizId
 	 * @return True when a CategoryHasQuiz is succesfully added
-	 * @throws SQLException
 	 */
-	private boolean addCategoryHasQuiz(int categoryId, int quizId) throws SQLException {
+	private boolean addCategoryHasQuiz(int categoryId, int quizId){
 		boolean succes  = false;
 		try {
 			statement = con.prepareStatement("INSERT INTO Category_has_Quiz (category_id,quiz_id) VALUES(?,?)");
@@ -362,7 +385,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -372,9 +400,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param question
 	 * @param quizId
 	 * @return True when a Question is succesfully added
-	 * @throws SQLException
 	 */
-	private int addQuestion(Question question, int quizId) throws SQLException {
+	private int addQuestion(Question question, int quizId) {
 		int questionId  = 0;
 		try {
 			statement = con.prepareStatement("INSERT INTO Question (question,quiz_id) VALUES(?,?)");
@@ -391,7 +418,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return questionId;
 	}
@@ -400,10 +432,9 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param answer
 	 * @param questionId
-	 * @return True when a Answer is succesfully added
-	 * @throws SQLException
+	 * @return True when an Answer is succesfully added
 	 */
-	private boolean addAnswer(Answer answer, int questionId) throws SQLException{
+	private boolean addAnswer(Answer answer, int questionId) {
 		boolean succes  = false;
 		try {
 			statement = con.prepareStatement("INSERT INTO Answer (answer,correct,question_id) VALUES(?,?,?)");
@@ -417,7 +448,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}	
@@ -427,9 +463,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param quizId
 	 * @param childId
 	 * @return True when a Quiz is added succesfully to a Child
-	 * @throws SQLException
 	 */
-	public boolean addQuizToChild(int quizId, int childId) throws SQLException {
+	public boolean addQuizToChild(int quizId, int childId){
 		boolean succes  = false;
 		try {
 			statement = con.prepareStatement("INSERT INTO Child_has_Quiz (child_id,quiz_id) VALUES(?,?)");
@@ -442,7 +477,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -451,9 +491,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param quiz
 	 * @return True when a Quiz is succesfully updated
-	 * @throws SQLException
 	 */
-	public boolean updateQuiz(Quiz quiz) throws SQLException{
+	public boolean updateQuiz(Quiz quiz){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Quiz SET `name` = ?, `description` = ? WHERE quiz_id = ?");
@@ -481,7 +520,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -490,9 +534,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param question
 	 * @return True when a Question is succesfully updated
-	 * @throws SQLException
 	 */
-	private boolean updateQuestion(Question question) throws SQLException{
+	private boolean updateQuestion(Question question){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Question SET question = ? WHERE question_id = ?;");
@@ -505,7 +548,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -514,9 +562,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param answer
 	 * @return True when a Answer is succesfully updated
-	 * @throws SQLException
 	 */
-	private boolean updateAnswer(Answer answer) throws SQLException{
+	private boolean updateAnswer(Answer answer) {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Answer SET answer = ?, correct = ? WHERE answer_id = ?;");
@@ -530,7 +577,12 @@ public class QuizDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -540,9 +592,8 @@ public class QuizDAO extends DataAccesObject {
 	 * @param childId
 	 * @param quizId
 	 * @return True when a Quiz is succesfully deleted from a Child
-	 * @throws SQLException
 	 */
-	public boolean deleteQuizFromChild(int childId,int quizId) throws SQLException{
+	public boolean deleteQuizFromChild(int childId,int quizId){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM Child_has_Quiz WHERE child_id = ? AND quiz_id = ?;");
@@ -555,7 +606,12 @@ public class QuizDAO extends DataAccesObject {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}	
 		return succes;
 	}
@@ -565,9 +621,8 @@ public class QuizDAO extends DataAccesObject {
 	 * 
 	 * @param quizId
 	 * @return True when a Quiz is succesfully deleted
-	 * @throws SQLException
 	 */
-	public boolean deleteQuiz(int quizId) throws SQLException{
+	public boolean deleteQuiz(int quizId) {
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("SELECT question_id FROM Question WHERE quiz_id = ?");
@@ -596,15 +651,28 @@ public class QuizDAO extends DataAccesObject {
 						statement.setInt(1,quizId);					
 						if(statement.executeUpdate() > 0){
 							succes = true;
+						} else {
+							return false;
 						}
+					} else{
+						return false;
 					}
+				}else {
+					return false;
 				}
+			}else {
+				return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Coudn't add a new question");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}		
 		return succes;
 	}
