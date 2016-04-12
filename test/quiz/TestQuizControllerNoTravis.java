@@ -1,20 +1,13 @@
 package quiz;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import com.google.gson.Gson;
-
 import controller.QuizController;
-import dao.QuizDAO;
 import model.category.Category;
 import model.quiz.Answer;
 import model.quiz.Question;
@@ -29,7 +22,6 @@ public class TestQuizControllerNoTravis {
 	private Answer answer;
 	private Mentor mentor;
 	private Child child;
-	private Gson gson;
 	private QuizController quizController = new QuizController();
 	
 	@Before
@@ -61,26 +53,26 @@ public class TestQuizControllerNoTravis {
 	}
 	
 	@Test
-	public void testGetAllQuizes() throws Exception{
+	public void testGetAllQuizes(){
 		String allQuizes = quizController.getAllQuizes();
 		assertTrue(allQuizes.length() > 0 && !allQuizes.isEmpty() && !allQuizes.equals("Er zijn geen quizes."));	
 	}
 	
 	@Test
-	public void testGetAllQuizesByCategory() throws Exception{		
-		String allQuizes = quizController.getAllQuizesByCategory("1");
+	public void testGetAllQuizesByCategory(){		
+		String allQuizes = quizController.getAllQuizesByCategory(1);
 		assertTrue(allQuizes.length() > 0 && !allQuizes.isEmpty()&& !allQuizes.equals("Er zijn geen quizes."));	
 	}
 	
 	@Test
-	public void testGetAllQuizesByMentor() throws Exception{		
-		String allQuizes = quizController.getAllQuizesByChild("1");
+	public void testGetAllQuizesByMentor(){		
+		String allQuizes = quizController.getAllQuizesByChild(1);
 		assertTrue(allQuizes.length() > 0 && !allQuizes.isEmpty() && !allQuizes.equals("Er zijn geen quizes."));		
 	}
 	
 	@Test
-	public void testGetAllQuizesByChild() throws Exception{		
-		String allQuizes = quizController.getAllQuizesByChild("1");
+	public void testGetAllQuizesByChild(){		
+		String allQuizes = quizController.getAllQuizesByChild(1);
 		assertTrue(allQuizes.length() > 0 && !allQuizes.isEmpty() && !allQuizes.equals("Er zijn geen quizes."));	
 	}	
 	/*
