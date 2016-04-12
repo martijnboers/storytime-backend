@@ -57,14 +57,11 @@ public class UserDAO extends DataAccesObject {
 			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(theUser.getPassword()));
 			statement.setString(3, theUser.getProfilePicture());
 			statement.setString(4, theUser.getName());
-			if(statement.execute() != true) {
-				return 0;
-			}
+			statement.executeUpdate();
+			
 			ResultSet generatedKey = statement.getGeneratedKeys();
-			while(generatedKey.next())
-			{
-				id = generatedKey.getInt(1);
-			}
+			generatedKey.next();
+			id = generatedKey.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR,"", "Couldn't add user");
