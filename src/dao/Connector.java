@@ -51,7 +51,7 @@ public class Connector {
 	 * @throws MissingPropertiesFile
 	 */
 	public Connector(DbConfiguration _config) throws IOException, DatabaseException, MissingPropertiesFile {
-		Logger log = Logger.getInstance();
+		log = Logger.getInstance();
 		dbProp = new DatabaseProperties();
 		config = (_config == null) ? dbProp.getPropValues() : _config;
 

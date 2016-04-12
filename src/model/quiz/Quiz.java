@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.category.Category;
-import model.user.Child;
 import model.user.Mentor;
 
 public class Quiz {

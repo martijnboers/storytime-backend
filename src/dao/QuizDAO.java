@@ -136,7 +136,6 @@ public class QuizDAO extends DataAccesObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
 		} finally {
 			try {
 				statement.close();
@@ -171,7 +170,6 @@ public class QuizDAO extends DataAccesObject {
 			try {
 				statement.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -616,7 +614,6 @@ public class QuizDAO extends DataAccesObject {
 		return succes;
 	}
 	
-	// TODO: Split in little functions? (Add else)
 	/**
 	 * 
 	 * @param quizId
@@ -631,37 +628,17 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			result.next();
 			int questionId = result.getInt(1);
-			statement.clearBatch();
 			
-			statement = con.prepareStatement("DELETE FROM Answer WHERE Answer.question_id = ?;");
-			statement.setInt(1, questionId);
-			
-			if(statement.executeUpdate() > 0){
+			if(deleteAnswer(questionId) && deleteQuestions(questionId) && deleteCategoryHasQuiz(quizId)){
 				statement.clearBatch();
-				statement = con.prepareStatement("DELETE FROM Question WHERE Question.question_id = ?;");
-				statement.setInt(1, questionId);
-				if(statement.executeUpdate() > 0){
-					statement.clearBatch();
-					statement = con.prepareStatement("DELETE FROM Category_has_Quiz WHERE Category_has_Quiz.quiz_id = ?;");
-					statement.setInt(1, quizId);
-					
-					if(statement.executeUpdate() > 0){
-						statement.clearBatch();
-						statement = con.prepareStatement("DELETE FROM Quiz WHERE Quiz.quiz_id = ?");
-						statement.setInt(1,quizId);					
-						if(statement.executeUpdate() > 0){
-							succes = true;
-						} else {
-							return false;
-						}
-					} else{
-						return false;
-					}
-				}else {
-					return false;
+				statement = con.prepareStatement("DELETE FROM Quiz WHERE Quiz.quiz_id = ?");
+				statement.setInt(1,quizId);					
+				if(statement.executeUpdate() > 0) {
+					succes = true;
 				}
-			}else {
-				return false;
+				succes = false; 
+			} else {
+				succes = false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -674,6 +651,69 @@ public class QuizDAO extends DataAccesObject {
 				e.printStackTrace();
 			}
 		}		
+		return succes;
+	}
+	
+	private boolean deleteAnswer(int questionId) {
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("DELETE FROM Answer WHERE Answer.question_id = ?;");
+			statement.setInt(1, questionId);
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return succes;
+	}
+	
+	private boolean deleteQuestions(int questionId) {
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("DELETE FROM Question WHERE Question.question_id = ?;");
+			statement.setInt(1, questionId);
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return succes;
+	}
+	
+	private boolean deleteCategoryHasQuiz(int quizId) {
+		boolean succes = false;
+		try {
+			statement = con.prepareStatement("DELETE FROM Category_has_Quiz WHERE Category_has_Quiz.quiz_id = ?;");
+			statement.setInt(1, quizId);
+			if(statement.executeUpdate() >= 1) {
+				succes = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
 		return succes;
 	}
 	

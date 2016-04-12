@@ -17,7 +17,6 @@ public class QuizController {
 		try {
 			quizDAO = new QuizDAO();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

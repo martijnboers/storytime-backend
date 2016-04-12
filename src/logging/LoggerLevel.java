@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import exceptions.MissingPropertiesFile;
-import init.StartServer;
 
 /**
  * @author martijn

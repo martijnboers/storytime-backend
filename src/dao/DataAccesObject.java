@@ -34,7 +34,6 @@ public class DataAccesObject {
 		try {
 			con = ConnectorFactory.getConnection();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

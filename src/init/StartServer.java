@@ -19,20 +19,17 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import controller.QuizController;
 import logging.Level;
 import logging.Logger;
 
 /**
- * @author martijn
  * 
- *         Use this file to start server
- *
+ * Use this file to start server
+ * @author martijn
  */
 public class StartServer {
 
-	/** TODO: Make parameters as small as possible because GSON objects
-	 *  e.g. User user -> int user_id
+	/** 
 	 * 
 	 * @param args
 	 * @throws Exception
