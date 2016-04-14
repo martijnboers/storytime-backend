@@ -79,11 +79,11 @@ public class CategoryDAO extends DataAccesObject {
 	public List<Category> getCategoriesByRoadmap(Roadmap roadmap) {
 		List<Category> theCategories = new ArrayList<Category>();
 		try {
-			statement = con.prepareStatement("SELECT * FROM `Category_has_Roadmap` WHERE Category_has_Roadmap.roadmap_id = ?");
+			statement = con.prepareStatement("SELECT Category_has_Roadmap.category_id FROM `Category_has_Roadmap` WHERE Category_has_Roadmap.roadmap_id = ?");
 			statement.setInt(1, roadmap.getId());
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Category category = getCategoryById(result.getInt("cagetory_id"));
+				Category category = getCategoryById(result.getInt("category_id"));
 				if (!theCategories.contains(category)) {
 					theCategories.add(category);
 				}
@@ -112,7 +112,7 @@ public class CategoryDAO extends DataAccesObject {
 			statement = con.prepareStatement("INSERT INTO Category (category_id, name) VALUES (NULL, ?);");
 			statement.setString(1, category.getName());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
@@ -140,7 +140,7 @@ public class CategoryDAO extends DataAccesObject {
 			statement = con.prepareStatement("UPDATE Category SET name = ? WHERE Category.category_id = ?;");
 			statement.setInt(2, category.getCategoryId());
 			statement.setString(1, category.getName());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
@@ -168,7 +168,7 @@ public class CategoryDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("DELETE FROM Category WHERE Category.category_id = ?");
 			statement.setInt(1, category.getCategoryId());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = deleteCategoryHasQuiz(category) && deleteCategoryHasRoadmap(category);
 			}
 		} catch (SQLException e) {
@@ -195,7 +195,7 @@ public class CategoryDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("DELETE FROM `storytime`.`Category_has_Quiz` WHERE `Category_has_Quiz`.`category_id` = ?");
 			statement.setInt(1, category.getCategoryId());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
@@ -222,7 +222,7 @@ public class CategoryDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("DELETE FROM `storytime`.`Category_has_Roadmap` WHERE `Category_has_Roadmap`.`category_id` = ?");
 			statement.setInt(1, category.getCategoryId());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {

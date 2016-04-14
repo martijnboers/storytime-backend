@@ -117,7 +117,7 @@ public class AchievementDAO extends DataAccesObject {
 			statement.setString(1, achievement.getName());
 			statement.setDouble(2, achievement.getPoints());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
@@ -148,7 +148,7 @@ public class AchievementDAO extends DataAccesObject {
 			statement.setDouble(2, achievement.getPoints());
 			statement.setInt(3, achievement.getId());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
@@ -176,7 +176,7 @@ public class AchievementDAO extends DataAccesObject {
 			statement = con.prepareStatement("DELETE FROM Achievement WHERE Achievement.achievement_id = ?");
 			statement.setInt(1, achievement.getId());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = resetAchievementInRoadmap(achievement);;
 			}
 		} catch (SQLException e) {
@@ -202,7 +202,7 @@ public class AchievementDAO extends DataAccesObject {
 		try {
 			statement = con.prepareStatement("UPDATE `Roadmap` SET `achievement_id` = NULL WHERE `achievement_id` = ?");
 			statement.setInt(1, achievement.getId());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
