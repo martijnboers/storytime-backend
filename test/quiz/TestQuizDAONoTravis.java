@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import dao.QuizDAO;
+import dao.UserDAO;
 import model.category.Category;
 import model.quiz.Answer;
 import model.quiz.Question;
@@ -25,15 +26,16 @@ public class TestQuizDAONoTravis {
 	private Answer answer;
 	private Mentor mentor;
 	private Child child;
-	private QuizDAO quizDAO;
+	private QuizDAO quizDAO = new QuizDAO();
+	private UserDAO userDAO = new UserDAO();
 	
 	@Before
 	public void initObjects(){
 		quiz = new Quiz("testJUnit","Een omschrijving voor dit");
 		child = new Child();
-		child.setChildId(2);
+		child.setChildId(userDAO.getLatestIdChild());
 		mentor = new Mentor("email@email.com", "username", "password", "picture", "naam");
-		mentor.setMentorId(1);
+		mentor.setMentorId(userDAO.getLatestIdMentor());
 		quiz.setMentor(mentor);	
 		quiz.setCompleted(false);
 		
@@ -56,61 +58,52 @@ public class TestQuizDAONoTravis {
 	}
 	
 	@Test
-	public void testGetAllQuizes() throws Exception{		
-		quizDAO = new QuizDAO();
+	public void testGetAllQuizes(){		
 		List<Quiz> theQuizes = quizDAO.getAllQuizes();
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);
 	}
 	
 	@Test
-	public void testGetAllQuizesByCategory() throws Exception{		
-		quizDAO = new QuizDAO();
+	public void testGetAllQuizesByCategory(){		
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByCategory(1);
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);
 	}
 	
 	@Test
-	public void testGetAllQuizesByMentor() throws Exception{		
-		quizDAO = new QuizDAO();
+	public void testGetAllQuizesByMentor(){		
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByMentor(1);
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);	}
 	
 	@Test
-	public void testGetAllQuizesByChild() throws Exception{		
-		quizDAO = new QuizDAO();
+	public void testGetAllQuizesByChild(){		
 		List<Quiz> theQuizes = quizDAO.getAllQuizesByChild(child.getChildId());
 		assertTrue(!theQuizes.isEmpty() && theQuizes.size() > 0);	}	
 	
 	@Test
-	public void testAddQuiz() throws Exception{		
-		quizDAO = new QuizDAO();			
+	public void testAddQuiz(){		
 		assertTrue(quizDAO.addQuiz(quiz, mentor.getMentorId()));	}
 	
 	@Test
-	public void testAddQuizToChild() throws Exception{
-		quizDAO = new QuizDAO();
+	public void testAddQuizToChild() {
 		assertTrue(quizDAO.addQuizToChild(1,child.getChildId()));
 	}
 	
 	@Test
-	public void testUpdateQuiz() throws Exception{
-		quizDAO = new QuizDAO();
+	public void testUpdateQuiz() {
 		quiz.setQuizId(1);
 		question.setQuestionId(1);
 		answer.setAnswerId(1);
-		quiz.setDescription("Het werk nu goed");
+		quiz.setDescription("Het werk nu super goed");
 		assertTrue(quizDAO.updateQuiz(quiz));
 	}
 	
 	@Test
-	public void testxDeleteQuizFromChild() throws Exception{
-		quizDAO = new QuizDAO();
-		assertTrue(quizDAO.deleteQuizFromChild(child.getChildId(), 1));}
+	public void testxDeleteQuizFromChild(){
+		assertTrue(quizDAO.deleteQuizFromChild(child.getChildId(), 1));
+	}
 	
 	@Test
-	public void testzDeleteQuiz() throws Exception{
-		quizDAO = new QuizDAO();
-		int quizId = quizDAO.getLatestIdQuestion();
-		assertTrue(quizDAO.deleteQuiz(quizId));}
-	
+	public void testzDeleteQuiz(){
+		assertTrue(quizDAO.deleteQuiz(quizDAO.getLatestIdQuestion()));
+	}
 }

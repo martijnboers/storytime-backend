@@ -9,6 +9,12 @@ public class Achievement {
 	public Achievement() {
 	}
 
+	public Achievement(String name, double points) {
+		this.name = name;
+		this.points = points;
+	}
+	
+	
 	public Achievement(int id, String name, double points) {
 		this.id = id;
 		this.name = name;

@@ -30,7 +30,11 @@ public class DataAccesObject {
 	protected Logger log = Logger.getInstance();
 	protected Connection con;
 
-	public DataAccesObject() throws Exception {
-		con = ConnectorFactory.getConnection();
+	public DataAccesObject() {
+		try {
+			con = ConnectorFactory.getConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

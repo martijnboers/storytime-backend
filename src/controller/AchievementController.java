@@ -15,7 +15,6 @@ public class AchievementController {
 
 	protected Json json = new Json();
 	
-	// TODO: Kan deze logic
 	public AchievementController() {
 		try {
 			acievementDAO = new AchievementDAO();
@@ -27,12 +26,7 @@ public class AchievementController {
 	public String getAllAchievements() {
 		Gson gson = new Gson();
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-		try {
 			acievementDAO.getAllAchievements();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return json.createJson(State.ERROR, e.getMessage());
-		}
 		if(theAchievements != null && !theAchievements.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theAchievements));
 		}

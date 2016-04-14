@@ -1,14 +1,9 @@
 package controller;
 
-import java.sql.SQLException;
-
 import org.json.simple.JSONObject;
 
 import dao.SessionManagementDAO;
 import dao.UserDAO;
-import exceptions.DatabaseException;
-import logging.Level;
-import logging.Logger;
 import model.State;
 import model.user.Child;
 import model.user.Mentor;
@@ -16,38 +11,25 @@ import model.user.User;
 
 public class UserController {
 	UserDAO userDAO;
-	private Logger logger = Logger.getInstance();
 	Json json = new Json();
 
-	public UserController() throws Exception {
-		try {
-			userDAO = new UserDAO();
-		} catch(SQLException e) {
-			
-		}
+	public UserController(){
+		userDAO = new UserDAO();
 	}
 
 	public String addMentor(Mentor theMentor) {
 		if (userExists(theMentor.getUsername())) {
 			return json.createJson(State.ERROR, "User bestaat al");
 		}
-		try {
-			userDAO.addMentor(theMentor);
-		} catch (SQLException e) {
-			return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
-		} catch (DatabaseException dE) {
-			return json.createJson(State.ERROR, "Er is iets fout gegaan met de mentor toevoegen");
+		if(userDAO.addMentor(theMentor)){
+			return json.createJson(State.PASSED, "Succesvol geregistreerd");
 		}
-		return json.createJson(State.PASSED, "Succesvol geregistreerd");
+		return json.createJson(State.ERROR, "Registreren is niet gelukt");
 	}
 
 	public boolean userExists(String username) {
-		try {
-			if (userDAO.userExists(username)) {
-				return true;
-			}
-		} catch (DatabaseException | SQLException e) {
-			e.printStackTrace();
+		if (userDAO.userExists(username)) {
+			return true;
 		}
 		return false;
 	}
@@ -86,18 +68,14 @@ public class UserController {
 
 			return json.nestedJson(State.PASSED, userInfo);
 		}
-
-		return json.createJson(State.ERROR,
-				"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens");
+		return json.createJson(State.ERROR, "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens");
 	}
 
-	public byte[] getProfilePicture(User user) {
-		try {
-			return userDAO.getProfilePicture(user);
-		} catch (DatabaseException | SQLException e) {
-			e.printStackTrace();
+	public byte[] getProfilePicture(User user) throws Exception {
+		byte[] profilePicture  = userDAO.getProfilePicture(user);
+		if(profilePicture.length > 0){
+			return profilePicture; 
 		}
-		return null;
+		throw new Exception("Kan profielfoto niet laden");
 	}
-
 }

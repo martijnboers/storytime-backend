@@ -146,7 +146,7 @@ public class UserRequest extends ViewSuper {
     @GET
     @Produces("image/png")
     @Path("/profilepic/{id}")
-    public byte[] getProfilePicture(@PathParam("id") int id) throws SQLException, InvalidTokenException {
+    public byte[] getProfilePicture(@PathParam("id") int id) throws Exception {
         return userController.getProfilePicture(session.getUserFromId(id));
     }
 }

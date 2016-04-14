@@ -10,14 +10,27 @@ public class Step {
 
 	public Step() {
 	}
-
+	
+	public Step(int orderID, String name, String description) {
+		this.orderID = orderID;
+		this.name = name;
+		this.description = description;
+	}
+	
+	public Step(int orderID, String name, String description, boolean completed) {
+		this.orderID = orderID;
+		this.name = name;
+		this.description = description;
+		this.completed = completed;
+	}
+	
 	public Step(int id, int orderID, String name, String description) {
 		this.id = id;
 		this.orderID = orderID;
 		this.name = name;
 		this.description = description;
 	}
-	
+
 	public Step(int id, int orderID, String name, String description, boolean completed) {
 		this.id = id;
 		this.orderID = orderID;

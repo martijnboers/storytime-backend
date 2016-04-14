@@ -12,16 +12,15 @@ import model.roadmap.Achievement;
 public class AchievementDAO extends DataAccesObject {
 	private PreparedStatement statement;
 
-	public AchievementDAO() throws Exception {
+	public AchievementDAO() {
 		super();
 	}
 	
 	/**
 	 * 
 	 * @return List with all the achievements
-	 * @throws SQLException
 	 */
-	public List<Achievement> getAllAchievements() throws SQLException {
+	public List<Achievement> getAllAchievements(){
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 		try {
 			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points FROM Achievement");
@@ -35,7 +34,12 @@ public class AchievementDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theAchievements;
 	}
@@ -44,9 +48,8 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param child_id
 	 * @return List with all the possible achievements of a child
-	 * @throws SQLException
 	 */
-	public List<Achievement> getAllAchievementsByChild(int child_id) throws SQLException {
+	public List<Achievement> getAllAchievementsByChild(int child_id){
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
 		try {
 			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points"
@@ -66,7 +69,12 @@ public class AchievementDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return theAchievements;
 	}
@@ -75,9 +83,8 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param achievement_id
 	 * @return An achievement with the achievement_id that is given
-	 * @throws SQLException
 	 */
-	public Achievement getAchievementsById(int achievement_id) throws SQLException {
+	public Achievement getAchievementsById(int achievement_id){
 		Achievement achievement = new Achievement();
 		try {
 			statement = con.prepareStatement("SELECT Achievement.achievement_id, Achievement.name, Achievement.points FROM Achievement WHERE Achievement.achievement_id = ?;");
@@ -88,7 +95,12 @@ public class AchievementDAO extends DataAccesObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return achievement;
 	}
@@ -97,23 +109,28 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param achievement
 	 * @return True if a achievement is added, false is something failed.
-	 * @throws SQLException
 	 */
-	public boolean addAchievement(Achievement achievement) throws SQLException {
+	public boolean addAchievement(Achievement achievement){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("INSERT INTO Achievement (`achievement_id` , `name` , `points`) VALUES (NULL, ?, ?);");
 			statement.setString(1, achievement.getName());
 			statement.setDouble(2, achievement.getPoints());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Adding Achievement went wrong");
 		} finally {
-			statement.close();
+			try {
+				
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -122,9 +139,8 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param achievement
 	 * @return True if a achievement is updated, false is something failed.
-	 * @throws SQLException
 	 */
-	public boolean updateAchievement(Achievement achievement) throws SQLException {
+	public boolean updateAchievement(Achievement achievement){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE Achievement SET name = ?, points = ? WHERE Achievement.achievement_id = ?;");
@@ -132,14 +148,19 @@ public class AchievementDAO extends DataAccesObject {
 			statement.setDouble(2, achievement.getPoints());
 			statement.setInt(3, achievement.getId());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Updating Achievement went wrong");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -148,22 +169,25 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param achievement
 	 * @return True if a achievement is deleted, false is something failed.
-	 * @throws SQLException
 	 */
-	public boolean deleteAchievement(Achievement achievement) throws SQLException {
+	public boolean deleteAchievement(Achievement achievement){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("DELETE FROM Achievement WHERE Achievement.achievement_id = ?");
 			statement.setInt(1, achievement.getId());
 			
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = resetAchievementInRoadmap(achievement);;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Deleting Achievement went wrong");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}
@@ -172,21 +196,25 @@ public class AchievementDAO extends DataAccesObject {
 	 * 
 	 * @param achievement
 	 * @return True if all achievement_id are deleted, false is something failed.
-	 * @throws SQLException
 	 */
-	private boolean resetAchievementInRoadmap(Achievement achievement) throws SQLException {
+	private boolean resetAchievementInRoadmap(Achievement achievement){
 		boolean succes = false;
 		try {
 			statement = con.prepareStatement("UPDATE `Roadmap` SET `achievement_id` = NULL WHERE `achievement_id` = ?");
 			statement.setInt(1, achievement.getId());
-			if(statement.execute() == true) {
+			if(statement.executeUpdate() > 0) {
 				succes = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.out(Level.ERROR, "", "Resetting achievement_id went wrong");
 		} finally {
-			statement.close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
 		}
 		return succes;
 	}

@@ -19,6 +19,11 @@ public class Roadmap {
 	public Roadmap() {
 	}
 
+	public Roadmap(String nm, String description) {
+		this.name = nm;
+		this.description = description;
+	}
+	
 	public Roadmap(int id, String nm, String description) {
 		this.id = id;
 		this.name = nm;
