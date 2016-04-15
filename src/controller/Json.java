@@ -16,10 +16,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -30,7 +29,7 @@ import model.State;
  *
  *         Class for creating JSON objects with the same format so it can be
  *         easily parsed in APEX
- *         
+ * 
  *         TODO: Refactor to GSON
  */
 public class Json {
@@ -74,5 +73,19 @@ public class Json {
 			e.printStackTrace();
 		}
 		return _json.toString();
+	}
+
+	
+	
+	public String parseJsonKeyword(String jsonInput, String keyword) {
+		JSONParser jsonParser = new JSONParser();
+		try {
+			JSONObject temp = (JSONObject) jsonParser.parse(jsonInput);
+			return (String) temp.get(keyword);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

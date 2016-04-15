@@ -142,6 +142,13 @@ public class UserRequest extends ViewSuper {
     public String logout(@HeaderParam("token") String token) throws InvalidTokenException, SQLException {
         return sec.logout(session.getUserFromToken(token));
     }
+    
+    @POST
+    @Path("/forget")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String forget(String credentials) throws JsonSyntaxException, SQLException {
+        return userController.forgetPassword(credentials);
+    }
 
     @GET
     @Produces("image/png")
