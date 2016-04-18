@@ -132,7 +132,7 @@ public class UserRequest extends ViewSuper {
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
-    public String login(String credentials) throws JsonSyntaxException, SQLException {
+    public String login(String credentials) throws Exception {
         return sec.login(gson.fromJson(credentials, Credentials.class));
     }
 

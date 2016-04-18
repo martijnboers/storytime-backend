@@ -35,6 +35,7 @@ import model.user.User;
 public class Security {
 	private SessionManagementDAO session;
 	protected Json json = new Json();
+	private UserController user = new UserController();
 	
 	public Security() throws Exception{
 		session = new SessionManagementDAO();
@@ -49,18 +50,17 @@ public class Security {
 		return escapeHtml4(in);
 	}
 	
-	public String login(Credentials cred) throws SQLException {
+	public String login(Credentials cred) throws Exception {
 		String token = session.Login(cred);
 		if (token != null) {
-			return json.createJson(State.PASSED, token);
+			return  user.getUserInfo(token);
 		} else {
 			return json.createJson(State.ERROR, "Verkeerde inloggegevens");
 		}
 	}
 	
 	public String logout(User user) throws SQLException {
-		boolean loggedout = session.logout(user);
-		if (loggedout) {
+		if (session.logout(user)) {
 			return json.createJson(State.PASSED, "Gebruiker is uitgelogd");
 		} else {
 			return json.createJson(State.ERROR, "Er is iets mis gegaan");

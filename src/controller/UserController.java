@@ -58,6 +58,7 @@ public class UserController {
 			userInfo.put("Username", c.getUsername());
 			userInfo.put("Birthday", c.getDateOfBirth());
 			userInfo.put("Gender", c.getGender());
+			userInfo.put("Token", token);
 
 			return json.nestedJson(State.PASSED, userInfo);
 		} else if (m != null) {
@@ -65,6 +66,7 @@ public class UserController {
 			userInfo.put("Name", m.getName());
 			userInfo.put("Username", m.getUsername());
 			userInfo.put("Email", m.getEmail());
+			userInfo.put("Token", token);
 
 			return json.nestedJson(State.PASSED, userInfo);
 		}
