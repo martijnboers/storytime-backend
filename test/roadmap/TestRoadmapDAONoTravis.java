@@ -34,7 +34,7 @@ public class TestRoadmapDAONoTravis {
 		roadmap = new Roadmap("JRoadmapName", "JRoadmapDescription");
 		roadmap.setMentor(mentor);
 		roadmap.setId(roadmapDAO.getLatestIdRoadmap());
-
+		
 		mentor = new Mentor("email@email.com", "username", "password", "picture", "naam");
 		mentor.setMentorId(userDAO.getLatestIdMentor());
 		roadmap.setMentor(mentor);
@@ -49,8 +49,6 @@ public class TestRoadmapDAONoTravis {
 		
 		step1 = new Step(1, "JStep1", "JStepDescription1");
 		step2 = new Step(2, "JStep2", "JStepDescription1");
-		step1.setId(1);
-		step2.setId(2);
 		roadmap.addStep(step1);
 		roadmap.addStep(step2);
 		
@@ -77,7 +75,7 @@ public class TestRoadmapDAONoTravis {
 	}
 	
 	@Test
-	public void testGetAllRoadmapsByChild() {
+	public void testxGetAllRoadmapsByChild() {
 		List<Roadmap> theRoadmaps = roadmapDAO.getAllRoadmapsByChild(child);
 		assertTrue(!theRoadmaps.isEmpty() && theRoadmaps.size() > 0);
 	}	
@@ -89,18 +87,16 @@ public class TestRoadmapDAONoTravis {
 	
 	@Test
 	public void testaddRoadmapHasChild() {
-		roadmap.setId(roadmapDAO.getLatestIdRoadmap());
 		assertTrue(roadmapDAO.addRoadmapHasChild(roadmap, child));
 	}
 	
 	@Test
 	public void testaddRoadmapHasCategory() {
-		roadmap.setId(roadmapDAO.getLatestIdRoadmap() );
 		assertTrue(roadmapDAO.addRoadmapHasCategory(roadmap, category));
 	}
 	
 	@Test
-	public void testUpdateRoadmap() {
+	public void testyUpdateRoadmap() {
 		step1.setName("JUpdate");
 		roadmap.setDescription("JRoadmapDescriptionUpdate");
 		roadmap.setId(1);

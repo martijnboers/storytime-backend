@@ -33,7 +33,7 @@ public class UserController {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Provides information about the user, wheter this is a Child or Mentor and
 	 * the path the UI should point to
@@ -79,5 +79,21 @@ public class UserController {
 			return profilePicture; 
 		}
 		throw new Exception("Kan profielfoto niet laden");
+	}
+	
+	/**
+	 * Request a password reset
+	 * 
+	 * @Todo NOT FINISHED
+	 * 
+	 * @param token
+	 * @return JSON String
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public String forgetPassword(String credentials) {
+		Json jSon = new Json();
+		String password =jSon.parseJsonKeyword(credentials, "email");
+		return null;
 	}
 }

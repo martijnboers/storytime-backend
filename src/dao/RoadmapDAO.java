@@ -273,6 +273,7 @@ public class RoadmapDAO extends DataAccesObject{
 	public boolean addRoadmapHasChild(Roadmap roadmap, Child child) {
 		boolean succes = false;
 		try {
+			System.out.println(roadmap.getId() +" - "+ child.getChildId());
 			statement = con.prepareStatement("INSERT INTO `storytime`.`Child_has_Roadmap` (`child_id`, `roadmap_id`) VALUES (?, ?);");
 			statement.setInt(1, child.getChildId());
 			statement.setInt(2, roadmap.getId());
@@ -493,6 +494,7 @@ public class RoadmapDAO extends DataAccesObject{
 	private boolean addStepHasChild(Step step, Child child) {
 		boolean succes = false;
 		try {
+			System.out.println(step.getId() +" - "+ child.getChildId());
 			statement = con.prepareStatement("INSERT INTO `storytime`.`Step_has_Child` (`step_id`, `child_id`, `completed`) VALUES (?, ?, NULL);");
 			statement.setInt(1, step.getId());
 			statement.setInt(2, child.getChildId());
