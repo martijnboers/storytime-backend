@@ -16,7 +16,6 @@ package view;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,12 +28,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import model.State;
-import controller.Json;
-import dao.Connector;
+import model.system.State;
 import dao.ConnectorFactory;
-import exceptions.DatabaseException;
-import exceptions.MissingPropertiesFile;
 
 /**
  * @author martijn

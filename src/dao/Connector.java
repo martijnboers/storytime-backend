@@ -23,7 +23,7 @@ import exceptions.DatabaseException;
 import exceptions.MissingPropertiesFile;
 import logging.Level;
 import logging.Logger;
-import model.DbConfiguration;
+import model.system.DbConfiguration;
 
 /**
  * @author martijn

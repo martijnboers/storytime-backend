@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import dao.AchievementDAO;
-import model.State;
+import model.system.State;
 import model.roadmap.Achievement;
 
 public class AchievementController {

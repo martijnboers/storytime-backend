@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
 import dao.QuizDAO;
-import model.State;
+import model.system.State;
 import model.quiz.Quiz;
 
 
@@ -95,7 +95,7 @@ public class QuizController {
 		Quiz quiz = gson.fromJson(input, Quiz.class);
 		
 		if(quizDAO.updateQuiz(quiz)){
-			return json.createJson(State.PASSED, "Quiz is geüpdated");
+			return json.createJson(State.PASSED, "Quiz is geï¿½pdated");
 		}
 		return json.createJson(State.ERROR, "Er is iets fout gegaan met het updaten van de Quiz");	
 	}

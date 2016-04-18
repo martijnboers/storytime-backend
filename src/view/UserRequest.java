@@ -26,16 +26,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.eclipse.jetty.server.Response;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import controller.Json;
 import controller.UserController;
 import exceptions.InvalidTokenException;
-import model.State;
-import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
 

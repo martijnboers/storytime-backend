@@ -4,15 +4,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import controller.Json;
 import controller.QuizController;
-import model.State;
 import model.category.Category;
 import model.quiz.Answer;
 import model.quiz.Question;

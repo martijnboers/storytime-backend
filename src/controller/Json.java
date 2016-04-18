@@ -16,13 +16,12 @@ package controller;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.List;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import model.State;
+import model.system.State;
 
 /**
  * @author martijn

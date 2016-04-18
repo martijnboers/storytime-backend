@@ -12,13 +12,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package model;
+
+package controller;
+
+import model.quiz.Answer;
+import model.system.FrontendEvent;
+import model.user.Child;
 
 /**
- * @author martijn
- *
+ * Created by martijn on 4/19/16.
  */
-public enum State {
-	ERROR,
-	PASSED
+public class ChatController {
+
+    public String getPolling(Child child, int id) {
+        // TODO
+        return null;
+    }
+
+    public String start(Child child) {
+        return null;
+    }
+
+    public String insertAnswer(Child child, Answer answer) {
+        return null;
+    }
+
+    public boolean addToPollStream(Child child, FrontendEvent event, String message) {
+        return true;
+    }
+
+    public String getQuestion(Child child, int id) {
+        return null;
+    }
 }

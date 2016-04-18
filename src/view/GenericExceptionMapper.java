@@ -21,7 +21,7 @@ import javax.ws.rs.ext.Provider;
 
 import controller.Json;
 import controller.Security;
-import model.State;
+import model.system.State;
 
 /**
  * @author martijn
