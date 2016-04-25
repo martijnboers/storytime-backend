@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.util.Random;
 
+import Mail.Mailer;
 import exceptions.DatabaseException;
 // Doei error
 //import exceptions.DatabaseInsertException;
@@ -387,18 +388,21 @@ public class UserDAO extends DataAccesObject {
 
 	public boolean generatePassword(String email) {
 		int mentorId = emailExists(email);
+		String randomToken = randomString();
 		java.util.Date current = new java.util.Date();
 		if (mentorId == -1) {
 			return false;
 		}
 		try {
 			PreparedStatement generateQuery = con.prepareStatement("INSERT INTO  `storytime`.`Password_Token` (`token` ,`date_created`, `mentor_id`)	VALUES (?,  ?, ?);");
-			generateQuery.setString(1, randomString());
+			generateQuery.setString(1, randomToken);
 			generateQuery.setDate(2, new Date(current.getTime()));
 			generateQuery.setInt(3, mentorId);
 		
 			if(generateQuery.executeUpdate() <= 0) {
 				return false;
+			} else {
+				sentPasswordMail(email, randomToken);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -414,6 +418,12 @@ public class UserDAO extends DataAccesObject {
 		return true;
 	}
 	
+	private void sentPasswordMail(String email, String randomToken) {
+		// TODO Auto-generated method stub
+		Mailer m = new Mailer();
+		m.sentPasswordMail(email, randomToken);
+	}
+
 	private String randomString() {
 		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 		StringBuilder sb = new StringBuilder();
