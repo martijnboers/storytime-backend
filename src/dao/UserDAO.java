@@ -3,11 +3,13 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.Random;
 
 import Mail.Mailer;
 import exceptions.DatabaseException;
+import exceptions.MissingPropertiesFile;
 // Doei error
 //import exceptions.DatabaseInsertException;
 import logging.Level;
@@ -421,7 +423,15 @@ public class UserDAO extends DataAccesObject {
 	private void sentPasswordMail(String email, String randomToken) {
 		// TODO Auto-generated method stub
 		Mailer m = new Mailer();
-		m.sentPasswordMail(email, randomToken);
+		try {
+			m.sentPasswordMail(email, randomToken);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MissingPropertiesFile e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private String randomString() {

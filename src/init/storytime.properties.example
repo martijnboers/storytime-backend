@@ -9,6 +9,11 @@ password=
 database=
 port=
 
+mail_address=
+mail_password=
+mail_port=
+mail_host=
+
 #logging:
 # 1 = only critical
 # 2 = crit and error
