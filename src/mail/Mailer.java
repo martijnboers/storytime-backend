@@ -1,4 +1,4 @@
-package Mail;
+package mail;
 //File Name SendEmail.java
 
 import java.io.IOException;
@@ -87,8 +87,8 @@ public class Mailer {
 
 			// Now set the actual message
 			message.setText(
-					"Beste meneer/mevrouw, via deze link kunt u het wachtwoord resetten: https://story.social/forgotpassword/"
-							+ token);
+					"Beste meneer/mevrouw, via deze link kunt u het wachtwoord resetten: https://story.social/#/newpassword/"
+							+ token + "/" + email);
 
 			// Send message
 			Transport.send(message);
