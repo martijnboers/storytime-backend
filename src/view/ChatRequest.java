@@ -3,12 +3,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
@@ -23,19 +23,30 @@ import model.quiz.Answer;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+
+import org.atmosphere.annotation.Broadcast;
+import org.atmosphere.annotation.Suspend;
 
 /**
  * Created by martijn on 4/19/16.
  */
 
 @Path("/chat")
+@Produces("application/json")
 public class ChatRequest extends ViewSuper {
     Logger log = Logger.getInstance();
     ChatController chat = new ChatController();
 
     public ChatRequest() throws Exception {
         log.out(Level.INFORMATIVE, "Chat", "Initializing chat controller");
+    }
+
+    @Broadcast(writeEntity = false)
+    @POST
+    public String broadcast(String message) {
+        return message;
     }
 
     /**
@@ -60,7 +71,6 @@ public class ChatRequest extends ViewSuper {
      */
     @GET
     @Path("/poll/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public String getPolling(@HeaderParam("token") String token, @PathParam("id") int id) throws SQLException, InvalidTokenException {
         return chat.getPolling(session.getChildFromToken(token), id);
     }
@@ -83,7 +93,6 @@ public class ChatRequest extends ViewSuper {
      */
     @POST
     @Path("/answer")
-    @Produces(MediaType.APPLICATION_JSON)
     public String insertNewAnswer(@HeaderParam("token") String token, String json) throws SQLException, InvalidTokenException {
         return chat.insertAnswer(session.getChildFromToken(token), gson.fromJson(json, Answer.class));
     }
@@ -92,6 +101,11 @@ public class ChatRequest extends ViewSuper {
     /**
      * Get the individual question
      *
+     * @param token
+     * @param id
+     * @return
+     * @throws SQLException
+     * @throws InvalidTokenException
      * @api {GET} /chat/question/id Get the question that corresponds with the given id
      * @apiName getQuestion
      * @apiGroup chat
@@ -99,16 +113,9 @@ public class ChatRequest extends ViewSuper {
      * @apiParam {id} Question id
      * @apiSuccessExample MESSAGE: User printable message QUESTION: tobeimplemented id STATE: SUCCEEDED
      * @apiErrorExample MESSAGE: User printable error message, STATE: ERROR
-     *
-     * @param token
-     * @param id
-     * @return
-     * @throws SQLException
-     * @throws InvalidTokenException
      */
     @GET
     @Path("/question/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public String getQuestion(@HeaderParam("token") String token, @PathParam("id") int id) throws SQLException, InvalidTokenException {
         return chat.getQuestion(session.getChildFromToken(token), id);
     }

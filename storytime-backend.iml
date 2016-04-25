@@ -18,6 +18,8 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.2.5.v20141112" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.2.5.v20141112" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:9.2.5.v20141112" level="project" />
+    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jersey.core:jersey-server:2.17" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jersey.core:jersey-common:2.17" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.17" level="project" />
@@ -51,5 +53,13 @@
     <orderEntry type="library" name="Maven: org.mariadb.jdbc:mariadb-java-client:1.1.7" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:platform:3.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-jersey:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-annotations:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-runtime:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.19" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.19" level="project" />
+    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-servlet:1.19" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
   </component>
 </module>
