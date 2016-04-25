@@ -20,12 +20,11 @@ import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.atmosphere.annotation.Broadcast;
+import org.atmosphere.annotation.Suspend;
 import org.eclipse.jetty.util.IO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import model.system.State;
@@ -41,6 +40,20 @@ public class IndexRequest extends ViewSuper {
 
 	public IndexRequest() throws Exception {
 		super();
+	}
+
+	@Suspend
+	@GET
+	public String suspend() {
+		System.out.println("sus");
+		return "";
+	}
+
+	@Broadcast(writeEntity = false)
+	@POST
+	public String broadcast(String message) {
+		System.out.println("broad");
+		return message;
 	}
 
 	@GET

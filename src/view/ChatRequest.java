@@ -22,12 +22,7 @@ import logging.Logger;
 import model.quiz.Answer;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-
-import org.atmosphere.annotation.Broadcast;
-import org.atmosphere.annotation.Suspend;
 
 /**
  * Created by martijn on 4/19/16.
@@ -43,11 +38,7 @@ public class ChatRequest extends ViewSuper {
         log.out(Level.INFORMATIVE, "Chat", "Initializing chat controller");
     }
 
-    @Broadcast(writeEntity = false)
-    @POST
-    public String broadcast(String message) {
-        return message;
-    }
+
 
     /**
      * This can be periodically polled to get next action to be performed, like get next question or start a new
