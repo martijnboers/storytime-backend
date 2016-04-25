@@ -8,3 +8,6 @@ To add test, please add Test to your filename, else maven won't pick it up as a 
 
 ## Documenation
 Documentation can be found at [our docs page](https://docs.story.social/)
+
+## LICENSE
+GPLv3, please see LICENSE

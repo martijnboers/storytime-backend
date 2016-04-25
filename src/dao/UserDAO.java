@@ -3,7 +3,10 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
+import java.util.Random;
 
+import Mail.Mailer;
 import exceptions.DatabaseException;
 // Doei error
 //import exceptions.DatabaseInsertException;
@@ -19,6 +22,36 @@ public class UserDAO extends DataAccesObject {
 
 	private PreparedStatement statement;
 
+	/**
+	 * 
+	 * @param email
+	 * @return mentor ID
+	 */
+	public int emailExists(String email){
+		boolean found = false;
+		int mentorId=-1;
+		try {
+			statement = con.prepareStatement("SELECT mentor_id FROM Mentor WHERE email = ?;");
+			statement.setString(1, email);
+			
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				mentorId = result.getInt("mentor_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.INFORMATIVE, "", "Gebruiker bestaat niet");
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return mentorId;
+	}
+	
 	public boolean userExists(String username){
 		boolean found = false;
 
@@ -351,5 +384,54 @@ public class UserDAO extends DataAccesObject {
 			}
 		}
 		return childId;
+	}
+
+	public boolean generatePassword(String email) {
+		int mentorId = emailExists(email);
+		String randomToken = randomString();
+		java.util.Date current = new java.util.Date();
+		if (mentorId == -1) {
+			return false;
+		}
+		try {
+			PreparedStatement generateQuery = con.prepareStatement("INSERT INTO  `storytime`.`Password_Token` (`token` ,`date_created`, `mentor_id`)	VALUES (?,  ?, ?);");
+			generateQuery.setString(1, randomToken);
+			generateQuery.setDate(2, new Date(current.getTime()));
+			generateQuery.setInt(3, mentorId);
+		
+			if(generateQuery.executeUpdate() <= 0) {
+				return false;
+			} else {
+				sentPasswordMail(email, randomToken);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.ERROR,"", "Couldn't add password token");
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+	
+	private void sentPasswordMail(String email, String randomToken) {
+		// TODO Auto-generated method stub
+		Mailer m = new Mailer();
+		m.sentPasswordMail(email, randomToken);
+	}
+
+	private String randomString() {
+		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < 20; i++) {
+		    char c = chars[random.nextInt(chars.length)];
+		    sb.append(c);
+		}
+		return sb.toString();
 	}
 }
