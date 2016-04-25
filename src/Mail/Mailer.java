@@ -58,6 +58,7 @@ public class Mailer {
 		// Setup mail server
 		properties.put("mail.smtp.port", ec.getPort());
 		properties.put("mail.smtp.host", ec.getHost());
+		properties.put("mail.smtp.ssl.trust", "*");
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
 
