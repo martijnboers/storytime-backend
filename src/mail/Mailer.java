@@ -75,7 +75,7 @@ public class Mailer {
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
-
+			message.setSentDate(new Date());
 			// Set From: header field of the header.
 			message.setFrom(new InternetAddress(from));
 
