@@ -93,7 +93,10 @@ public class UserController {
 	@SuppressWarnings("unchecked")
 	public String forgetPassword(String credentials) {
 		Json jSon = new Json();
-		String password =jSon.parseJsonKeyword(credentials, "email");
-		return null;
+		String email = jSon.parseJsonKeyword(credentials, "email");
+		if (userDAO.generatePassword(email)) {
+			return json.createJson(State.PASSED, "Wachtwoord succesvol opnieuw aangevraag, zie " + email + " voor verdere instructies");
+		}
+		return json.createJson(State.ERROR, "Email bestaat niet");
 	}
 }
