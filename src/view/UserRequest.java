@@ -149,6 +149,13 @@ public class UserRequest extends ViewSuper {
     public String forget(String credentials) throws JsonSyntaxException, SQLException {
         return userController.forgetPassword(credentials);
     }
+    
+    @POST
+    @Path("/updatepassword")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updatepassword(String credentials) throws JsonSyntaxException, SQLException {
+        return userController.updatePassword(credentials);
+    }
 
     @GET
     @Produces("image/png")

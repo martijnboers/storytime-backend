@@ -388,7 +388,7 @@ public class UserDAO extends DataAccesObject {
 		return childId;
 	}
 
-	public boolean generatePassword(String email) {
+	public boolean generatePasswordToken(String email) {
 		int mentorId = emailExists(email);
 		String randomToken = randomString();
 		java.util.Date current = new java.util.Date();
@@ -443,5 +443,40 @@ public class UserDAO extends DataAccesObject {
 		    sb.append(c);
 		}
 		return sb.toString();
+	}
+
+	public boolean updatePassword(String token, String email, String newPassword) {
+		boolean tokenFound = false;
+		try {
+			statement = con.prepareStatement("SELECT token FROM Password_Token WHERE token = ? AND email = ?;");
+			statement.setString(1, token);
+			statement.setString(2, email);
+			
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				tokenFound = true;
+			}
+			if (tokenFound) {
+				PreparedStatement updateStatement = con.prepareStatement("UPDATE User u JOIN Mentor m ON u.user_id = m.user_id WHERE m.email = ? "
+				+ "SET u.password = ?");
+				updateStatement.setString(1, email);
+				updateStatement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(newPassword));
+				if(updateStatement.executeUpdate() < 0) {
+					return false;
+				}
+				return true;		
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.out(Level.INFORMATIVE, "", "Gebruiker bestaat niet");
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR,"", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 }
