@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
@@ -123,5 +125,11 @@ public class UserController {
 			return json.createJson(State.PASSED, "Het kind is succesvol toegevoegd");
 		}
 		return json.createJson(State.ERROR, "Het kind is niet succesvol toegevoegd");
+	}
+
+	public String getChildsFromMentor(Mentor m) {
+		List<Child> childs = userDAO.getChilds(m);
+		Gson g = new Gson();
+		return g.toJson(childs);
 	}
 }
