@@ -84,6 +84,15 @@ public class UserRequest extends ViewSuper {
         return userController.addMentor(gson.fromJson(input, Mentor.class));
     }
 
+    @POST
+    @Consumes("application/json")
+    @Path("/registerchild")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String registerChild(@HeaderParam("token") String token, String input) throws UnknownHostException, SQLException, InvalidTokenException {
+    	Child c = gson.fromJson(input, Child.class);
+    	Mentor m = session.getMentorFromToken(token);
+    	return userController.addChild(c, m);
+    }
     /**
      * @api {get} /user/info returns a mentor or child object based on token
      *

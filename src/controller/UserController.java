@@ -2,6 +2,8 @@ package controller;
 
 import org.json.simple.JSONObject;
 
+import com.google.gson.Gson;
+
 import dao.SessionManagementDAO;
 import dao.UserDAO;
 import model.State;
@@ -114,5 +116,12 @@ public class UserController {
 			return json.createJson(State.PASSED, "Uw wachtwoord is succesvol gewijzigd");
 		}
 		return json.createJson(State.ERROR, "Uw aanvraag is niet juist gevalideerd");
+	}
+
+	public String addChild(Child c, Mentor m) {
+		if (userDAO.addChild(m, c)) {
+			return json.createJson(State.PASSED, "Het kind is succesvol toegevoegd");
+		}
+		return json.createJson(State.ERROR, "Het kind is niet succesvol toegevoegd");
 	}
 }
