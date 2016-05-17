@@ -16,6 +16,7 @@ package view;
 
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,15 +27,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.eclipse.jetty.server.Response;
-
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import controller.Json;
 import controller.UserController;
 import exceptions.InvalidTokenException;
-import model.State;
 import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
@@ -89,6 +87,7 @@ public class UserRequest extends ViewSuper {
     @Path("/registerchild")
     @Produces(MediaType.APPLICATION_JSON)
     public String registerChild(@HeaderParam("token") String token, String input) throws UnknownHostException, SQLException, InvalidTokenException {
+    	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
     	Child c = gson.fromJson(input, Child.class);
     	Mentor m = session.getMentorFromToken(token);
     	return userController.addChild(c, m);
