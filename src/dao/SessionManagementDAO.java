@@ -133,7 +133,7 @@ public class SessionManagementDAO extends DataAccesObject {
                 ResultSet results = mentorStatemtent.executeQuery();
 
                 while (results.next()) {
-                    return new Mentor(results.getInt("user_id"), results.getString("email"),
+                    return new Mentor(results.getInt("mentor_id"), results.getString("email"),
                             results.getString("username"), "", "/account/profilepic/" + results.getInt("user_id"),
                             results.getString("name"));
                 }

@@ -1,6 +1,10 @@
 package controller;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
+
+import com.google.gson.Gson;
 
 import dao.SessionManagementDAO;
 import dao.UserDAO;
@@ -94,9 +98,38 @@ public class UserController {
 	public String forgetPassword(String credentials) {
 		Json jSon = new Json();
 		String email = jSon.parseJsonKeyword(credentials, "email");
-		if (userDAO.generatePassword(email)) {
+		if (userDAO.generatePasswordToken(email)) {
 			return json.createJson(State.PASSED, "Wachtwoord succesvol opnieuw aangevraag, zie " + email + " voor verdere instructies");
 		}
 		return json.createJson(State.ERROR, "Email bestaat niet");
+	}
+
+	/**
+	 * Checks if token is valid and then updates password provided in JSON
+	 * @param credentials
+	 * @return
+	 */
+	public String updatePassword(String credentials) {
+		Json jSon = new Json();
+		String token = jSon.parseJsonKeyword(credentials, "token");
+		String email = jSon.parseJsonKeyword(credentials, "email");
+		String newPassword = jSon.parseJsonKeyword(credentials, "password");
+		if (userDAO.updatePassword(token, email, newPassword)) {
+			return json.createJson(State.PASSED, "Uw wachtwoord is succesvol gewijzigd");
+		}
+		return json.createJson(State.ERROR, "Uw aanvraag is niet juist gevalideerd");
+	}
+
+	public String addChild(Child c, Mentor m) {
+		if (userDAO.addChild(m, c)) {
+			return json.createJson(State.PASSED, "Het kind is succesvol toegevoegd");
+		}
+		return json.createJson(State.ERROR, "Het kind is niet succesvol toegevoegd");
+	}
+
+	public String getChildsFromMentor(Mentor m) {
+		List<Child> childs = userDAO.getChilds(m);
+		Gson g = new Gson();
+		return g.toJson(childs);
 	}
 }

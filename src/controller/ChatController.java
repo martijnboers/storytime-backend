@@ -15,14 +15,23 @@
 
 package controller;
 
+import dao.RoadmapDAO;
 import model.quiz.Answer;
+import model.roadmap.Roadmap;
 import model.system.FrontendEvent;
 import model.user.Child;
+
+import java.util.List;
 
 /**
  * Created by martijn on 4/19/16.
  */
 public class ChatController {
+    private RoadmapDAO roadmapdao;
+
+    public ChatController(){
+        roadmapdao = new RoadmapDAO();
+    }
 
     public String getPolling(Child child, int id) {
         // TODO
@@ -30,6 +39,8 @@ public class ChatController {
     }
 
     public String start(Child child) {
+        List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
+        
         return null;
     }
 

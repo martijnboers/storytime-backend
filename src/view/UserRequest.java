@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,7 @@ package view;
 
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,10 +28,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import controller.UserController;
 import exceptions.InvalidTokenException;
+import model.user.Child;
 import model.user.Credentials;
 import model.user.Mentor;
 
@@ -78,6 +83,26 @@ public class UserRequest extends ViewSuper {
         return userController.addMentor(gson.fromJson(input, Mentor.class));
     }
 
+    @POST
+    @Consumes("application/json")
+    @Path("/registerchild")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String registerChild(@HeaderParam("token") String token, String input) throws UnknownHostException, SQLException, InvalidTokenException {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        Child c = gson.fromJson(input, Child.class);
+        Mentor m = session.getMentorFromToken(token);
+        return userController.addChild(c, m);
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("/loadchilds")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String loadChilds(@HeaderParam("token") String token) throws UnknownHostException, SQLException, InvalidTokenException {
+        Mentor m = session.getMentorFromToken(token);
+        return userController.getChildsFromMentor(m);
+    }
+
     /**
      * @api {get} /user/info returns a mentor or child object based on token
      *
@@ -91,7 +116,7 @@ public class UserRequest extends ViewSuper {
      *
      * @apiErrorExample Error-Response: "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens"
      *
-     * @param input
+     * @param token
      * @return
      * @throws UnknownHostException
      */
@@ -136,12 +161,19 @@ public class UserRequest extends ViewSuper {
     public String logout(@HeaderParam("token") String token) throws InvalidTokenException, SQLException {
         return sec.logout(session.getUserFromToken(token));
     }
-    
+
     @POST
     @Path("/forget")
     @Produces(MediaType.APPLICATION_JSON)
     public String forget(String credentials) throws JsonSyntaxException, SQLException {
         return userController.forgetPassword(credentials);
+    }
+
+    @POST
+    @Path("/updatepassword")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updatepassword(String credentials) throws JsonSyntaxException, SQLException {
+        return userController.updatePassword(credentials);
     }
 
     @GET

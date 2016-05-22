@@ -42,20 +42,6 @@ public class IndexRequest extends ViewSuper {
 		super();
 	}
 
-	@Suspend
-	@GET
-	public String suspend() {
-		System.out.println("sus");
-		return "";
-	}
-
-	@Broadcast(writeEntity = false)
-	@POST
-	public String broadcast(String message) {
-		System.out.println("broad");
-		return message;
-	}
-
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String index() {

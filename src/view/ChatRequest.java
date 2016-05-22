@@ -117,7 +117,7 @@ public class ChatRequest extends ViewSuper {
      * @return Json
      * @throws SQLException
      * @throws InvalidTokenException
-     * @api {GET} /chat/start Start a chat and get the first question and the next id
+     * @api {GET} /chat/start System decides to start Feedback Roadmap or start a new Roadmap
      * @apiName start
      * @apiGroup chat
      * @apiParam {String} Child token for authentication
