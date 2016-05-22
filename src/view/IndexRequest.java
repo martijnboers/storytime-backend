@@ -20,8 +20,6 @@ import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.atmosphere.annotation.Broadcast;
-import org.atmosphere.annotation.Suspend;
 import org.eclipse.jetty.util.IO;
 
 import javax.ws.rs.*;

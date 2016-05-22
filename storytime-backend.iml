@@ -53,13 +53,5 @@
     <orderEntry type="library" name="Maven: org.mariadb.jdbc:mariadb-java-client:1.1.7" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:platform:3.3.0" level="project" />
-    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-jersey:2.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-annotations:2.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-runtime:2.4.3" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.19" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.19" level="project" />
-    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-servlet:1.19" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
   </component>
 </module>
