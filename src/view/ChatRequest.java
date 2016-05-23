@@ -59,14 +59,14 @@ public class ChatRequest extends ViewSuper {
      * @return String with new id and information on session
      * @throws SQLException
      * @throws InvalidTokenException
+     *
      * @api {GET} /chat/poll Info polling on current chat session.
      * @apiName pol
      * @apiGroup chat
      * @apiParam {String} Child token for authentication
      * @apiParam {int} Previous polling token given with last request, keep null for first time connecting
-     * @apiSuccessExample MESSAGE: User printable message ID: New poll id STATE: SUCCEEDED Action: Action to be
-     * performed in front end
-     * @apiErrorExample MESSAGE: User printable error message, STATE: ERROR
+     * @apiSuccess MESSAGE: User printable message ID: New poll id STATE: SUCCEEDED Action: Action to be performed in front end
+     * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @GET
     @Path("/poll/{id}")
@@ -87,8 +87,8 @@ public class ChatRequest extends ViewSuper {
      * @apiGroup chat
      * @apiParam {String} Child token for authentication
      * @apiParam {Answer} int id, String answer, boolean correct
-     * @apiSuccessExample MESSAGE: User printable message ID: Next question id STATE: SUCCEEDED
-     * @apiErrorExample MESSAGE: User printable error message, STATE: ERROR
+     * @apiSuccess MESSAGE: User printable message ID: Next question id STATE: SUCCEEDED
+     * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @POST
     @Path("/answer")
@@ -111,8 +111,8 @@ public class ChatRequest extends ViewSuper {
      * @apiParam {String} Child token for authentication
      * @apiParam {roadmapid} Id of roadmap
      * @apiParam {id} Question id (Emtpy if first)
-     * @apiSuccessExample MESSAGE: User printable message QUESTION: tobeimplemented id STATE: SUCCEEDED
-     * @apiErrorExample MESSAGE: User printable error message, STATE: ERROR
+     * @apiSuccess MESSAGE: User printable message QUESTION: tobeimplemented id STATE: SUCCEEDED
+     * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @GET
     @Path("/question/{roadmapid}/{id}")
@@ -130,9 +130,9 @@ public class ChatRequest extends ViewSuper {
      * @apiName start
      * @apiGroup chat
      * @apiParam {String} Child token for authentication
-     * @apiSuccessExample MESSAGE: User printable message ID: Next question id QUESTION: String question, int questionId, boolean completed
+     * @apiSuccess MESSAGE: User printable message ID: Next question id QUESTION: String question, int questionId, boolean completed
      * private List<Answer> STATE: SUCCEEDED
-     * @apiErrorExample MESSAGE: User printable error message, STATE: ERROR
+     * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @GET
     @Path("/start")

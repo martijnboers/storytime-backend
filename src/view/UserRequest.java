@@ -140,11 +140,11 @@ public class UserRequest extends ViewSuper {
      * @apiError CredentialsMisMatch If the credentials are incorrect.
      *
      *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccess Success-Response:
      *						{ MESSAGE: <token>
      *                    , STATE: "SUCCEEDED" } }
      *
-     * @apiErrorExample Error-Response: { MESSAGE:
+     * @apiError Error-Response: { MESSAGE:
      *                  "Verkeerde inloggegevens" ,
      *                  STATE: "ERROR" } }
      **/
