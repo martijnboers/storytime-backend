@@ -31,7 +31,7 @@ import java.sql.SQLException;
  * <p>
  * 1: Start /chat/polling to see for achievements or other reminders set by controllers while away. <b>Returns ChatEvent</b>. (needs to be persistent/database)
  * 2: (if polling == something) display on screen or start a Feedback Roadmap (check if previous roadmap is completed and if should be awarded)
- * 3: Ask /chat/start for what Roadmap to begin. This will check for recently added roadmaps or picks random roadmap. <b>Returns RoadmapId</b>  (roam for AI).
+ * 3: Ask /chat/start for what Roadmap to begin. This will check for recently added roadmaps or picks random roadmap. <b>Returns RoadmapId</b>  (room for AI).
  * 4: Ask /chat/question what question to display. This consumes a RoadmapId and a QuestionId. If first question call leave empty
  * 5: User interacts with question, submit answer to /chat/answer. Answer can be String or Yes or No <needs further discussion> <b>Returns next QuestionId for Roadmap</b>
  * 6: GOTO: 4; REPEAT
