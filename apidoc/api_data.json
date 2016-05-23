@@ -21,7 +21,7 @@
   {
     "type": "get",
     "url": "/user/info",
-    "title": "returns a mentor object based on token",
+    "title": "returns a mentor or child object based on token",
     "name": "info",
     "group": "User",
     "parameter": {
@@ -32,7 +32,7 @@
             "type": "String",
             "optional": false,
             "field": "token",
-            "description": "<p>Token for mentor object.</p>"
+            "description": "<p>Token for mentor or child object.</p>"
           }
         ]
       }
@@ -45,25 +45,27 @@
             "optional": false,
             "field": "SQLException",
             "description": "<p>If there is a db error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error-Response:",
+            "description": "<p>&quot;Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens&quot;</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response: { MESSAGE:",
-          "content": "\"Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens\"\n, STATE: \"ERROR\" } }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
-      "examples": [
-        {
-          "title": "Success-Response: { {user info object} , STATE:",
-          "content": "\"SUCCEEDED\" } }",
-          "type": "json"
-        }
-      ]
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success-Response:",
+            "description": "<p>user info object</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "src/view/UserRequest.java",
@@ -109,25 +111,27 @@
             "optional": false,
             "field": "CredentialsMisMatch",
             "description": "<p>If the credentials are incorrect.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error-Response:",
+            "description": "<p>{ MESSAGE: &quot;Verkeerde inloggegevens&quot; , STATE: &quot;ERROR&quot; } }</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response: { MESSAGE:",
-          "content": "\"Verkeerde inloggegevens\" ,\nSTATE: \"ERROR\" } }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
-      "examples": [
-        {
-          "title": "Success-Response: ",
-          "content": "\t\t\t\t\t\t{ MESSAGE: <token>\n                   , STATE: \"SUCCEEDED\" } }",
-          "type": "json"
-        }
-      ]
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success-Response:",
+            "description": "<pre><code>\t\t\t\t\t{ MESSAGE: &lt;token&gt;                , STATE: &quot;SUCCEEDED&quot; } }</code></pre>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "src/view/UserRequest.java",
@@ -194,28 +198,246 @@
             "optional": false,
             "field": "UserDuplicate",
             "description": "<p>If the user already exist.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error-Response:",
+            "description": "<p>{ MESSAGE: &quot;Er is iets fout gegaan met de mentor toevoegen&quot; , STATE: &quot;ERROR&quot; } }</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response: { MESSAGE:",
-          "content": "\"Er is iets fout gegaan met de mentor toevoegen\" ,\nSTATE: \"ERROR\" } }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
-      "examples": [
-        {
-          "title": "Success-Response: { MESSAGE: \"Succesvol geregistreerd\"",
-          "content": ", STATE: \"SUCCEEDED\" } }",
-          "type": "json"
-        }
-      ]
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success-Response:",
+            "description": "<p>{ MESSAGE: &quot;Succesvol geregistreerd&quot; , STATE: &quot;SUCCEEDED&quot; } }</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "src/view/UserRequest.java",
     "groupTitle": "User"
+  },
+  {
+    "type": "POST",
+    "url": "/chat/answer",
+    "title": "Answer a question that was asked. Please start the session with /user/start",
+    "name": "answer",
+    "group": "chat",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Child",
+            "description": "<p>token for authentication</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Answer",
+            "optional": false,
+            "field": "int",
+            "description": "<p>id, String answer, boolean correct</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable message ID: Next question id STATE: SUCCEEDED</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable error message, STATE: ERROR</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/view/ChatRequest.java",
+    "groupTitle": "chat"
+  },
+  {
+    "type": "GET",
+    "url": "/chat/question/id",
+    "title": "Get the question that corresponds with the given id",
+    "name": "getQuestion",
+    "group": "chat",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Child",
+            "description": "<p>token for authentication</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "roadmapid",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>of roadmap</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "id",
+            "optional": false,
+            "field": "Question",
+            "description": "<p>id (Emtpy if first)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable message QUESTION: tobeimplemented id STATE: SUCCEEDED</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable error message, STATE: ERROR</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/view/ChatRequest.java",
+    "groupTitle": "chat"
+  },
+  {
+    "type": "GET",
+    "url": "/chat/poll",
+    "title": "Info polling on current chat session.",
+    "name": "pol",
+    "group": "chat",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Child",
+            "description": "<p>token for authentication</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "Previous",
+            "description": "<p>polling token given with last request, keep null for first time connecting</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable message ID: New poll id STATE: SUCCEEDED Action: Action to be performed in front end</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable error message, STATE: ERROR</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/view/ChatRequest.java",
+    "groupTitle": "chat"
+  },
+  {
+    "type": "GET",
+    "url": "/chat/start",
+    "title": "System decides to start Feedback Roadmap or start a new Roadmap",
+    "name": "start",
+    "group": "chat",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Child",
+            "description": "<p>token for authentication</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable message ID: Next question id QUESTION: String question, int questionId, boolean completed private List<Answer> STATE: SUCCEEDED</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>User printable error message, STATE: ERROR</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/view/ChatRequest.java",
+    "groupTitle": "chat"
   }
 ]

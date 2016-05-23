@@ -64,10 +64,10 @@ public class UserRequest extends ViewSuper {
      * @apiError UserDuplicate If the user already exist.
      *
      *
-     * @apiSuccessExample Success-Response: { MESSAGE: "Succesvol geregistreerd"
+     * @apiSuccess Success-Response: { MESSAGE: "Succesvol geregistreerd"
      *                    , STATE: "SUCCEEDED" } }
      *
-     * @apiErrorExample Error-Response: { MESSAGE:
+     * @apiError Error-Response: { MESSAGE:
      *                  "Er is iets fout gegaan met de mentor toevoegen" ,
      *                  STATE: "ERROR" } }
      *
@@ -112,9 +112,9 @@ public class UserRequest extends ViewSuper {
      * @apiError SQLException If there is a db error.
      *
      *
-     * @apiSuccessExample Success-Response: user info object
+     * @apiSuccess Success-Response: user info object
      *
-     * @apiErrorExample Error-Response: "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens"
+     * @apiError Error-Response: "Er is iets misgegaan met het ophalen van jouw gegevens. Probeer het nog eens"
      *
      * @param token
      * @return
