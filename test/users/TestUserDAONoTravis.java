@@ -46,7 +46,6 @@ public class TestUserDAONoTravis {
 		child.setUsername("testChild");
 		child.setPassword("plainPassword");
 		child.setName("kind naam");
-		System.out.println(uDAO.getLatestIdMentor());
 		mentor.setMentorId(uDAO.getLatestIdMentor());
 		assertTrue(uDAO.addChild(mentor, child));
 	}

@@ -42,6 +42,7 @@ public class ChatController {
 
     /**
      * Returns one or multiple chat FrontendEvents
+     *
      * @param child
      * @param id
      * @return

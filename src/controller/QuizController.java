@@ -69,8 +69,7 @@ public class QuizController {
 		Json json = new Json();
 		Gson gson = new Gson();
 		Quiz quiz = gson.fromJson(input, Quiz.class);
-		System.out.println(quiz.toString());
-		
+
 		quizDAO.addQuiz(quiz, quiz.getMentor().getMentorId());
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
 		

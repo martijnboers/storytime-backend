@@ -501,7 +501,6 @@ public class UserDAO extends DataAccesObject {
 			statement.setInt(1, m.getMentorId());
 			ResultSet results = statement.executeQuery();
 			while (results.next()) {
-				System.out.println("Added child");
 				childs.add(new Child(results.getInt("user_id"), results.getDate("date_of_birth"),
 						results.getString("gender"), results.getString("username"), null,
 						"/account/profilepic/" + results.getInt("user_id"), results.getString("name")));
