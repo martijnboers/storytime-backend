@@ -16,10 +16,12 @@
 package view;
 
 import controller.ChatController;
+import dao.RoadmapDAO;
 import exceptions.InvalidTokenException;
 import logging.Level;
 import logging.Logger;
 import model.quiz.Answer;
+import model.roadmap.Roadmap;
 
 import javax.ws.rs.*;
 import java.sql.SQLException;
@@ -117,7 +119,8 @@ public class ChatRequest extends ViewSuper {
     @GET
     @Path("/question/{roadmapid}/{id}")
     public String getQuestion(@HeaderParam("token") String token, @PathParam("roadmapid") int roadmap, @PathParam("id") int id) throws SQLException, InvalidTokenException {
-        return chat.getQuestion(session.getChildFromToken(token), id);
+        RoadmapDAO roadmapdao = new RoadmapDAO();
+        return chat.getQuestion(session.getChildFromToken(token), roadmapdao.getRoadmapById(roadmap), id);
     }
 
 

@@ -73,7 +73,7 @@ public class ChatController {
         pollStream.add(event);
     }
 
-    public String getQuestion(Child child, int id) {
+    public String getQuestion(Child child, Roadmap roadmap, int id) {
         return null;
     }
 }
