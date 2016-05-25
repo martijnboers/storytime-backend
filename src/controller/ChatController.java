@@ -74,6 +74,6 @@ public class ChatController {
     }
 
     public String getQuestion(Child child, Roadmap roadmap, int id) {
-        return null;
+        return gson.toJson(roadmap.getSteps().get(id));
     }
 }
