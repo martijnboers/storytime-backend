@@ -1,55 +1,89 @@
 package controller;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import dao.AchievementDAO;
-import model.system.State;
 import model.roadmap.Achievement;
+import model.system.State;
 
 public class AchievementController {
-	AchievementDAO acievementDAO;
-
+	AchievementDAO achiemementDAO;
+	
 	protected Json json = new Json();
 	
-	public AchievementController() {
-		try {
-			acievementDAO = new AchievementDAO();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public AchievementController(){
+			achiemementDAO = new AchievementDAO();
 	}
 	
-	public String getAllAchievements() {
+	public String getAllAchievements(){
 		Gson gson = new Gson();
 		List<Achievement> theAchievements = new ArrayList<Achievement>();
-			acievementDAO.getAllAchievements();
+		theAchievements = achiemementDAO.getAllAchievements();
+			
+		if(theAchievements != null && !theAchievements.isEmpty()){
+			return json.createJson(State.PASSED,gson.toJson(theAchievements));
+		}
+		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements");
+	}
+	
+	public String getAllAchievementsByChild(int child_id){
+		Gson gson = new Gson();
+		
+		List<Achievement> theAchievements = new ArrayList<Achievement>();
+		theAchievements = achiemementDAO.getAllAchievementsByChild(child_id);
+		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements.");
+		
 		if(theAchievements != null && !theAchievements.isEmpty()){
 			return json.createJson(State.PASSED,gson.toJson(theAchievements));
 		}
 		return json.createJson(State.ERROR, "Er zijn geen achievements.");
 	}
 	
-	public List<Achievement> getAllAchievementsByChild(int child_id) throws SQLException {
-		return acievementDAO.getAllAchievementsByChild(child_id);
+	public String getAchievementByid(int achievement_id){
+		Gson gson = new Gson();
+		
+		Achievement theAchievement = achiemementDAO.getAchievementsById(achievement_id);
+		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements.");
+		if(theAchievement != null){
+			return json.createJson(State.PASSED,gson.toJson(theAchievement));
+		}
+		return json.createJson(State.ERROR, "Er zijn geen achievements.");
 	}
 	
-	public Achievement getAchievementsById(int achievement_id) throws SQLException {
-		return acievementDAO.getAchievementsById(achievement_id);
+	public String addAchievement(String input) {
+		Json json = new Json();
+		Gson gson = new Gson();
+		Achievement achievement = gson.fromJson(input, Achievement.class);
+
+		achiemementDAO.addAchievement(achievement);
+		json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de achievement.");
+		
+		return json.createJson(State.PASSED, "Achievement is toegevoegd");
 	}
 	
-	public boolean addAchievement(Achievement achievement) throws SQLException {
-		return acievementDAO.addAchievement(achievement);
+	public String updateAchievement(String input){
+		Json json = new Json();
+		Gson gson = new Gson();
+		
+		Achievement achievement = gson.fromJson(input, Achievement.class);
+		
+		if(achiemementDAO.updateAchievement(achievement)){
+			return json.createJson(State.PASSED, "Achievement is ge�pdated");
+		}
+		return json.createJson(State.ERROR, "Er is iets fout gegaan met het updaten van de achievement");	
 	}
 	
-	public boolean updateAchievement(Achievement achievement) throws SQLException {
-		return acievementDAO.updateAchievement(achievement);
-	}
-	
-	public boolean deleteAchievement(Achievement achievement) throws SQLException {
-		return acievementDAO.deleteAchievement(achievement);
+	public String deleteAchievement(String input) {
+		Json json = new Json();
+		Gson gson = new Gson();
+		Achievement achievement = gson.fromJson(input, Achievement.class);
+		
+		if(achiemementDAO.deleteAchievement(achievement)) {
+			return json.createJson(State.PASSED, "Achievement is verwijderd.");			
+		}
+		return json.createJson(State.ERROR, "Achievement kon niet verwijderd worden.");
 	}
 }
