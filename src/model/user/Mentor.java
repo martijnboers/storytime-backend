@@ -8,7 +8,7 @@ import model.roadmap.Roadmap;
 
 public class Mentor extends User {
 	
-	private int MentorId;
+	private int mentorId;
 	private String email;
 	private List<Child> theChildren = new ArrayList<Child>();
 	private List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
@@ -24,16 +24,20 @@ public class Mentor extends User {
 
 	public Mentor(int id, String email, String username, String password, String profilePicture, String name) {
 		super(username, password, profilePicture, name);
-		this.MentorId = id;
+		this.mentorId = id;
 		this.email = email;
 	}
 	
+	public Mentor(int id, String email, int user_id) {
+		this.mentorId = id;
+	}
+
 	public int getMentorId() {
-		return MentorId;
+		return mentorId;
 	}
 
 	public void setMentorId(int id) {
-		this.MentorId = id;
+		this.mentorId = id;
 	}
 
 	public String getEmail() {
@@ -94,7 +98,7 @@ public class Mentor extends User {
 
 	@Override
 	public String toString() {
-		return "Mentor [MentorId=" + MentorId + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps="
+		return "Mentor [mentorId=" + mentorId + ", email=" + email + ", theChildren=" + theChildren + ", theRoadmaps="
 				+ theRoadmaps + ", theQuizes=" + theQuizes + "]";
 	}
 

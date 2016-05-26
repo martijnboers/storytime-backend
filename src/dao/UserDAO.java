@@ -401,6 +401,31 @@ public class UserDAO extends DataAccesObject {
 		}
 		return childId;
 	}
+	
+	/**
+	 * @param mentor_id
+	 * @return Mentor by given id
+	 */
+	public Mentor getMentorById(int mentor_id) {
+		Mentor mentor = new Mentor();
+		try {
+			statement = con.prepareStatement("SELECT Mentor.mentor_id, Mentor.email, Mentor.user_id FROM Mentor WHERE Mentor.mentor_id = ?");
+			statement.setInt(1, mentor_id);
+			ResultSet result = statement.executeQuery();
+			result.next();
+			mentor = new Mentor(result.getInt("mentor_id"), result.getString("name"), result.getInt("mentor_id"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				log.out(Level.ERROR, "", "Statement isn't closed");
+				e.printStackTrace();
+			}
+		}
+		return mentor;
+	}
 
 	public boolean generatePasswordToken(String email) {
 		int mentorId = emailExists(email);
