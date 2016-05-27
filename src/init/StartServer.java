@@ -25,17 +25,17 @@ import logging.Logger;
 /**
  * 
  * Use this file to start server
+ * 
  * @author martijn
  */
 public class StartServer {
 
-	/** 
+	/**
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception
-	{
+	public static void main(String[] args) throws Exception {
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 		context.setContextPath("/");
 		Logger mainLogger = Logger.getInstance();
@@ -46,12 +46,12 @@ public class StartServer {
 
 		ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");
 		jerseyServlet.setInitOrder(0);
-		
+
 		jerseyServlet.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
 		jerseyServlet.setInitParameter("jersey.config.server.provider.packages", "view");
-		
+
 		server.start();
 		server.join();
-		mainLogger.out(Level.INFORMATIVE, "Main", "Server started");	
-	}	
+		mainLogger.out(Level.INFORMATIVE, "Main", "Server started");
+	}
 }
