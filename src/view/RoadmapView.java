@@ -1,5 +1,6 @@
 package view;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +23,7 @@ public class RoadmapView extends ViewSuper {
 	
 	@POST
 	@Path("/add")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addQuiz(String input){
 		return roadmapController.addRoadmap(input);
@@ -29,6 +31,7 @@ public class RoadmapView extends ViewSuper {
 	
 	@POST
 	@Path("/add/child")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addQuizToChild(String input){
 		return roadmapController.addRoadmapHasChild(input);
@@ -36,20 +39,23 @@ public class RoadmapView extends ViewSuper {
 	
 	@DELETE
 	@Path("/delete")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteQuiz(String input){
 		return roadmapController.deleteRoadmap(input);
 	}
 	
 	@GET
-	@Path("/roadmaps/all")
+	@Path("/all")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizes(){
 		return roadmapController.getAllRoadmaps();
 	}
 	
 	@GET
-	@Path("/roadmaps/all/category/{id}")
+	@Path("/category/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByCategory(@PathParam("id") int id){
 		CategoryDAO categoryDAO = new CategoryDAO();
@@ -57,7 +63,8 @@ public class RoadmapView extends ViewSuper {
 	}
 	
 	@GET
-	@Path("/roadmaps/all/mentor/{id}")
+	@Path("/mentor/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByMentor(@PathParam("id") int id){
 		UserDAO userDAO = new UserDAO();
@@ -65,7 +72,8 @@ public class RoadmapView extends ViewSuper {
 	}
 	
 	@POST
-	@Path("/update/roadmap")
+	@Path("/update")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateQuiz(String input){
 		return roadmapController.updateRoadmap(input);

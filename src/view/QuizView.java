@@ -1,5 +1,6 @@
 package view;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,7 @@ public class QuizView extends ViewSuper{
 	
 	@POST
 	@Path("/add")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addQuiz(String input){
 		return quizController.addQuiz(input);
@@ -27,6 +29,7 @@ public class QuizView extends ViewSuper{
 	
 	@POST
 	@Path("/add/child")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addQuizToChild(String input){
 		return quizController.addQuizToChild(input);
@@ -34,34 +37,39 @@ public class QuizView extends ViewSuper{
 	
 	@DELETE
 	@Path("/delete")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteQuiz(String input){
 		return quizController.deleteQuiz(input);
 	}
 	
 	@GET
-	@Path("/quizes/all")
+	@Path("/all")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizes(){
 		return quizController.getAllQuizes();
 	}
 	
 	@GET
-	@Path("/quizes/all/category/{id}")
+	@Path("/category/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByCategory(@PathParam("id") int id){
 		return quizController.getAllQuizesByCategory(id);
 	}
 	
 	@GET
-	@Path("/quizes/all/mentor/{id}")
+	@Path("/mentor/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByMentor(@PathParam("id") int id){
 		return quizController.getAllQuizesByMentor(id);
 	}
 	
 	@POST
-	@Path("/update/quiz")
+	@Path("/update")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateQuiz(String input){
 		return quizController.updateQuiz(input);

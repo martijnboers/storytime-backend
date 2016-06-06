@@ -1,5 +1,6 @@
 package view;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,7 @@ public class AchievementView extends ViewSuper {
 	
 	@POST
 	@Path("/add")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addQuiz(String input){
 		return achievementController.addAchievement(input);
@@ -27,34 +29,39 @@ public class AchievementView extends ViewSuper {
 	
 	@DELETE
 	@Path("/delete")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteQuiz(String input){
 		return achievementController.deleteAchievement(input);
 	}
 	
 	@GET
-	@Path("/achievements/all")
+	@Path("/all")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizes(){
 		return achievementController.getAllAchievements();
 	}
 	
 	@GET
-	@Path("/achievements/all/{id}")
+	@Path("/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByMentor(@PathParam("id") int id){
 		return achievementController.getAchievementByid(id);
 	}
 	
 	@GET
-	@Path("/achievements/all/child/{id}")
+	@Path("/child/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByCategory(@PathParam("id") int id){
 		return achievementController.getAllAchievementsByChild(id);
 	}
 	
 	@POST
-	@Path("/update/achievement")
+	@Path("/update")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateQuiz(String input){
 		return achievementController.updateAchievement(input);

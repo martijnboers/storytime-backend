@@ -1,5 +1,6 @@
 package view;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,21 +35,24 @@ public class CategoryView extends ViewSuper {
 	}
 	
 	@GET
-	@Path("/categories/all")
+	@Path("/all")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizes(){
 		return categoryController.getAllCategories();
 	}
 	
 	@GET
-	@Path("/categories/all/{id}")
+	@Path("/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByMentor(@PathParam("id") int id){
 		return categoryController.getCategoryById(id);
 	}
 	
 	@GET
-	@Path("/categories/all/child/{id}")
+	@Path("/child/{id}")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllQuizesByCategory(@PathParam("id") int id){
 		RoadmapDAO roadmapDAO = new RoadmapDAO();
@@ -56,7 +60,8 @@ public class CategoryView extends ViewSuper {
 	}
 	
 	@POST
-	@Path("/update/category")
+	@Path("/update/")
+	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateQuiz(String input){
 		return categoryController.updateCategory(input);
