@@ -25,7 +25,7 @@ public class CategoryController {
 		theCategories = categoryDAO.getAllCategories();
 
 		if (theCategories != null && !theCategories.isEmpty()) {
-			return json.createJson(State.PASSED, gson.toJson(theCategories));
+			return gson.toJson(theCategories);
 		}
 		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de categories");
 	}
@@ -38,7 +38,7 @@ public class CategoryController {
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de categories.");
 
 		if (theCategories != null && !theCategories.isEmpty()) {
-			return json.createJson(State.PASSED, gson.toJson(theCategories));
+			return gson.toJson(theCategories);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen categories.");
 	}

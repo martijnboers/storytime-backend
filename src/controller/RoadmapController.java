@@ -21,13 +21,15 @@ public class RoadmapController {
 	
 	public String getAllRoadmaps(){
 		Gson gson = new Gson();
+		
 		List<Roadmap> theRoadmaps = new ArrayList<Roadmap>();
 		theRoadmaps = roadmapDAO.getAllRoadmaps();
 			
 		if(theRoadmaps != null && !theRoadmaps.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theRoadmaps));
+			return gson.toJson(theRoadmaps);
 		}
-		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de roadmaps");
+		return gson.toJson(theRoadmaps);
+	//	return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de roadmaps");
 	}
 	
 	public String getAllRoadmapsByMentor(Mentor mentor){
@@ -38,7 +40,7 @@ public class RoadmapController {
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de roadmaps.");
 		
 		if(theRoadmaps != null && !theRoadmaps.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theRoadmaps));
+			return gson.toJson(theRoadmaps);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen roadmaps.");
 	}
@@ -50,7 +52,7 @@ public class RoadmapController {
 		theRoadmaps = roadmapDAO.getAllRoadmapsByChild(child);
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de roadmaps.");
 		if(theRoadmaps != null && !theRoadmaps.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theRoadmaps));
+			return gson.toJson(theRoadmaps);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen roadmaps.");
 	}
@@ -62,7 +64,7 @@ public class RoadmapController {
 		theRoadmaps = roadmapDAO.getAllRoadmapsByCategory(category);
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de roadmaps.");
 		if(theRoadmaps != null && !theRoadmaps.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theRoadmaps));
+			return gson.toJson(theRoadmaps);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen roadmaps voor deze category.");
 	}

@@ -24,7 +24,7 @@ public class AchievementController {
 		theAchievements = achiemementDAO.getAllAchievements();
 			
 		if(theAchievements != null && !theAchievements.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theAchievements));
+			return gson.toJson(theAchievements);
 		}
 		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements");
 	}
@@ -37,7 +37,7 @@ public class AchievementController {
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements.");
 		
 		if(theAchievements != null && !theAchievements.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theAchievements));
+			return gson.toJson(theAchievements);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen achievements.");
 	}
@@ -48,7 +48,7 @@ public class AchievementController {
 		Achievement theAchievement = achiemementDAO.getAchievementsById(achievement_id);
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de achievements.");
 		if(theAchievement != null){
-			return json.createJson(State.PASSED,gson.toJson(theAchievement));
+			return gson.toJson(theAchievement);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen achievements.");
 	}
