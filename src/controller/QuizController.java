@@ -23,7 +23,7 @@ public class QuizController {
 		theQuizes = quizDAO.getAllQuizes();
 			
 		if(theQuizes != null && !theQuizes.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+			return gson.toJson(theQuizes);
 		}
 		return json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes");
 	}
@@ -36,7 +36,7 @@ public class QuizController {
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
 		
 		if(theQuizes != null && !theQuizes.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+			return gson.toJson(theQuizes);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen quizes.");
 	}
@@ -48,7 +48,7 @@ public class QuizController {
 		theQuizes = quizDAO.getAllQuizesByChild(childId);
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
 		if(theQuizes != null && !theQuizes.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+			return gson.toJson(theQuizes);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen quizes.");
 	}
@@ -60,7 +60,7 @@ public class QuizController {
 		theQuizes = quizDAO.getAllQuizesByCategory(categoryId);
 		json.createJson(State.ERROR, "Er is iets fout gegaan met het ophalen van de quizes.");
 		if(theQuizes != null && !theQuizes.isEmpty()){
-			return json.createJson(State.PASSED,gson.toJson(theQuizes));
+			return gson.toJson(theQuizes);
 		}
 		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
 	}
