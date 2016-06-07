@@ -18,6 +18,8 @@ package controller;
 import com.google.gson.Gson;
 import dao.RoadmapDAO;
 import model.quiz.Answer;
+import model.quiz.Question;
+import model.quiz.Quiz;
 import model.roadmap.Roadmap;
 import model.system.ChatEvent;
 import model.system.FrontendEvent;
@@ -59,11 +61,11 @@ public class ChatController {
 
     public String start(Child child) {
         List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
-        return gson.toJson(maps.get(maps.size()-1));
+        return gson.toJson(maps.get(maps.size() - 1));
     }
 
-    public String insertAnswer(Child child, Answer answer) {
-        return null;
+    public String insertAnswer(Child child, int quizid, int questionid, Answer answer) {
+        return answer.toString();
     }
 
     public void addPollFeed(ChatEvent event) {
@@ -73,7 +75,8 @@ public class ChatController {
         pollStream.add(event);
     }
 
-    public String getQuestion(Child child, Roadmap roadmap, int id) {
-        return gson.toJson(roadmap.getSteps().get(id));
+    public String getQuestion(Child child, Quiz roadmap, int id) {
+        //return gson.toJson(roadmap.getSteps().get(id));
+        return null;
     }
 }

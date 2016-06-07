@@ -16,6 +16,7 @@
 package view;
 
 import controller.ChatController;
+import dao.QuizDAO;
 import dao.RoadmapDAO;
 import exceptions.InvalidTokenException;
 import logging.Level;
@@ -34,9 +35,10 @@ import java.sql.SQLException;
  * 1: Start /chat/polling to see for achievements or other reminders set by controllers while away. <b>Returns ChatEvent</b>. (needs to be persistent/database)
  * 2: (if polling == something) display on screen or start a Feedback Roadmap (check if previous roadmap is completed and if should be awarded)
  * 3: Ask /chat/start for what Roadmap to begin. This will check for recently added roadmaps or picks random roadmap. <b>Returns RoadmapId</b>  (room for AI).
- * 4: Ask /chat/question what question to display. This consumes a RoadmapId and a QuestionId. If first question call leave empty
- * 5: User interacts with question, submit answer to /chat/answer. Answer can be String or Yes or No <needs further discussion> <b>Returns next QuestionId for Roadmap</b>
- * 6: GOTO: 4; REPEAT
+ * 4: Display full roadmap until the end
+ * 5: Ask /chat/question what question to display. This consumes a RoadmapId and a QuestionId. If first question call leave questionid empty
+ * 6: User interacts with question, submit answer to /chat/answer. Answer can be String or Yes or No <needs further discussion> <b>Returns next QuestionId for Roadmap</b>
+ * 7: GOTO: 5; REPEAT
  */
 
 @Path("/chat")
@@ -44,6 +46,7 @@ import java.sql.SQLException;
 public class ChatRequest extends ViewSuper {
     Logger log = Logger.getInstance();
     ChatController chat = new ChatController();
+    QuizDAO quizdao = new QuizDAO();
 
     public ChatRequest() throws Exception {
         log.out(Level.INFORMATIVE, "Chat", "Initializing chat controller");
@@ -61,7 +64,6 @@ public class ChatRequest extends ViewSuper {
      * @return String with new id and information on session
      * @throws SQLException
      * @throws InvalidTokenException
-     *
      * @api {GET} /chat/poll Info polling on current chat session.
      * @apiName pol
      * @apiGroup chat
@@ -93,9 +95,10 @@ public class ChatRequest extends ViewSuper {
      * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @POST
-    @Path("/answer")
-    public String insertNewAnswer(@HeaderParam("token") String token, String json) throws SQLException, InvalidTokenException {
-        return chat.insertAnswer(session.getChildFromToken(token), gson.fromJson(json, Answer.class));
+    @Path("/answer/{quizid}/{id}")
+    public String insertNewAnswer(@HeaderParam("token") String token, @PathParam("quizid") int quizid,
+                                  @PathParam("id") int questionid, String json) throws SQLException, InvalidTokenException {
+        return chat.insertAnswer(session.getChildFromToken(token), quizid, questionid, gson.fromJson(json, Answer.class));
     }
 
 
@@ -117,12 +120,11 @@ public class ChatRequest extends ViewSuper {
      * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @GET
-    @Path("/question/{roadmapid}/{id}")
-    public String getQuestion(@HeaderParam("token") String token, @PathParam("roadmapid") int roadmap, @PathParam("id") int id) throws SQLException, InvalidTokenException {
-        RoadmapDAO roadmapdao = new RoadmapDAO();
-        return chat.getQuestion(session.getChildFromToken(token), roadmapdao.getRoadmapById(roadmap), id);
+    @Path("/question/{quizid}/{id}")
+    public String getQuestion(@HeaderParam("token") String token, @PathParam("quizid") int roadmap, @PathParam("id") int id) throws SQLException, InvalidTokenException {
+        //return chat.getQuestion(session.getChildFromToken(token), quizdao.get , id);
+        return null;
     }
-
 
     /**
      * @param token
