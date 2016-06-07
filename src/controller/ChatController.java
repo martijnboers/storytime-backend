@@ -59,8 +59,7 @@ public class ChatController {
 
     public String start(Child child) {
         List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
-        // Return the ID of the list that needs to be displayed to the user
-        return null;
+        return gson.toJson(maps.get(maps.size()-1));
     }
 
     public String insertAnswer(Child child, Answer answer) {

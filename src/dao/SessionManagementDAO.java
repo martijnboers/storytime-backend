@@ -192,7 +192,7 @@ public class SessionManagementDAO extends DataAccesObject {
                         "SELECT * FROM User INNER JOIN Child On User.user_id=Child.user_id WHERE User.user_id="
                                 + result.getInt("user_id"));
                 while (results.next()) {
-                    return new Child(results.getInt("user_id"), results.getDate("date_of_birth"),
+                    return new Child(results.getInt("child_id"), results.getDate("date_of_birth"),
                             results.getString("gender"), results.getString("username"), null,
                             "/account/profilepic/" + results.getInt("user_id"), results.getString("name"));
                 }
