@@ -24,6 +24,7 @@ public class DbConfiguration {
 	private String password;
 	private String database;
 	private String port;
+	private boolean production;
 
 	// Needs an empty constructor for Jersey
 	public DbConfiguration(){
@@ -40,12 +41,13 @@ public class DbConfiguration {
 	 * @param database
 	 * @param port
 	 */
-	public DbConfiguration(String host, String user, String password, String database, String port) {
+	public DbConfiguration(String host, String user, String password, String database, String port, boolean production) {
 		this.host=host;
 		this.user=user;
 		this.password=password;
 		this.database=database;
 		this.port=port;
+		this.production=production;
 	}
 
 	/**
@@ -175,6 +177,13 @@ public class DbConfiguration {
 			return false;
 		return true;
 	}
-	
-	
+
+
+	public boolean isProduction() {
+		return production;
+	}
+
+	public void setProduction(boolean production) {
+		this.production = production;
+	}
 }

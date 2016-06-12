@@ -60,23 +60,25 @@ public class Connector {
         } catch (Exception e) {
             // Geen properties file gevonden
             log.out(Level.ERROR, "Connector", "Database properties can't be found, serving local test db");
+            config = new DbConfiguration();
+            config.setProduction(false);
             test = true;
         }
 
 
         try {
-            String connectString = (test) ? "jdbc:sqlite:testdatabase.sqlite"
+            if (test || !config.isProduction()) {
+                connection = DriverManager.getConnection("jdbc:sqlite:testdatabase.sqlite");
+                log.out(Level.INFORMATIVE, "Connector", "Trying with: jdbc:sqlite:testdatabase.sqlite");
+            } else {
+                connection = DriverManager.getConnection("jdbc:mariadb://" + config.getHost() + ":" + config.getPort()
+                        + "/" + config.getDatabase(), config.getUser(), config.getPassword());
 
-                    :
+                log.out(Level.INFORMATIVE, "Connector",
+                        "Trying with connection string: " + "jdbc:mariadb://" + config.getHost() + ":" + config.getPort()
+                                + "/" + config.getDatabase() + " " + config.getUser() + " " + config.getPassword());
+            }
 
-                    "jdbc:mariadb://" + config.getHost() + ":" + config.getPort()
-                            + "/" + config.getDatabase() + " " + config.getUser() + " " + config.getPassword();
-
-
-            log.out(Level.INFORMATIVE, "Connector",
-                    "Trying with connection string: " + connectString);
-
-            connection = DriverManager.getConnection(connectString);
 
         } catch (Exception e) {
             log.out(Level.CRITICAL, "Connector", "Error invalid database connection");

@@ -20,3 +20,5 @@ mail_host=
 # 3 = verbose
 
 loggingLevel=3
+
+production=true
