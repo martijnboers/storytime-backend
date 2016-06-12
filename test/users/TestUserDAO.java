@@ -14,7 +14,7 @@ import model.user.Child;
 import model.user.Mentor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestUserDAONoTravis {
+public class TestUserDAO {
 	private Mentor mentor;
 	private Child child;
 	private UserDAO uDAO;

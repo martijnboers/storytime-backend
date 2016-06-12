@@ -20,7 +20,7 @@ import model.user.Child;
 import model.user.Mentor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestQuizDAONoTravis {
+public class TestQuizDAO {
 	private Quiz quiz;
 	private Question question;
 	private Answer answer;
