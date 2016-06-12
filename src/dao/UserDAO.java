@@ -90,7 +90,7 @@ public class UserDAO extends DataAccesObject {
 		int id = 0;
 		try {
 			statement = con.prepareStatement(
-					"INSERT INTO  `storytime`.`User` (`username` , `password` , `profile_picture`, `name`)	VALUES (?,  ?,  ?,  ?);",
+					"INSERT INTO  `User` (`username` , `password` , `profile_picture`, `name`)	VALUES (?,  ?,  ?,  ?);",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			statement.setString(1, theUser.getUsername());
 			statement.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(theUser.getPassword()));
@@ -123,7 +123,7 @@ public class UserDAO extends DataAccesObject {
 		try {
 			int userId = addUser(theChild);
 			PreparedStatement childQuery = con.prepareStatement(
-					"INSERT INTO  `storytime`.`Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);",
+					"INSERT INTO  `Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			childQuery.setString(1, theChild.getDateOfBirth().toString());
 			childQuery.setString(2, theChild.getGender());
@@ -156,7 +156,7 @@ public class UserDAO extends DataAccesObject {
 		try {
 			int userId = addUser(theMentor);
 			PreparedStatement mentorQuery = con
-					.prepareStatement("INSERT INTO  `storytime`.`Mentor` (`email` , `user_id`)	VALUES (?,  ?);");
+					.prepareStatement("INSERT INTO  `Mentor` (`email` , `user_id`)	VALUES (?,  ?);");
 			mentorQuery.setString(1, theMentor.getEmail());
 			mentorQuery.setInt(2, userId);
 			if (mentorQuery.executeUpdate() <= 0) {
@@ -436,7 +436,7 @@ public class UserDAO extends DataAccesObject {
 		}
 		try {
 			PreparedStatement generateQuery = con.prepareStatement(
-					"INSERT INTO  `storytime`.`Password_Token` (`token` ,`date_created`, `mentor_id`)	VALUES (?,  ?, ?);");
+					"INSERT INTO  `Password_Token` (`token` ,`date_created`, `mentor_id`)	VALUES (?,  ?, ?);");
 			generateQuery.setString(1, randomToken);
 			generateQuery.setDate(2, new Date(current.getTime()));
 			generateQuery.setInt(3, mentorId);

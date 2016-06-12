@@ -57,7 +57,7 @@ public class TestUserDAO {
 	}
 	
 	@Test
-	public void testfDeleteMentor() throws Exception {
+		public void testfDeleteMentor() throws Exception {
 		uDAO = new UserDAO();
 		assertTrue(uDAO.deleteMentor(uDAO.getLatestIdMentor()));
 	}

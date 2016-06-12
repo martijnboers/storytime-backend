@@ -53,7 +53,7 @@ public class DatabaseProperties {
             throw new MissingPropertiesFile("property file '" + propFileName + "' not found in the classpath");
         }
         configuration = new DbConfiguration(prop.getProperty("host"), prop.getProperty("user"), prop.getProperty("password"),
-                prop.getProperty("database"), prop.getProperty("port"), (prop.getProperty("production") == "true") ? true : false);
+                prop.getProperty("database"), prop.getProperty("port"), prop.getProperty("production").equals("true"));
 
         inputStream.close();
         return configuration;

@@ -67,7 +67,7 @@ public class Connector {
 
 
         try {
-            if (test || !config.isProduction()) {
+            if (test || !(config.isProduction())) {
                 connection = DriverManager.getConnection("jdbc:sqlite:testdatabase.sqlite");
                 log.out(Level.INFORMATIVE, "Connector", "Trying with: jdbc:sqlite:testdatabase.sqlite");
             } else {
