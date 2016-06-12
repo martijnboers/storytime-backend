@@ -18,7 +18,7 @@ import model.user.Child;
 import model.user.Mentor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestQuizControllerNoTravis {
+public class TestQuizController {
 	private Quiz quiz;
 	private Question question;
 	private Answer answer;

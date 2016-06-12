@@ -37,7 +37,6 @@ public class Logger {
 			propLevel = Integer.valueOf(loggerLevel.getPropValues());
 		} catch (Exception e) {
 			System.out.println("Please check if you have the latest properties file");
-			e.printStackTrace();
 			propLevel = 3;
 		}
 	}
