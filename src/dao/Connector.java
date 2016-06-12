@@ -65,7 +65,7 @@ public class Connector {
 
 
         try {
-            String connectString = (test) ? "jdbc:sqlite:database.sqlite"
+            String connectString = (test) ? "jdbc:sqlite:test   database.sqlite"
 
                     :
 
