@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.category.Category;
+import model.roadmap.Roadmap;
 import model.user.Mentor;
 
 public class Quiz {
@@ -14,18 +15,21 @@ public class Quiz {
 	private Mentor mentor;
 	private List<Question> theQuestions = new ArrayList<Question>();
 	private List<Category> theCategories = new ArrayList<Category>();
+	private int roadmapid;
 
 	public Quiz() {}
 	
-	public Quiz(String name, String descprition) {
+	public Quiz(String name, String descprition, int roadmapid) {
 		this.name = name;
 		this.description = descprition;
+		this.roadmapid = roadmapid;
 	}
 
-	public Quiz(int id, String name, String descprition) {
+	public Quiz(int id, String name, String descprition, int roadmapid) {
 		this.quizId = id;
 		this.name = name;
 		this.description = descprition;
+		this.roadmapid = roadmapid;
 	}
 
 	public int getQuizId() {
@@ -153,5 +157,13 @@ public class Quiz {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}	
+	}
+
+	public int getRoadmapid() {
+		return roadmapid;
+	}
+
+	public void setRoadmapid(int roadmapid) {
+		this.roadmapid = roadmapid;
+	}
 }

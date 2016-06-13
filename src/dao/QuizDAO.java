@@ -30,7 +30,7 @@ public class QuizDAO extends DataAccesObject {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id, Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+					"SELECT Quiz.quiz_id, Quiz.name, Quiz.roadmap_id, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
 							+ "FROM Quiz " 
 							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id " 
@@ -40,7 +40,7 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Quiz quiz = new Quiz(result.getInt("quiz_id"), result.getString("name"),
-						result.getString("description"));
+						result.getString("description"), result.getInt("roadmap_id"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
 					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
@@ -103,7 +103,7 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Quiz quiz = new Quiz(result.getInt("quiz_id"), result.getString("name"),
-						result.getString("description"));
+						result.getString("description"), result.getInt("roadmap_id"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
 					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
@@ -178,14 +178,14 @@ public class QuizDAO extends DataAccesObject {
 
 	/**
 	 * 
-	 * @param id
+	 * @param categoryId
 	 * @return A list of Quizes of a Category
 	 */
 	public List<Quiz> getAllQuizesByCategory(int categoryId){
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description, Question.question_id, Question.question, Answer.answer_id, Answer.answer, Answer.correct "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.roadmap_id, Quiz.description, Question.question_id, Question.question, Answer.answer_id, Answer.answer, Answer.correct "
 							+ "FROM Quiz " 
 							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id "
@@ -196,7 +196,7 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Quiz quiz = new Quiz(result.getInt("quiz_id"), result.getString("name"),
-						result.getString("description"));
+						result.getString("description"), result.getInt("roadmap_id"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
 					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),
@@ -247,7 +247,7 @@ public class QuizDAO extends DataAccesObject {
 		List<Quiz> theQuizes = new ArrayList<Quiz>();
 		try {
 			statement = con.prepareStatement(
-					"SELECT Quiz.quiz_id,Quiz.name, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
+					"SELECT Quiz.quiz_id,Quiz.name, Quiz.roadmap_id, Quiz.description,Question.question_id, Question.question, Answer.answer_id,Answer.answer, Answer.correct "
 							+ "FROM Quiz " 
 							+ "JOIN Question ON Quiz.quiz_id = Question.quiz_id "
 							+ "JOIN Answer ON Question.question_id = Answer.question_id;");
@@ -255,7 +255,7 @@ public class QuizDAO extends DataAccesObject {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Quiz quiz = new Quiz(result.getInt("quiz_id"), result.getString("name"),
-						result.getString("description"));
+						result.getString("description"), result.getInt("roadmap_id"));
 				if (!theQuizes.contains(quiz)) {
 					Question question = new Question(result.getInt("question_id"),result.getString("question"));
 					Answer answer = new Answer(result.getInt("answer_id"),result.getString("answer"),

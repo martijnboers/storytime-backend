@@ -28,7 +28,7 @@ public class TestQuizController {
 
 	@Before
 	public void initObjects() {
-		quiz = new Quiz("EenAarbei", "Een omschrijving voor dit");
+		quiz = new Quiz("EenAarbei", "Een omschrijving voor dit", 1);
 		child = new Child();
 		child.setChildId(2);
 		mentor = new Mentor("email@email.com", "username", "password", "picture", "naam");
