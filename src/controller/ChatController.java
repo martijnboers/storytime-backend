@@ -85,7 +85,12 @@ public class ChatController {
 
     public String suggest(Answer answer) throws Exception {
         if (!answer.getAnswer().equals("")) {
-            return gson.toJson(roadmapdao.getSuggestedRoadmap(answer.getAnswer().split(" ")));
+            ArrayList<Roadmap> list = roadmapdao.getSuggestedRoadmap(answer.getAnswer().split(" "));
+            if (list.isEmpty()) {
+                throw new Exception("Geen bijhorende instructies kunnen vinden");
+            } else {
+                return gson.toJson(list);
+            }
         } else {
             throw new Exception("Geen suggesties gevonden");
         }
