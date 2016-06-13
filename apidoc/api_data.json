@@ -128,7 +128,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success-Response:",
-            "description": "<pre><code>\t\t\t\t\t{ MESSAGE: &lt;token&gt;                , STATE: &quot;SUCCEEDED&quot; } }</code></pre>"
+            "description": "<p>{ MESSAGE: <token> , STATE: &quot;SUCCEEDED&quot; } }</p>"
           }
         ]
       }
@@ -223,6 +223,28 @@
     "version": "0.0.0",
     "filename": "src/view/UserRequest.java",
     "groupTitle": "User"
+  },
+  {
+    "group": "chat",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MESSAGE:",
+            "description": "<p>Kan geen instructies vinden over onderwerp, STATE: ERROR</p>"
+          }
+        ]
+      }
+    },
+    "type": "POST",
+    "url": "/chat/suggest",
+    "title": "Let input from user decide which roadmap to start",
+    "version": "0.0.0",
+    "filename": "src/view/ChatRequest.java",
+    "groupTitle": "chat",
+    "name": "PostChatSuggest"
   },
   {
     "type": "POST",

@@ -151,6 +151,10 @@ public class ChatRequest extends ViewSuper {
      * @param token
      * @param answer
      * @return
+     * @apiName suggest
+     * @apiGroup chat
+     * @apiError MESSAGE: Kan geen instructies vinden over onderwerp, STATE: ERROR
+     * @api {POST} /chat/suggest Let input from user decide which roadmap to start
      */
     @POST
     @Path("/suggest")
