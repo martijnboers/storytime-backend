@@ -59,9 +59,12 @@ public class ChatController {
         return gson.toJson(out);
     }
 
-    public String start(Child child) {
-        List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
-        return gson.toJson(maps.get(maps.size() - 1));
+    public String start(Child child, int id) {
+        //List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
+        //return gson.toJson(maps.get(maps.size() - 1));
+
+        // Doesn't really matter if this roadmap belongs to which child.
+        return gson.toJson(roadmapdao.getRoadmapById(id));
     }
 
     public String insertAnswer(Child child, int quizid, int questionid, Answer answer) {
@@ -78,5 +81,13 @@ public class ChatController {
     public String getQuestion(Child child, Quiz roadmap, int id) {
         //return gson.toJson(roadmap.getSteps().get(id));
         return null;
+    }
+
+    public String suggest(Answer answer) throws Exception {
+        if (!answer.getAnswer().equals("")) {
+            return gson.toJson(roadmapdao.getSuggestedRoadmap(answer.getAnswer().split(" ")));
+        } else {
+            throw new Exception("Geen suggesties gevonden");
+        }
     }
 }

@@ -573,6 +573,31 @@ public class RoadmapDAO extends DataAccesObject {
         return succes;
     }
 
+    public ArrayList<Roadmap> getSuggestedRoadmap(String[] keywords) throws SQLException {
+        ArrayList<Roadmap> roadmaps = new ArrayList<>();
+
+        for (String keyword : keywords) {
+            if (keyword.length() > 3) {
+                try {
+                    statement = con.prepareStatement("SELECT roadmap_id FROM `Roadmap` WHERE `name` LIKE ? OR `description` LIKE ? LIMIT 0 , 6");
+
+                    statement.setString(1, "%" + keyword + "%");
+                    statement.setString(2, "%" + keyword + "%");
+
+                    ResultSet result = statement.executeQuery();
+                    while (result.next()) {
+                        roadmaps.add(getRoadmapById(result.getInt("roadmap_id")));
+                    }
+
+                } catch (SQLException e) {
+                    statement.close();
+                    throw new SQLException("Iets misgegaan met het ophalen van suggesties");
+                }
+            }
+        }
+        return roadmaps;
+    }
+
     // For testing purpose
     public int getLatestIdRoadmap() {
         int questionId = 0;

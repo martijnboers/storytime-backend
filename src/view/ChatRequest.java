@@ -140,8 +140,23 @@ public class ChatRequest extends ViewSuper {
      * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
     @GET
-    @Path("/start")
-    public String startChat(@HeaderParam("token") String token) throws SQLException, InvalidTokenException {
-        return chat.start(session.getChildFromToken(token));
+    @Path("/start/{id}")
+    public String startChat(@HeaderParam("token") String token, @PathParam("id") int id) throws SQLException, InvalidTokenException {
+        return chat.start(session.getChildFromToken(token), id);
+    }
+
+    /**
+     * Get a suggestion for a roadmap based on the input given by actor.
+     *
+     * @param token
+     * @param answer
+     * @return
+     */
+    @POST
+    @Path("/suggest")
+    public String getSuggestedRoadmap(@HeaderParam("token") String token, String answer) throws Exception {
+        // security
+        session.getChildFromToken(token);
+        return chat.suggest(gson.fromJson(answer, Answer.class));
     }
 }
