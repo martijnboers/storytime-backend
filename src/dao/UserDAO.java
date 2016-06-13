@@ -24,6 +24,7 @@ public class UserDAO extends DataAccesObject {
 	}
 
 	private PreparedStatement statement;
+	private PreparedStatement childQuery;
 
 	/**
 	 * 
@@ -122,7 +123,7 @@ public class UserDAO extends DataAccesObject {
 	public boolean addChild(Mentor theMentor, Child theChild) {
 		try {
 			int userId = addUser(theChild);
-			PreparedStatement childQuery = con.prepareStatement(
+			childQuery = con.prepareStatement(
 					"INSERT INTO  `Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			childQuery.setString(1, theChild.getDateOfBirth().toString());
@@ -138,7 +139,7 @@ public class UserDAO extends DataAccesObject {
 			log.out(Level.ERROR, "", "Couldn't add child");
 		} finally {
 			try {
-				statement.close();
+				childQuery.close();
 			} catch (SQLException e) {
 				log.out(Level.ERROR, "", "Statement isn't closed");
 				e.printStackTrace();
@@ -155,11 +156,11 @@ public class UserDAO extends DataAccesObject {
 
 		try {
 			int userId = addUser(theMentor);
-			PreparedStatement mentorQuery = con
+			statement = con
 					.prepareStatement("INSERT INTO  `Mentor` (`email` , `user_id`)	VALUES (?,  ?);");
-			mentorQuery.setString(1, theMentor.getEmail());
-			mentorQuery.setInt(2, userId);
-			if (mentorQuery.executeUpdate() <= 0) {
+			statement.setString(1, theMentor.getEmail());
+			statement.setInt(2, userId);
+			if (statement.executeUpdate() <= 0) {
 				return false;
 			}
 		} catch (SQLException e) {
