@@ -19,7 +19,7 @@ import model.user.Child;
 import model.user.Mentor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestRoadmapDAO {
+public class TestRoadmapDAONoTravis {
 	private Mentor mentor;
 	private Child child;
 	private Roadmap roadmap;
