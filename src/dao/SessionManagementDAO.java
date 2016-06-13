@@ -84,16 +84,10 @@ public class SessionManagementDAO extends DataAccesObject {
         } catch (Exception e) {
             log.out(Level.ERROR, "Login", "Kan niet inloggen");
         } finally {
-            try {
-                statement.close();
-                clean.close();
-                token.close();
-                logger.close();
-
-            } catch (Exception e) {
-                log.out(Level.ERROR, "Login", "Can't close database streams");
-            }
-
+            try { clean.close(); } catch (Exception e) { log.out(Level.ERROR, "Login", "Can't close the clean"); }
+            try { token.close(); } catch (Exception e) { log.out(Level.ERROR, "Login", "Can't close the token"); }
+            try { statement.close(); } catch (Exception e) { log.out(Level.ERROR, "Login", "Can't close the statement"); }
+            try { logger.close(); } catch (Exception e) { log.out(Level.ERROR, "Login", "Can't close the logger"); }
         }
         return null;
     }
@@ -142,12 +136,8 @@ public class SessionManagementDAO extends DataAccesObject {
             e.printStackTrace();
             log.out(Level.ERROR, "GetMentorFromToken", "Can't get mentor from token");
         } finally {
-            try {
-                statement.close();
-                clean.close();
-            } catch (Exception e) {
-                log.out(Level.ERROR, "getMentofFromeToken", "Can't close database streams");
-            }
+            try { mentorStatemtent.close(); } catch (Exception e) { log.out(Level.ERROR, "GetMentorFromToken", "Can't close the mentorStatement"); }
+            try { statement.close(); } catch (Exception e) { log.out(Level.ERROR, "GetMentorFromToken", "Can't close the statement"); }
         }
         return null;
     }
@@ -170,12 +160,8 @@ public class SessionManagementDAO extends DataAccesObject {
         } catch (Exception e) {
             log.out(Level.ERROR, "GetUserFromToken", "Can't get user from token");
         } finally {
-            try {
-                statement.close();
-                clean.close();
-            } catch (Exception e) {
-                log.out(Level.ERROR, "getUserFromToken", "Can't close database streams");
-            }
+            try { clean.close(); } catch (Exception e) { log.out(Level.ERROR, "GetUserFromToken", "Can't close the clean"); }
+            try { statement.close(); } catch (Exception e) { log.out(Level.ERROR, "GetUserFromToken", "Can't close the statement"); }
         }
         return null;
     }
@@ -200,12 +186,8 @@ public class SessionManagementDAO extends DataAccesObject {
         } catch (Exception e) {
             log.out(Level.ERROR, "GetChildFromToken", "Can't get user from token");
         } finally {
-            try {
-                statement.close();
-                clean.close();
-            } catch (Exception e) {
-                log.out(Level.ERROR, "getChildFromToken", "Can't close database streams");
-            }
+            try { statement.close(); } catch (Exception e) {log.out(Level.ERROR, "GetChildFromToken", "Can't close the statement");}
+            try { clean.close(); } catch (Exception e) { log.out(Level.ERROR, "GetChildFromToken", "Can't close the clean");}
         }
         return null;
     }
