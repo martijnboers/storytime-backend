@@ -47,7 +47,7 @@ public class AchievementView extends ViewSuper {
 	@Path("/{id}")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllQuizesByMentor(@PathParam("id") int id){
+	public String getAchvievementByChild(@PathParam("id") int id){
 		return achievementController.getAchievementByid(id);
 	}
 	
@@ -55,7 +55,7 @@ public class AchievementView extends ViewSuper {
 	@Path("/child/{id}")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllQuizesByCategory(@PathParam("id") int id){
+	public String getAllAchievementsByChild(@PathParam("id") int id){
 		return achievementController.getAllAchievementsByChild(id);
 	}
 	
