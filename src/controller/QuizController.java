@@ -1,10 +1,15 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import dao.QuizDAO;
+import dao.SessionManagementDAO;
 import model.system.State;
+import model.user.Mentor;
 import model.quiz.Quiz;
 
 
@@ -65,13 +70,17 @@ public class QuizController {
 		return json.createJson(State.ERROR, "Er zijn geen quizes voor.");
 	}
 	
-	public String addQuiz(String input) {
+	public String addQuiz(String token, String input) throws Exception {
 		Json json = new Json();
-		Gson gson = new Gson();
-		Quiz quiz = gson.fromJson(input, Quiz.class);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
+		SessionManagementDAO session = new SessionManagementDAO();
+		
+		Quiz q = gson.fromJson(input, Quiz.class);
+		Mentor m = session.getMentorFromToken(token);
 
-		quizDAO.addQuiz(quiz, quiz.getMentor().getMentorId());
-		json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
+		if (!quizDAO.addQuiz(q, m.getMentorId())) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
+		}
 		
 		return json.createJson(State.PASSED, "Quiz is toegevoegd");
 	}
