@@ -60,7 +60,7 @@ public class UserController {
 			userInfo.put("Type", "Child");
 			userInfo.put("Name", c.getName());
 			userInfo.put("Username", c.getUsername());
-			userInfo.put("Birthday", c.getDateOfBirth());
+			userInfo.put("Birthday", c.getDateOfBirth().toString());
 			userInfo.put("Gender", c.getGender());
 			userInfo.put("Token", token);
 
