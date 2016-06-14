@@ -3,6 +3,7 @@ package view;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,8 +24,8 @@ public class QuizView extends ViewSuper{
 	@Path("/add")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addQuiz(String input){
-		return quizController.addQuiz(input);
+	public String addQuiz(@HeaderParam("token") String token, String input) throws Exception{
+		return quizController.addQuiz(token, input);
 	}
 	
 	@POST
