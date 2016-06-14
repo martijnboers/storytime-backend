@@ -228,10 +228,16 @@ public class RoadmapDAO extends DataAccesObject {
             statement.setString(2, roadmap.getDescription());
             statement.setInt(3, roadmap.getMentor().getMentorId());
             statement.setInt(4, roadmap.getAchievement().getId());
+            
+        
 
             if (statement.executeUpdate() > 0) {
+            	ResultSet generatedKey = statement.getGeneratedKeys();
+    			generatedKey.next();
+    			int id = generatedKey.getInt(1);
+            	
                 for (Step step : roadmap.getSteps()) {
-                    addStep(step, roadmap);
+                    addStep(step, id);
                 }
                 succes = true;
             }
@@ -442,14 +448,14 @@ public class RoadmapDAO extends DataAccesObject {
         return theSteps;
     }
 
-    private boolean addStep(Step step, Roadmap roadmap) {
+    private boolean addStep(Step step, int id) {
         boolean succes = false;
         try {
             statement = con.prepareStatement("INSERT INTO `storytime`.`Step` (`step_id`, `order_id`, `name`, `description`, `roadmap_id`) VALUES (NULL, ?, ?, ?, ?);");
             statement.setInt(1, step.getOrderID());
             statement.setString(2, step.getName());
             statement.setString(3, step.getDescription());
-            statement.setInt(4, roadmap.getId());
+            statement.setInt(4, id);
 
             if (statement.executeUpdate() > 0) {
                 succes = true;

@@ -78,7 +78,7 @@ public class RoadmapController {
 		Json json = new Json();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
 		SessionManagementDAO session = new SessionManagementDAO();
-		
+		System.out.println(input);
 		Roadmap r = gson.fromJson(input, Roadmap.class);
 		Mentor m = session.getMentorFromToken(token);
 		r.setMentor(m);
