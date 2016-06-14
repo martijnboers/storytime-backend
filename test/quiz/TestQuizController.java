@@ -80,13 +80,13 @@ public class TestQuizController {
 	}
 
 	@Test
-	public void testAddQuiz() {
+	public void testAddQuiz() throws Exception {
 
 		String theQuiz = "{\r\n\t\"name\": \" controllerTest \",\r\n\t\"completed\": false,\r\n\t\"desription\": \"het werkt!!\",\r\n\t\"name\": \"foo\",\r\n\t\"mentor\": {\r\n\t\t\"name\": \"foo\",\r\n\t\t\"id\": 1,\r\n\t\t\"email\": \"test@test.nl\",\r\n\t\t\"username\": \"mijnUsername\",\r\n\t\t\"password\": \"geheim\",\r\n\t\t\"profilPicture\": null\r\n\t}\r\n}";
 
 		System.out.println(theQuiz);
-		 quizController.addQuiz(theQuiz);
-		 assertTrue(quizController.addQuiz(theQuiz).length() > 0);
+		 quizController.addQuiz(theQuiz, theQuiz);
+		 assertTrue(quizController.addQuiz(theQuiz, theQuiz).length() > 0);
 	}
 	/*
 	 * @Test public void testAddQuizToChild() throws Exception{ quizDAO = new
