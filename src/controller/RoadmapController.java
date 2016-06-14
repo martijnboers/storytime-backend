@@ -1,13 +1,18 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import dao.RoadmapDAO;
+import dao.SessionManagementDAO;
 import model.system.State;
 import model.user.Child;
 import model.user.Mentor;
 import model.category.Category;
+import model.quiz.Quiz;
 import model.roadmap.Roadmap;
 
 public class RoadmapController {
@@ -69,13 +74,17 @@ public class RoadmapController {
 		return json.createJson(State.ERROR, "Er zijn geen roadmaps voor deze category.");
 	}
 	
-	public String addRoadmap(String input) {
+	public String addRoadmap(String token, String input) throws Exception {
 		Json json = new Json();
-		Gson gson = new Gson();
-		Roadmap roadmap = gson.fromJson(input, Roadmap.class);
-
-		roadmapDAO.addRoadmap(roadmap);
-		json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Roadmap.");
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
+		SessionManagementDAO session = new SessionManagementDAO();
+		
+		Roadmap r = gson.fromJson(input, Roadmap.class);
+		Mentor m = session.getMentorFromToken(token);
+		r.setMentor(m);
+		if (!roadmapDAO.addRoadmap(r)) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Roadmap.");
+		}
 		
 		return json.createJson(State.PASSED, "Roadmap is toegevoegd");
 	}

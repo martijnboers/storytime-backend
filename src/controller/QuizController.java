@@ -78,8 +78,9 @@ public class QuizController {
 		Quiz q = gson.fromJson(input, Quiz.class);
 		Mentor m = session.getMentorFromToken(token);
 
-		quizDAO.addQuiz(q, m.getMentorId());
-		json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
+		if (!quizDAO.addQuiz(q, m.getMentorId())) {
+			json.createJson(State.ERROR, "Er is iets fout gegaan met het toevoegen van de Quiz.");
+		}
 		
 		return json.createJson(State.PASSED, "Quiz is toegevoegd");
 	}
