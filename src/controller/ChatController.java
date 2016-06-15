@@ -50,7 +50,12 @@ public class ChatController {
         String answer = chatSession.multisentenceRespond(chat.getAnswer());
 
         if (answer.equals("QUESTION")) {
-            return gson.toJson(new ChatObject("Kan ik je hiermee helpen?", "token", "ROADMAP", suggest(chat.getAnswer())));
+            ArrayList<Roadmap> suggestion = suggest(chat.getAnswer());
+            if (suggest(chat.getAnswer()).isEmpty()) {
+                return gson.toJson(new ChatObject("Sorry daar heb ik niet over kunnen vinden", "token", "CHAT", suggestion));
+            } else {
+                return gson.toJson(new ChatObject("Kan ik je hiermee helpen?", "token", "ROADMAP", suggestion));
+            }
         }
         return gson.toJson(new ChatObject(answer, "token", "CHAT", null));
     }
