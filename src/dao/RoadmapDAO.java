@@ -593,7 +593,10 @@ public class RoadmapDAO extends DataAccesObject {
 
                     ResultSet result = statement.executeQuery();
                     while (result.next()) {
-                        roadmaps.add(getRoadmapById(result.getInt("roadmap_id")));
+                    	Roadmap m = getRoadmapById(result.getInt("roadmap_id"));
+                    	if (!roadmaps.contains(m)) {
+                    		roadmaps.add(m);
+                    	}
                     }
 
                 } catch (SQLException e) {
