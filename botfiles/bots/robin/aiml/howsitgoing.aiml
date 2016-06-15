@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+   <category>
+      <pattern>goed</pattern>
+      <template>
+         <random>
+            <li>Ik ben blij dat het goed gaat</li>
+            <li>Dat is mooi!</li>
+            <li>Wat leuk voor je</li>
+         </random>
+      </template>
+   </category>
+   <category>
+      <pattern>slecht</pattern>
+      <template>
+         <random>
+            <li>Wat vervelend voor je</li>
+            <li>Dat is jammer om te horen</li>
+            <li>Kan ik je misschien hiermee helpen?</li>
+         </random>
+      </template>
+   </category>
+   <category>
+      <pattern>niet goed</pattern>
+      <template>
+         <srai>slecht</srai>
+      </template>
+   </category>
+   <category>
+      <pattern>* boos</pattern>
+      <template>
+         <srai>slecht</srai>
+      </template>
+   </category>
+   <category>
+      <pattern>* boos *</pattern>
+      <template>
+         <srai>slecht</srai>
+      </template>
+   </category>
+   <category>
+      <pattern>* vervelend *</pattern>
+      <template>
+         <srai>slecht</srai>
+      </template>
+   </category>
+   <category>
+      <pattern>* goed</pattern>
+      <template>
+         <srai>goed</srai>
+      </template>
+   </category>
+   <category>
+      <pattern>goed *</pattern>
+      <template>
+         <srai>goed</srai>
+      </template>
+   </category>
+</aiml>

@@ -1,0 +1,8 @@
+0,GOED,*,*,<random>#Newline            <li>Ik ben blij dat het goed gaat</li>#Newline            <li>Dat is mooi!</li>#Newline            <li>Wat leuk voor je</li>#Newline         </random>,howsitgoing.aiml
+0,SLECHT,*,*,<random>#Newline            <li>Wat vervelend voor je</li>#Newline            <li>Dat is jammer om te horen</li>#Newline            <li>Kan ik je misschien hiermee helpen?</li>#Newline         </random>,howsitgoing.aiml
+0,NIET GOED,*,*,<srai>slecht</srai>,howsitgoing.aiml
+0,* BOOS,*,*,<srai>slecht</srai>,howsitgoing.aiml
+0,* BOOS *,*,*,<srai>slecht</srai>,howsitgoing.aiml
+0,* VERVELEND *,*,*,<srai>slecht</srai>,howsitgoing.aiml
+0,* GOED,*,*,<srai>goed</srai>,howsitgoing.aiml
+0,GOED *,*,*,<srai>goed</srai>,howsitgoing.aiml

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.0">
-  <category>
+   <category>
       <pattern>,?,</pattern>
-	  <template>
-			  QUESTION
-      </template>
-  </category>
-
-  <category>
-        <pattern>Hoe *</pattern>
-  	  <template>
-  			  QUESTION
-        </template>
-    </category>
-
-    <category>
-            <pattern> * wil graag *</pattern>
-      	  <template>
-      			  QUESTION
-            </template>
-        </category>
+      <template>QUESTION</template>
+   </category>
+   <category>
+      <pattern>Hoe *</pattern>
+      <template>QUESTION</template>
+   </category>
+   <category>
+      <pattern>* wil graag *</pattern>
+      <template>QUESTION</template>
+   </category>
+   <category>
+      <pattern>* hulp *</pattern>
+      <template>QUESTION</template>
+   </category>
+   <category>
+      <pattern>* helpen *</pattern>
+      <template>QUESTION</template>
+   </category>
 </aiml>
