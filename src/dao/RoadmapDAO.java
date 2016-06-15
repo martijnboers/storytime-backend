@@ -581,8 +581,9 @@ public class RoadmapDAO extends DataAccesObject {
                 try {
                     statement = con.prepareStatement("SELECT roadmap_id FROM `Roadmap` WHERE `name` LIKE ? OR `description` LIKE ? LIMIT 0 , 6");
 
-                    statement.setString(1, "%" + keyword + "%");
-                    statement.setString(2, "%" + keyword + "%");
+                    // Strips all special characters, not for security but for better search results.
+                    statement.setString(1, "%" + keyword.replaceAll("[^a-zA-Z]+","") + "%");
+                    statement.setString(2, "%" + keyword.replaceAll("[^a-zA-Z]+","") + "%");
 
                     ResultSet result = statement.executeQuery();
                     while (result.next()) {

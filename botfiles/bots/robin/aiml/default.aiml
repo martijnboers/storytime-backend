@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+
+		<category><pattern>*</pattern>
+				<template>Sorry dat begrijp ik niet</template>
+		</category>
+
+		<category><pattern>BRAIN VERSION</pattern>
+				<template><program/></template>
+		</category>
+
+		<category><pattern>PROGRAM VERSION</pattern>
+				<template><program/></template>
+		</category>
+
+		<category><pattern>BRAIN BUILD</pattern>
+				<template><program><info>build</info></program></template>
+		</category>
+
+		<category><pattern>AIML MATCH LIMIT *</pattern>
+				<template>Match limit exceeded</template>
+		</category>
+
+		<category><pattern>AIML MATCH FAIL *</pattern>
+				<template>Match failed</template>
+		</category>
+
+</aiml>
+

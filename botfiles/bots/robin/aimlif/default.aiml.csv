@@ -1,0 +1,6 @@
+0,*,*,*,Sorry dat begrijp ik niet,default.aiml
+0,BRAIN VERSION,*,*,<program/>,default.aiml
+0,PROGRAM VERSION,*,*,<program/>,default.aiml
+0,BRAIN BUILD,*,*,<program><info>build</info></program>,default.aiml
+0,AIML MATCH LIMIT *,*,*,Match limit exceeded,default.aiml
+0,AIML MATCH FAIL *,*,*,Match failed,default.aiml

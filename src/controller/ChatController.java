@@ -17,13 +17,13 @@ package controller;
 
 import com.google.gson.Gson;
 import dao.RoadmapDAO;
+import model.chat.ChatObject;
 import model.quiz.Answer;
-import model.quiz.Question;
-import model.quiz.Quiz;
 import model.roadmap.Roadmap;
 import model.system.ChatEvent;
-import model.system.FrontendEvent;
 import model.user.Child;
+
+import org.alicebot.ab.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,51 +36,18 @@ public class ChatController {
     private static int pollId;
     private static ArrayList<ChatEvent> pollStream = new ArrayList<>();
     private Gson gson;
+    private Bot bot;
 
     public ChatController() {
         roadmapdao = new RoadmapDAO();
         gson = new Gson();
+        String path = "/home/martijn/code/storytime-backend/botfiles";
+        bot = new Bot("robin", path);
     }
 
-    /**
-     * Returns one or multiple chat FrontendEvents
-     *
-     * @param child
-     * @param id
-     * @return
-     */
-    public String getPolling(Child child, int id) {
-        ArrayList<ChatEvent> out = new ArrayList<>();
-        for (ChatEvent poll : pollStream) {
-            if (poll.getId() > id) {
-                out.add(poll);
-            }
-        }
-        return gson.toJson(out);
-    }
-
-    public String start(Child child, int id) {
-        //List<Roadmap> maps = roadmapdao.getAllRoadmapsByChild(child);
-        //return gson.toJson(maps.get(maps.size() - 1));
-
-        // Doesn't really matter if this roadmap belongs to which child.
-        return gson.toJson(roadmapdao.getRoadmapById(id));
-    }
-
-    public String insertAnswer(Child child, int quizid, int questionid, Answer answer) {
-        return answer.toString();
-    }
-
-    public void addPollFeed(ChatEvent event) {
-        // New poll added
-        pollId++;
-        event.setId(pollId);
-        pollStream.add(event);
-    }
-
-    public String getQuestion(Child child, Quiz roadmap, int id) {
-        //return gson.toJson(roadmap.getSteps().get(id));
-        return null;
+    public String chat(Child child, ChatObject chat) {
+        Chat chatSession = new Chat(bot);
+        return gson.toJson(new ChatObject(chatSession.multisentenceRespond(chat.getAnswer()), "token")) ;
     }
 
     public String suggest(Answer answer) throws Exception {

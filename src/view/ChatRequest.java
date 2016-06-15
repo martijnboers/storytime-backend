@@ -21,6 +21,7 @@ import dao.RoadmapDAO;
 import exceptions.InvalidTokenException;
 import logging.Level;
 import logging.Logger;
+import model.chat.ChatObject;
 import model.quiz.Answer;
 import model.roadmap.Roadmap;
 
@@ -41,7 +42,7 @@ import java.sql.SQLException;
  * 7: GOTO: 5; REPEAT
  */
 
-@Path("/chat")
+@Path("/")
 @Produces("application/json")
 public class ChatRequest extends ViewSuper {
     Logger log = Logger.getInstance();
@@ -52,7 +53,6 @@ public class ChatRequest extends ViewSuper {
         log.out(Level.INFORMATIVE, "Chat", "Initializing chat controller");
     }
 
-
     /**
      * This can be periodically polled to get next action to be performed, like get next question or start a new
      * quiz, show achievements etc.
@@ -60,7 +60,6 @@ public class ChatRequest extends ViewSuper {
      * This is more like a cron job that other functions can put messages in to be showed in the frontend UI
      *
      * @param token
-     * @param id
      * @return String with new id and information on session
      * @throws SQLException
      * @throws InvalidTokenException
@@ -72,95 +71,9 @@ public class ChatRequest extends ViewSuper {
      * @apiSuccess MESSAGE: User printable message ID: New poll id STATE: SUCCEEDED Action: Action to be performed in front end
      * @apiError MESSAGE: User printable error message, STATE: ERROR
      */
-    @GET
-    @Path("/poll/{id}")
-    public String getPolling(@HeaderParam("token") String token, @PathParam("id") int id) throws SQLException, InvalidTokenException {
-        return chat.getPolling(session.getChildFromToken(token), id);
-    }
-
-    /**
-     * Insert the answer and check if it's correct, return the new question id
-     *
-     * @param token
-     * @param json
-     * @return
-     * @throws SQLException
-     * @throws InvalidTokenException
-     * @api {POST} /chat/answer Answer a question that was asked. Please start the session with /user/start
-     * @apiName answer
-     * @apiGroup chat
-     * @apiParam {String} Child token for authentication
-     * @apiParam {Answer} int id, String answer, boolean correct
-     * @apiSuccess MESSAGE: User printable message ID: Next question id STATE: SUCCEEDED
-     * @apiError MESSAGE: User printable error message, STATE: ERROR
-     */
     @POST
-    @Path("/answer/{quizid}/{id}")
-    public String insertNewAnswer(@HeaderParam("token") String token, @PathParam("quizid") int quizid,
-                                  @PathParam("id") int questionid, String json) throws SQLException, InvalidTokenException {
-        return chat.insertAnswer(session.getChildFromToken(token), quizid, questionid, gson.fromJson(json, Answer.class));
-    }
-
-
-    /**
-     * Get the individual question
-     *
-     * @param token
-     * @param id
-     * @return
-     * @throws SQLException
-     * @throws InvalidTokenException
-     * @api {GET} /chat/question/id Get the question that corresponds with the given id
-     * @apiName getQuestion
-     * @apiGroup chat
-     * @apiParam {String} Child token for authentication
-     * @apiParam {roadmapid} Id of roadmap
-     * @apiParam {id} Question id (Emtpy if first)
-     * @apiSuccess MESSAGE: User printable message QUESTION: tobeimplemented id STATE: SUCCEEDED
-     * @apiError MESSAGE: User printable error message, STATE: ERROR
-     */
-    @GET
-    @Path("/question/{quizid}/{id}")
-    public String getQuestion(@HeaderParam("token") String token, @PathParam("quizid") int roadmap, @PathParam("id") int id) throws SQLException, InvalidTokenException {
-        //return chat.getQuestion(session.getChildFromToken(token), quizdao.get , id);
-        return null;
-    }
-
-    /**
-     * @param token
-     * @return Json
-     * @throws SQLException
-     * @throws InvalidTokenException
-     * @api {GET} /chat/start System decides to start Feedback Roadmap or start a new Roadmap
-     * @apiName start
-     * @apiGroup chat
-     * @apiParam {String} Child token for authentication
-     * @apiSuccess MESSAGE: User printable message ID: Next question id QUESTION: String question, int questionId, boolean completed
-     * private List<Answer> STATE: SUCCEEDED
-     * @apiError MESSAGE: User printable error message, STATE: ERROR
-     */
-    @GET
-    @Path("/start/{id}")
-    public String startChat(@HeaderParam("token") String token, @PathParam("id") int id) throws SQLException, InvalidTokenException {
-        return chat.start(session.getChildFromToken(token), id);
-    }
-
-    /**
-     * Get a suggestion for a roadmap based on the input given by actor.
-     *
-     * @param token
-     * @param answer
-     * @return
-     * @apiName suggest
-     * @apiGroup chat
-     * @apiError MESSAGE: Kan geen instructies vinden over onderwerp, STATE: ERROR
-     * @api {POST} /chat/suggest Let input from user decide which roadmap to start
-     */
-    @POST
-    @Path("/suggest")
-    public String getSuggestedRoadmap(@HeaderParam("token") String token, String answer) throws Exception {
-        // security
-        session.getChildFromToken(token);
-        return chat.suggest(gson.fromJson(answer, Answer.class));
+    @Path("/chat")
+    public String getPolling(@HeaderParam("token") String token, String json) throws SQLException, InvalidTokenException {
+        return chat.chat(session.getChildFromToken(token), gson.fromJson(json, ChatObject.class));
     }
 }
