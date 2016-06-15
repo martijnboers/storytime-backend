@@ -13,4 +13,11 @@
   			  QUESTION
         </template>
     </category>
+
+    <category>
+            <pattern> * wil graag *</pattern>
+      	  <template>
+      			  QUESTION
+            </template>
+        </category>
 </aiml>
