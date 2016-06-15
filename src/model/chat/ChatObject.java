@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class ChatObject {
     private String answer;
-    private String token;
+    private String state;
     private ArrayList<Roadmap> roadmap;
 
     public String getType() {
@@ -24,7 +24,7 @@ public class ChatObject {
 
     public ChatObject(String answer, String token, String type, ArrayList<Roadmap> roadmap) {
         this.answer = answer;
-        this.token = token;
+        this.state = token;
         this.type = type;
         this.roadmap = roadmap;
     }
@@ -37,12 +37,12 @@ public class ChatObject {
         this.answer = answer;
     }
 
-    public String getToken() {
-        return token;
+    public String getState() {
+        return state;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setState(String token) {
+        this.state = token;
     }
 
     public ArrayList<Roadmap> getRoadmap() {

@@ -55,7 +55,7 @@ public class ChatController {
         if (answer.equals("QUESTION")) {
             ArrayList<Roadmap> suggestion = suggest(chat.getAnswer());
             if (suggest(chat.getAnswer()).isEmpty()) {
-                return gson.toJson(new ChatObject("Sorry daar heb ik niet over kunnen vinden", "token", "CHAT", suggestion));
+                return gson.toJson(new ChatObject("Sorry daar heb ik niets over kunnen vinden", "token", "CHAT", suggestion));
             } else {
                 return gson.toJson(new ChatObject("Kan ik je hiermee helpen?", "token", "ROADMAP", suggestion));
             }

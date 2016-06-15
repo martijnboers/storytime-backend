@@ -4,9 +4,9 @@
       <pattern>goed</pattern>
       <template>
          <random>
-            <li>Ik ben blij dat het goed gaat</li>
-            <li>Dat is mooi!</li>
-            <li>Wat leuk voor je</li>
+            <li>Ik ben blij dat het goed gaat, waar kan ik je mee helpen?</li>
+            <li>Dat is mooi! Waar kan ik je mee helpen vandaag?</li>
+            <li>Wat leuk voor je! Kan ik je ergens mee helpen?</li>
          </random>
       </template>
    </category>
@@ -14,8 +14,8 @@
       <pattern>slecht</pattern>
       <template>
          <random>
-            <li>Wat vervelend voor je</li>
-            <li>Dat is jammer om te horen</li>
+            <li>Wat vervelend voor je. Kan ik je ergens mee helpen?</li>
+            <li>Dat is jammer om te horen. Kan ik je ergens mee helpen?</li>
             <li>Kan ik je misschien hiermee helpen?</li>
          </random>
       </template>
