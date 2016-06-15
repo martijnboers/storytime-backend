@@ -17,7 +17,9 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import dao.DatabaseProperties;
 import dao.RoadmapDAO;
+import exceptions.MissingPropertiesFile;
 import model.chat.ChatObject;
 import model.quiz.Answer;
 import model.roadmap.Roadmap;
@@ -26,6 +28,7 @@ import model.user.Child;
 
 import org.alicebot.ab.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -38,11 +41,11 @@ public class ChatController {
     private Gson gson;
     private Bot bot;
 
-    public ChatController() {
+    public ChatController() throws IOException, MissingPropertiesFile {
         roadmapdao = new RoadmapDAO();
         gson = new Gson();
-        String path = "/home/martijn/code/storytime-backend/botfiles";
-        bot = new Bot("robin", path);
+        DatabaseProperties properties = new DatabaseProperties();
+        bot = new Bot("robin", properties.getPropValues().getBotfile());
     }
 
     public String chat(Child child, ChatObject chat) throws Exception {
