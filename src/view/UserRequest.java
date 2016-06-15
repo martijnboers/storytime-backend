@@ -17,6 +17,7 @@ package view;
 
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -89,7 +90,9 @@ public class UserRequest extends ViewSuper {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String registerChild(@HeaderParam("token") String token, String input)
 			throws UnknownHostException, SQLException, InvalidTokenException {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+		System.out.println("date");
+		System.out.println(input);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
 		Child c = gson.fromJson(input, Child.class);
 		Mentor m = session.getMentorFromToken(token);
 		return userController.addChild(c, m);

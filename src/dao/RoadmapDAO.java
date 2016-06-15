@@ -220,6 +220,7 @@ public class RoadmapDAO extends DataAccesObject {
     }
 
     public boolean addRoadmap(Roadmap roadmap) {
+
         boolean succes = false;
         try {
             statement = con.prepareStatement("INSERT INTO Roadmap (`name`, `description`, `mentor_id`, `achievement_id`) VALUES (?, ?, ?, ?);");
@@ -228,9 +229,15 @@ public class RoadmapDAO extends DataAccesObject {
             statement.setInt(3, roadmap.getMentor().getMentorId());
             statement.setInt(4, roadmap.getAchievement().getId());
 
+
+
             if (statement.executeUpdate() > 0) {
+                ResultSet generatedKey = statement.getGeneratedKeys();
+                generatedKey.next();
+                int id = generatedKey.getInt(1);
+
                 for (Step step : roadmap.getSteps()) {
-                    addStep(step, roadmap);
+                    addStep(step, id);
                 }
                 succes = true;
             }
@@ -441,14 +448,14 @@ public class RoadmapDAO extends DataAccesObject {
         return theSteps;
     }
 
-    private boolean addStep(Step step, Roadmap roadmap) {
+    private boolean addStep(Step step, int id) {
         boolean succes = false;
         try {
             statement = con.prepareStatement("INSERT INTO `storytime`.`Step` (`step_id`, `order_id`, `name`, `description`, `roadmap_id`) VALUES (NULL, ?, ?, ?, ?);");
             statement.setInt(1, step.getOrderID());
             statement.setString(2, step.getName());
             statement.setString(3, step.getDescription());
-            statement.setInt(4, roadmap.getId());
+            statement.setInt(4, id);
 
             if (statement.executeUpdate() > 0) {
                 succes = true;
@@ -581,13 +588,15 @@ public class RoadmapDAO extends DataAccesObject {
                 try {
                     statement = con.prepareStatement("SELECT roadmap_id FROM `Roadmap` WHERE `name` LIKE ? OR `description` LIKE ? LIMIT 0 , 6");
 
-                    // Strips all special characters, not for security but for better search results.
-                    statement.setString(1, "%" + keyword.replaceAll("[^a-zA-Z]+","") + "%");
-                    statement.setString(2, "%" + keyword.replaceAll("[^a-zA-Z]+","") + "%");
+                    statement.setString(1, "%" + keyword + "%");
+                    statement.setString(2, "%" + keyword + "%");
 
                     ResultSet result = statement.executeQuery();
                     while (result.next()) {
-                        roadmaps.add(getRoadmapById(result.getInt("roadmap_id")));
+                        Roadmap m = getRoadmapById(result.getInt("roadmap_id"));
+                        if (!roadmaps.contains(m)) {
+                            roadmaps.add(m);
+                        }
                     }
 
                 } catch (SQLException e) {

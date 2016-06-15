@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -126,7 +127,9 @@ public class UserDAO extends DataAccesObject {
 			childQuery = con.prepareStatement(
 					"INSERT INTO  `Child` (`date_of_birth` ,`gender` , `user_id`, `mentor_id`)	VALUES (?,  ?, ?, ?);",
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			childQuery.setString(1, theChild.getDateOfBirth().toString());
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			childQuery.setString(1, sdf.format(theChild.getDateOfBirth()));
 			childQuery.setString(2, theChild.getGender());
 			childQuery.setInt(3, userId);
 			childQuery.setInt(4, theMentor.getMentorId());
