@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.0">
   <category>
-      <pattern>hoi *</pattern>
+      <pattern>hoi</pattern>
       <template>
         <random>
           <li>Hallo hoe gaat het?</li>
@@ -10,4 +10,10 @@
         </random>
       </template>
   </category>
+
+  <category>
+        <pattern>hoi *</pattern>
+        <template><srai>hoi</srai></template>
+  </category>
+
 </aiml>

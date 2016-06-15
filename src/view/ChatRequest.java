@@ -73,7 +73,7 @@ public class ChatRequest extends ViewSuper {
      */
     @POST
     @Path("/chat")
-    public String getPolling(@HeaderParam("token") String token, String json) throws SQLException, InvalidTokenException {
+    public String getChat(@HeaderParam("token") String token, String json) throws Exception {
         return chat.chat(session.getChildFromToken(token), gson.fromJson(json, ChatObject.class));
     }
 }

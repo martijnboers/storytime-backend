@@ -16,6 +16,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dao.RoadmapDAO;
 import model.chat.ChatObject;
 import model.quiz.Answer;
@@ -26,7 +27,6 @@ import model.user.Child;
 import org.alicebot.ab.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by martijn on 4/19/16.
@@ -45,19 +45,19 @@ public class ChatController {
         bot = new Bot("robin", path);
     }
 
-    public String chat(Child child, ChatObject chat) {
+    public String chat(Child child, ChatObject chat) throws Exception {
         Chat chatSession = new Chat(bot);
-        return gson.toJson(new ChatObject(chatSession.multisentenceRespond(chat.getAnswer()), "token")) ;
+        String answer = chatSession.multisentenceRespond(chat.getAnswer());
+
+        if (answer.equals("QUESTION")) {
+            return gson.toJson(new ChatObject("Kan ik je hiermee helpen?", "token", "ROADMAP", suggest(chat.getAnswer())));
+        }
+        return gson.toJson(new ChatObject(answer, "token", "CHAT", null));
     }
 
-    public String suggest(Answer answer) throws Exception {
-        if (!answer.getAnswer().equals("")) {
-            ArrayList<Roadmap> list = roadmapdao.getSuggestedRoadmap(answer.getAnswer().split(" "));
-            if (list.isEmpty()) {
-                throw new Exception("Geen bijhorende instructies kunnen vinden");
-            } else {
-                return gson.toJson(list);
-            }
+    public ArrayList<Roadmap> suggest(String answer) throws Exception {
+        if (!answer.equals("")) {
+            return roadmapdao.getSuggestedRoadmap(answer.split(" "));
         } else {
             throw new Exception("Geen suggesties gevonden");
         }
