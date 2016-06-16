@@ -33,6 +33,12 @@
       </template>
    </category>
    <category>
+      <pattern>* slecht</pattern>
+      <template>
+         <srai>slecht</srai>
+      </template>
+   </category>
+   <category>
       <pattern>* boos *</pattern>
       <template>
          <srai>slecht</srai>
